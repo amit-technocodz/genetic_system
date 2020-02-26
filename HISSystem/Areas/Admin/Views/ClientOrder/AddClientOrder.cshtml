@@ -1,0 +1,261 @@
+﻿
+@model GeneticSystem.Areas.Admin.Models.ClientOrderViewModel
+@{
+    //ViewData["Title"] = "Add Order";
+    //Layout = "~/Views/Shared/_Admin.cshtml";
+    ViewBag.CurrentDate = DateTime.UtcNow;
+    ViewBag.DueDate = DateTime.UtcNow.AddDays(21);
+}
+
+<form id="encounterForm">
+    <fieldset id="form-fieldset">
+        <div class="col-md-12">
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <div class="prtm-block pos-relative">
+                        <div class="prtm-page-bar">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item text-capitalize"><h2>@ViewData["Title"]</h2></li>
+                                <li class="breadcrumb-item"><a href="#">Registeration</a></li>
+                                <li class="breadcrumb-item"><a href="#">Orders</a></li>
+                                <li class="breadcrumb-item"><a href="#" class="active"> New Order</a></li>
+                            </ul>
+                        </div>
+
+
+                        <div class="tab-content pad-all-sm">
+
+                            <div id="tab-26" class=" row tab-pane fade in ">
+                                hghgcgh
+                            </div>
+                            <div id="tab-27" class="tab-pane fade in active">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Order No.</label>
+                                                    @Html.TextBox("clientOrder.ClientOrder.OrderNo", null, new { @Class = "form-control", @readonly = true })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Patient Name</label>
+                                                    @Html.DropDownList("clientOrder.ClientOrder.UserID", new SelectList(ViewBag.Clients, "ID", "ArFirstName"), "Select", new { @Class = "form-control dropdown", @onchange = "test();" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Order Date</label>
+                                                    @Html.TextBox("clientOrder.ClientOrder.OrderDate", (DateTime)ViewBag.CurrentDate, new { @class = "form-control datepicker" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Regn No</label>
+                                                    @Html.TextBox("clientOrder.ClientOrder.User.RegisterationNo", null, new { @Class = "form-control", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Due Date</label>
+                                                    @Html.TextBox("clientOrder.ClientOrder.OrderDueDate", (DateTime)ViewBag.DueDate, new { @Class = "form-control datepicker" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Test Type</label>
+                                                    @Html.DropDownList("clientOrder.ClientOrder.TemplateID", new SelectList(ViewBag.Templates, "ID", "Name"), "Select", new { @Class = "form-control dropdown", @onchange = "GetTemplate();" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <input type="button" name="button" value="Save" onclick="saveOrderFunction();" class="btn btn-xs btn-primary" id="signupform" />
+                                                <input type="button" name="submit" value="Update" class="btn btn-xs btn-warning" disabled />
+                                                <input type="button" name="submit" value="History" class="btn btn-xs btn-info" disabled />
+                                                <input type="button" name="submit" value="Attachment" class="btn btn-xs btn-warning" disabled />
+                                                <input type="button" name="submit" value="Reminder" class="btn btn-xs btn-info" disabled />
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="col-md-12" id="setTemplate">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <h4 id="summary-Name">Summary</h4>
+                                                    @Html.TextArea("clientOrder.ClientOrder.OrderSummary", new { @Class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <h4>Follow Up Needed</h4>
+                                                    @Html.ListBox("clientOrder.ClientOrder.FollowUpArray", new MultiSelectList(ViewBag.EffectedGene, "ID", "Name", null), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <h4>@*@ViewBag.TemplateName*@ TestName </h4>
+                                                    @Html.ListBox("clientOrder.ClientOrder.TestTypeArray", new MultiSelectList(ViewBag.TestTypes, "ID", "Name", null), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <h4>Assign Doctor</h4>
+                                                    @Html.DropDownList("clientOrder.ClientOrder.DoctorID", new SelectList(ViewBag.Clients, "ID", "ArFirstName"), "Select", new { @Class = "form-control dropdown", @onchange = "test();" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="profile-box-r">
+                                            <div class="row mrgn-all-xs">
+                                                <div class="col-md-12">
+                                                    <div class="pro-pic">
+                                                        <img src="/assets/img/user-1.jpg" alt="">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+
+                                                    <div class="form-group">
+                                                        <label>
+                                                            Birthdate
+                                                        </label>
+                                                        @Html.TextBox("clientOrder.ClientOrder.User.PatientPersonalInformation.DateOfBirth",null, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>ID No</label>
+                                                        @Html.TextBox("clientOrder.ClientOrder.User.ID",null, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                    @*<div class="form-group">
+                                                            <label>Age</label>
+                                                            <input class="form-control" id="" name="" type="text" value="">
+                                                        </div>*@
+                                                    <div class="form-group">
+                                                        <label>City</label>
+                                                        @Html.TextBox("clientOrder.ClientOrder.User.PatientPersonalInformation.City.Name", null,new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Address</label>
+                                                        @Html.TextBox("clientOrder.ClientOrder.User.Address",null, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Mobile</label>
+                                                        @Html.TextBox("clientOrder.ClientOrder.User.Mobile", null,new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Blood GR</label>
+                                                        @Html.TextBox("clientOrder.ClientOrder.User.PatientPersonalInformation.BloodGroup.Name",null, new { @class = "form-control", @readonly = "readonly" })
+                                                    </div>
+                                                    @*<div class="form-group">
+                                                            <label>Hight</label>
+                                                            <input class="form-control" id="" name="" type="text" value="">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Weight</label>
+                                                            <input class="form-control" id="" name="" type="text" value="">
+                                                        </div>*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<script>
+
+
+
+
+                function test() {
+                    debugger
+
+            var user = $("#PatientID").val();
+         //   alert(user);
+            $.ajax({
+
+                url: "/admin/patientorder/getpatientDetails",
+                type: "get",
+                data: { 'Id': user },
+                success: function (data) {
+                    console.log(data);
+                    $("#User_PatientPersonalInformation_DateOfBirth").val(data.patientPersonalInformation.dateOfBirth);
+                    $("#User_ID").val(user);
+                    $("#User_RegisterationNo").val(data.registerationNo);
+                    $("#User_Address").val(data.address);
+
+                    $("#User_Mobile").val(data.mobile);
+                     $("#User_PatientPersonalInformation_BloodGroup_Name").val(data.patientPersonalInformation.bloodGroup.name);
+                },
+                error: function () {
+                }
+            });
+        }
+        var objfill;
+
+
+        //$('select').selectpicker();
+        function Uncheck(data) {
+            var test = $(data).attr("data-info");
+            if ($(data).prop("checked")) {
+                document.getElementById(test).removeAttribute('readonly');
+            }
+            else {
+               document.getElementById(test).setAttribute('readonly',true);
+            }
+        }
+        function enabletextbox(data) {
+            var test = $(data).attr("data-info");
+            var test1 = $(data).attr("datainfo1");
+            if ($(data).prop("checked")) {
+                document.getElementById(test).removeAttribute('readonly');
+                document.getElementById(test1).removeAttribute('readonly');
+            }
+            else {
+                document.getElementById(test).setAttribute('readonly', true);
+                document.getElementById(test1).setAttribute('readonly',true);
+            }
+
+        }
+        function showdetail() {
+            $("#detail-div").toggle();
+        }
+        function autocomplete(data) {
+        $('.autocomplete').autocomplete({
+            source: '/admin/patientOrder/AutoCompleteNameWithID',
+            minLength: 0,
+            select: function (event, ui) {
+                $("#hiddenUserID").val(ui.item.id);
+            },
+        }).focus(function () {
+            $('.autocomplete').autocomplete("search");
+        });
+    }
+    $('.autocomplete').autocomplete("option", "appendTo", ".eventInsForm");
+
+</script>
+
+
+
