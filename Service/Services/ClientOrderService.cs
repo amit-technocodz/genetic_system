@@ -54,6 +54,7 @@ namespace Service.Services
                 var list = db.ClientOrder.Get().ToList();
                 var anotherList = context.ClientOrder.ToList();
                 var xray = anotherList;
+                //comm
                 return list;
             }
             catch (Exception ex)

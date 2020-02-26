@@ -274,3 +274,16 @@ E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\obj\Debug\netcoreapp
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\obj\Debug\netcoreapp2.2\Service.csproj.CopyComplete
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\obj\Debug\netcoreapp2.2\Service.dll
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\obj\Debug\netcoreapp2.2\Service.pdb
+J:\GitHub\genetic_system\Service\bin\Debug\netcoreapp2.2\Service.deps.json
+J:\GitHub\genetic_system\Service\bin\Debug\netcoreapp2.2\Service.dll
+J:\GitHub\genetic_system\Service\bin\Debug\netcoreapp2.2\Service.pdb
+J:\GitHub\genetic_system\Service\bin\Debug\netcoreapp2.2\Data.dll
+J:\GitHub\genetic_system\Service\bin\Debug\netcoreapp2.2\Repository.dll
+J:\GitHub\genetic_system\Service\bin\Debug\netcoreapp2.2\Data.pdb
+J:\GitHub\genetic_system\Service\bin\Debug\netcoreapp2.2\Repository.pdb
+J:\GitHub\genetic_system\Service\obj\Debug\netcoreapp2.2\Service.csprojAssemblyReference.cache
+J:\GitHub\genetic_system\Service\obj\Debug\netcoreapp2.2\Service.AssemblyInfoInputs.cache
+J:\GitHub\genetic_system\Service\obj\Debug\netcoreapp2.2\Service.AssemblyInfo.cs
+J:\GitHub\genetic_system\Service\obj\Debug\netcoreapp2.2\Service.csproj.CopyComplete
+J:\GitHub\genetic_system\Service\obj\Debug\netcoreapp2.2\Service.dll
+J:\GitHub\genetic_system\Service\obj\Debug\netcoreapp2.2\Service.pdb
