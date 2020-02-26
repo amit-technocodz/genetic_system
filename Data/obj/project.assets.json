@@ -5059,11 +5059,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Data\\Data.csproj",
+      "projectUniqueName": "E:\\GeneticGit\\GeneticSystem\\Data\\Data.csproj",
       "projectName": "Data",
-      "projectPath": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Data\\Data.csproj",
+      "projectPath": "E:\\GeneticGit\\GeneticSystem\\Data\\Data.csproj",
       "packagesPath": "C:\\Users\\anirudh.sharma\\.nuget\\packages\\",
-      "outputPath": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Data\\obj\\",
+      "outputPath": "E:\\GeneticGit\\GeneticSystem\\Data\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\anirudh.sharma\\AppData\\Roaming\\NuGet\\NuGet.Config",

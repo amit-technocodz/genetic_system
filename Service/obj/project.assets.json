@@ -5469,11 +5469,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Service\\Service.csproj",
+      "projectUniqueName": "E:\\GeneticGit\\GeneticSystem\\Service\\Service.csproj",
       "projectName": "Service",
-      "projectPath": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Service\\Service.csproj",
+      "projectPath": "E:\\GeneticGit\\GeneticSystem\\Service\\Service.csproj",
       "packagesPath": "C:\\Users\\anirudh.sharma\\.nuget\\packages\\",
-      "outputPath": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Service\\obj\\",
+      "outputPath": "E:\\GeneticGit\\GeneticSystem\\Service\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\anirudh.sharma\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -5489,11 +5489,11 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Data\\Data.csproj": {
-              "projectPath": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Data\\Data.csproj"
+            "E:\\GeneticGit\\GeneticSystem\\Data\\Data.csproj": {
+              "projectPath": "E:\\GeneticGit\\GeneticSystem\\Data\\Data.csproj"
             },
-            "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Repository\\Repository.csproj": {
-              "projectPath": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Repository\\Repository.csproj"
+            "E:\\GeneticGit\\GeneticSystem\\Repository\\Repository.csproj": {
+              "projectPath": "E:\\GeneticGit\\GeneticSystem\\Repository\\Repository.csproj"
             }
           }
         }
