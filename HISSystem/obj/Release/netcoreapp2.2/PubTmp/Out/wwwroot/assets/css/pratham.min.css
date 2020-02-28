@@ -14049,8 +14049,8 @@ textarea {
     display: block;
     float: left;
     width: 100%;
-    position: absolute;
-    bottom: 0;
+    padding-left: 190px;
+    display:none;
 }
 
     .footer-wrapper .prtm-footer {
@@ -14122,10 +14122,18 @@ textarea {
     border: none;
 }
 
-@media (max-width: 1366px) {
+@media (min-width: 1366px) {
     .inbox-tabs .font-md {
         font-size: 12px;
     }
+    /*.footer-wrapper {
+        display: block;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        padding-left: 190px;
+    }*/
+
 }
 
 @media (max-width: 568px) {
@@ -20607,4 +20615,8 @@ span.validation {
     border-bottom: 1px solid #4a545f !important;
     border-radius: 0 !important;
     margin-right:5px;
+}
+
+.info-box{
+    font-weight:600;
 }

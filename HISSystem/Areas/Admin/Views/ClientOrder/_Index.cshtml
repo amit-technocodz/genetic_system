@@ -9,34 +9,47 @@
             <th>Order DueDate</th>
             <th>Doctor</th>
             <th>Patient</th>
-            <th>Actions</th>
+            <th>Test Type</th>
+            <th>Status</th>
+            <th colspan="2">Actions</th>
+            @*<th><i class="fa fa-trash" aria-hidden="true"></i> Delete</th>*@
+            @*<th><i class="fa fa-paperclip" aria-hidden="true"></i> Attachment</th>*@
         </tr>
     </thead>
     <tbody>
         @foreach (var order in Model.Data)
         {
-            <tr>
-                <td>
-                    @order.OrderNo
-                </td>
-                <td>
-                    @order.OrderDate
-                </td>
-                <td>
-                    @order.OrderDueDate
-                </td>
-                <td>
-                    @order.Doctor?.EnFirstName @order.Doctor?.EnSecondName @order.Doctor?.EnThirdName
-                </td>
-                <td>
-                    @order.User?.EnFirstName @order.User?.EnSecondName @order.User?.EnThirdName
-                </td>
-                <td>
-                    <a href="javascript:void(0);" class="fa fa fa-pencil mrgn-l-xs fa-1x" onclick="editTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Edit"></a>
-                    <a href="javascript:void(0);" class="fa fa-trash mrgn-l-xs fa-1x" onclick="deleteTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Delete"></a>
-                    <a href="javascript:void(0);" class="fa fa-floppy-o mrgn-l-xs fa-1x" onclick="updateTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Timeline" hidden></a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @order.OrderNo
+            </td>
+            <td>
+                @order.OrderDate
+            </td>
+            <td>
+                @order.OrderDueDate
+            </td>
+            <td>
+                @order.Doctor?.EnFirstName @order.Doctor?.EnSecondName @order.Doctor?.EnThirdName
+            </td>
+            <td>
+                @order.User?.EnFirstName @order.User?.EnSecondName @order.User?.EnThirdName
+            </td>
+            <td>
+                @order.TemplateID
+            </td>
+            <td>
+                Status
+            </td>
+            <td colspan="2">
+                <button type="button" class="btn btn-xs btn-warning UpdtOrdrBtn" value="@order.ID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update</button>
+                <button type="button" class="btn btn-xs btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
+                <button type="button" class="btn btn-xs btn-success"><i class="fa fa-paperclip" aria-hidden="true"></i> Attachment</button>
+            </td>
+            @*<td><button type="button" class="btn btn-xs btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button></td>
+        <td><button type="button" class="btn btn-xs btn-success"><i class="fa fa-paperclip" aria-hidden="true"></i> Attachment</button></td>*@
+            @*<td><button type="button" class="btn btn-xs btn-primary">Log</button></td>*@
+        </tr>
         }
     </tbody>
     <tfoot>

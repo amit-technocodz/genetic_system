@@ -159,7 +159,6 @@ E:\Projects\GeneticSystem\19-02-2020\GeneticSystem\GeneticSystem\Data\obj\Debug\
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\bin\Debug\netcoreapp2.2\Data.deps.json
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\bin\Debug\netcoreapp2.2\Data.dll
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\bin\Debug\netcoreapp2.2\Data.pdb
-E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Debug\netcoreapp2.2\Data.csprojAssemblyReference.cache
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Debug\netcoreapp2.2\Data.AssemblyInfoInputs.cache
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Debug\netcoreapp2.2\Data.AssemblyInfo.cs
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Debug\netcoreapp2.2\Data.dll

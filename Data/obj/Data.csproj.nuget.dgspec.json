@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\GeneticGit\\GeneticSystem\\Data\\Data.csproj": {}
+    "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Data\\Data.csproj": {}
   },
   "projects": {
-    "E:\\GeneticGit\\GeneticSystem\\Data\\Data.csproj": {
+    "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Data\\Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\GeneticGit\\GeneticSystem\\Data\\Data.csproj",
+        "projectUniqueName": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Data\\Data.csproj",
         "projectName": "Data",
-        "projectPath": "E:\\GeneticGit\\GeneticSystem\\Data\\Data.csproj",
+        "projectPath": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Data\\Data.csproj",
         "packagesPath": "C:\\Users\\anirudh.sharma\\.nuget\\packages\\",
-        "outputPath": "E:\\GeneticGit\\GeneticSystem\\Data\\obj\\",
+        "outputPath": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\anirudh.sharma\\AppData\\Roaming\\NuGet\\NuGet.Config",

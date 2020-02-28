@@ -169,3 +169,16 @@ E:\Projects\GeneticSystem\19-02-2020\GeneticSystem\GeneticSystem\Service\obj\Rel
 E:\Projects\GeneticSystem\19-02-2020\GeneticSystem\GeneticSystem\Service\obj\Release\netcoreapp2.2\Service.csproj.CopyComplete
 E:\Projects\GeneticSystem\19-02-2020\GeneticSystem\GeneticSystem\Service\obj\Release\netcoreapp2.2\Service.dll
 E:\Projects\GeneticSystem\19-02-2020\GeneticSystem\GeneticSystem\Service\obj\Release\netcoreapp2.2\Service.pdb
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\bin\Release\netcoreapp2.2\Service.deps.json
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\bin\Release\netcoreapp2.2\Service.dll
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\bin\Release\netcoreapp2.2\Service.pdb
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\bin\Release\netcoreapp2.2\Data.dll
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\bin\Release\netcoreapp2.2\Repository.dll
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\bin\Release\netcoreapp2.2\Data.pdb
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\bin\Release\netcoreapp2.2\Repository.pdb
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\obj\Release\netcoreapp2.2\Service.csprojAssemblyReference.cache
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\obj\Release\netcoreapp2.2\Service.AssemblyInfoInputs.cache
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\obj\Release\netcoreapp2.2\Service.AssemblyInfo.cs
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\obj\Release\netcoreapp2.2\Service.csproj.CopyComplete
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\obj\Release\netcoreapp2.2\Service.dll
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\obj\Release\netcoreapp2.2\Service.pdb

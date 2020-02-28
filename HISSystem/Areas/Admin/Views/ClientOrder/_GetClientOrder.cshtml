@@ -40,7 +40,7 @@
                                                                     <input name="clientOrder.ClientOrderData[@itemData.index].UpdatedBy" class="form-control itemDatadsbl" value="1" hidden>
                                                                 </td>
 
-                                                                @if (Model.TemplateDataList.Count > 0)
+                                                                @if (Model.ClientOrderData.Count > 0)
                                                                 {
                                                                     @foreach (var column in subTemplate.value.TemplateColumns.Select((column, p) => new { p, column }))
                                                                     {

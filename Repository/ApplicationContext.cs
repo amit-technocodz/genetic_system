@@ -102,5 +102,9 @@ namespace Repository
         public DbSet<TemplateData> TemplateData { get; set; }
         public DbSet<ClientOrder> ClientOrder { get; set; }
         public DbSet<ClientOrderData> ClientOrderData { get; set; }
+        public DbSet<MedicalDictionary> MedicalDictionary { get; set; }
+        public DbSet<MedicalDictionarySpecialty> MedicalDictionarySpecialty { get; set; }
+
+
     }
 }

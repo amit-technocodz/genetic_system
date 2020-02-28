@@ -32,13 +32,13 @@ namespace Service.UnitOfServices
         PatientEncounterService PatientEncounterService { get; }
         CompanyProfileService CompanyProfileService { get; }
         EmailService EmailService { get; }
-
         SMSService SMSService { get; }
         TemplateService TemplateService { get; }
         PatientOrderService PatientOrderService { get; }
         DynamicTemplateService DynamicTemplateService { get; }
         ClientOrderService ClientOrderService { get; }
-        
+        MedicalDictionaryService MedicalDictionaryService { get; }
+
     }
 }
 

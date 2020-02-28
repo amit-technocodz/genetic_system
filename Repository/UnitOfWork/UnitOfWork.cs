@@ -82,12 +82,45 @@ namespace Repository.UnitOfWork
         Repository<TemplateData> _TemplateData;
         Repository<ClientOrder> _ClientOrder;
         Repository<ClientOrderData> _ClientOrderData;
-
+        Repository<MedicalDictionary> _MedicalDictionary;
+        Repository<MedicalDictionarySpecialty> _MedicalDictionarySpecialty;
 
         public UnitOfWork()
         {
             this._context = new ApplicationContext();
         
+        }
+        public IRepository<MedicalDictionarySpecialty> MedicalDictionarySpecialty
+        {
+            get
+            {
+                if (_MedicalDictionarySpecialty != null)
+                {
+                    return _MedicalDictionarySpecialty;
+                }
+                else
+                {
+                    _MedicalDictionarySpecialty = new Repository<MedicalDictionarySpecialty>(_context);
+                    return _MedicalDictionarySpecialty;
+                }
+
+            }
+        }
+        public IRepository<MedicalDictionary> MedicalDictionary
+        {
+            get
+            {
+                if (_MedicalDictionary != null)
+                {
+                    return _MedicalDictionary;
+                }
+                else
+                {
+                    _MedicalDictionary = new Repository<MedicalDictionary>(_context);
+                    return _MedicalDictionary;
+                }
+
+            }
         }
         public IRepository<ClientOrderData> ClientOrderData
         {

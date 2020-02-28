@@ -35,9 +35,9 @@
     <div class="table-style">
         <div class="row mrgn-b-sm">
             <div class="col-md-4 col-lg-4">
-
                 <div class="btn-group" role="group">
                     <button class="btn btn-primary btn-lg" id="addClientOrderBtn" type="button"> New Order </button>
+                    <button class="btn btn-warning btn-lg cancelEvent" id="cancelOrderBtn" type="button" style="display: none;"> Back </button>
                     <button data-toggle="dropdown" class="btn btn-lg btn-info dropdown-toggle" type="button"><i class="fa fa-share-square-o" aria-hidden="true"></i> Export <i class="fa fa-sort-desc" aria-hidden="true"></i> </button>
                 </div>
             </div>
@@ -79,8 +79,8 @@
                 <div class="table-responsive">
                     <div id="orderArea" class="unseen">
                         @{
-                                Html.RenderPartial("_Index", Model.Data);
-                            }
+                            await Html.RenderPartialAsync("_Index");
+                        }
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-4">
                     </div>
@@ -112,30 +112,94 @@
 
 @section Scripts{
     <script>
+        var ListHtml;
 
-        var orderAreaData = undefined;
+        $(document).on("click", ".UpdtOrdrBtn", function () {
+            ListHtml = document.getElementById('orderArea').innerHTML;
+            var orderId = $(this).val();
+            $.ajax({
+                url: '/admin/clientOrder/updateOrder',
+                type: 'GET',
+                data: {
+                    orderId: orderId
+                },
+                success: function (result) {
+                    $('#orderArea').html(result);
+                    loadMultiSelect();
+                    document.getElementById("postUpdatebtn").style.display = 'block';
+                    document.getElementById("signupform").style.display = 'none';
+                                            document.getElementById("quickSearchBlock").hidden = true;
+                        document.getElementById("addClientOrderBtn").style.display = 'none';
+                        document.getElementById("cancelOrderBtn").style.display = 'block';
+                    document.getElementById("postUpdatebtn").addEventListener("click", function () {
+                        updateOrderData();
+                    });
+                },
+                error: function () {
+                    toastr.error("Something went wrong!");
+                }
+            });
+        });
+
+        
+        $(document).on("click", ".cancelEvent", function () {
+            document.getElementById('orderArea').innerHTML = ListHtml; 
+            document.getElementById("cancelOrderBtn").style.display = 'none';
+            document.getElementById("addClientOrderBtn").style.display = 'block';
+            document.getElementById("quickSearchBlock").hidden = false;
+        });
+
         document.getElementById("addClientOrderBtn").addEventListener("click", function () {
             orderAreaData = document.getElementById("orderArea").innerHTML;
             addOrderData();
-            document.getElementById("quickSearchBlock").hidden = true;
         });
+
+
+
+        function updateOrderData() {
+            var formdata = new FormData($('form').get(0));
+            formdata.append("GeneTemplateId", $("#TestType").val());
+            //for (var pair of formdata.entries()) {
+            //    console.log(pair[0] + ', ' + pair[1]);
+            //    }
+            $.ajax({
+                type: 'POST',
+                url: "/admin/clientorder/UpdateOrder",
+                data: formdata,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    console.log(response);
+                    toastr.info('Record saved');
+                },
+                error: function (xhr, status) {
+                    toastr.error('Something went wrong');
+                }
+            });
+
+        }
 
         function resetOrderArea() {
             document.getElementById("orderArea").innerHTML = orderAreaData;
         }
 
         function addOrderData() {
-               $.ajax({
-                    type: "GET",
-                    url: '/admin/clientorder/addOrder',
-                    success: function (result) {
-                        $('#orderArea').html(result);
-                        loadMultiSelect();
-                    },
-                   error: function () {
-                        alert("Content load failed.");
-                    }
-                });
+            ListHtml = document.getElementById('orderArea').innerHTML;
+            $.ajax({
+                type: "GET",
+                url: '/admin/clientorder/addOrder',
+                success: function (result) {
+                    $('#orderArea').html(result);
+                    loadMultiSelect();
+                   document.getElementById("quickSearchBlock").hidden = true;
+                   document.getElementById("addClientOrderBtn").style.display = 'none';
+                   document.getElementById("cancelOrderBtn").style.display = 'block';
+                },
+                error: function () {
+                    alert("Content load failed.");
+                }
+            });
         }
 
         function loadMultiSelect() {
@@ -156,23 +220,44 @@
                 }
             });
         }
-        function saveOrderFunction() {
-                    var formdata = new FormData($('form').get(0));
-                    formdata.append("GeneTemplateId", $("#TestType").val());
-            for (var pair of formdata.entries()) {
-                console.log(pair[0] + ', ' + pair[1]);
-            }
 
+           function test() {
+               var user = $("#clientOrder_ClientOrder_UserID").val();
+        $.ajax({
+
+            url: "/admin/patientorder/getpatientDetails",
+            type: "get",
+            data: { 'Id': user },
+            success: function (data) {
+                debugger
+                $("#clientOrder_ClientOrder_User_PatientPersonalInformation_DateOfBirth").val(data.patientPersonalInformation.dateOfBirth);
+                $("#clientOrder_ClientOrder_User_ID").val(user);
+                $("#clientOrder_ClientOrder_User_PatientPersonalInformation_BloodGroup_Name").val(data.patientPersonalInformation.bloodGroup.name);
+                $("#clientOrder_ClientOrder_User_RegisterationNo").val(data.registerationNo);
+                $("#clientOrder_ClientOrder_User_Address").val(data.address);
+                $("#clientOrder_ClientOrder_User_Mobile").val(data.patientPersonalInformation.City.Name);
+            },
+            error: function () {
+            }
+        });
+    }
+
+        function saveOrderFunction() {
+            var formdata = new FormData($('form').get(0));
+            formdata.append("GeneTemplateId", $("#TestType").val());
+            //for (var pair of formdata.entries()) {
+            //    console.log(pair[0] + ', ' + pair[1]);
+            //}
             $.ajax({
                 type: 'POST',
                 url: "/admin/clientorder/AddOrder",
                 data: formdata,
-                dataType: "json",
+                dataType: "text",
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                    console.log(response);
                     toastr.info('Record saved');
+                    $("#orderArea").html(response);
                 },
                 error: function (xhr, status) {
                     toastr.error('Something went wrong');
@@ -219,12 +304,10 @@
                 var page = parseInt($(this).html());
                 debugger
                 $.ajax({
-                    url: '/admin/patient/getpatients',
+                    url: '/admin/clientorder/getOrders',
                     data: { "page": page },
                     success: function (data) {
-                        debugger
-                        $(".unseen").html(data);
-                        debugger
+                        $("#orderArea").html(data);
                     },
                     error: function (xhr, status) {
                         toastr.error('Something went wrong');

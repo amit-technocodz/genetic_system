@@ -69,7 +69,9 @@
                     <input type="text" name="search" id="search" class="form-control" placeholder="Search Master Template..." />
                 </div>
             </div>
-            <div class="col-md-5"> <label for="search">&nbsp;</label> <br /><a href="#" data-info="addMasterLookup" class="btn btn-xs btn-warning addMasterLookup"><i class="fa fa-plus" aria-hidden="true"></i> Add Master Template</a></div>
+            <div class="col-md-5">
+                <label for="search">&nbsp;</label> <br /><a href="#" data-info="addMasterLookup" class="btn btn-xs btn-warning addMasterLookup"><i class="fa fa-plus" aria-hidden="true"></i> Add Master Template</a>
+            </div>
         </div>
     </div>
 
@@ -140,7 +142,7 @@
     @*<script src="https://cdn.jsdelivr.net/npm/chosen-js@1.8.7/chosen.jquery.js" integrity="sha256-TDtzz+WOGufaQuQzqpEnnxdJQW5xrU+pzjznwBtaWs4=" crossorigin="anonymous"></script>*@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.js" integrity="sha256-TDtzz+WOGufaQuQzqpEnnxdJQW5xrU+pzjznwBtaWs4=" crossorigin="anonymous"></script>
     <script>
-
+        var getGlobalHTML;
 
         function GetTemplateDetail(current, type) {
             var fields = type.split('>>');
@@ -173,9 +175,8 @@
                     type: "GET",
                     url: '/admin/dynamictemplate/AddTemplate',
                     success: function (data) {
-                        $('#masterModalBody').html(data);
-                        $('#addMasterModal').modal(options);
-                        $('#addMasterModal').modal('show');
+                        $("#DataLookup").empty();
+                        $("#DataLookup").append(data);
                     },
                     error: function () {
                         alert("Content load failed.");
@@ -183,10 +184,16 @@
                 });
         });
 
+
+
+
+
         //GLOBAL VARIABLE TO STORE TEMPLATE ROW DATA
         var templateHtml = null;
 
         function editTemplateData(event) {
+            var getInnerHTML = document.getElementById("DataLookup").innerHTML;
+            getGlobalHTML = getInnerHTML;
             var targetElement = event.target.parentElement;
             var id = targetElement.previousElementSibling.getAttribute("data-info");
             var multiSelect = targetElement.parentElement.getElementsByClassName('tryMultiselect');
@@ -198,8 +205,27 @@
             targetElement.firstElementChild.nextElementSibling.nextElementSibling.hidden = false;
             targetElement.firstElementChild.hidden = true;
         }
-           function cancelTemplateData(event) {
-               disableTemplateData(event);
+        function cancelTemplateData(event) {
+            document.getElementById("DataLookup").innerHTML = getGlobalHTML;
+            var row = event.target.parentElement.parentElement.getElementsByClassName('tryMultiselect');
+            debugger
+            //$(row).each(function (i, element) {
+            //    debugger
+            //    $(element).chosen('destroy');
+
+            //    var removeTemp = element.parentElement.getElementsByClassName('chosen-container');
+            //    removeTemp[0].remove();
+            //    $(element).chosen();
+            //});
+            $("#DataLookup").find('.tryMultiselect').each(function (i, element) {
+                $(element).chosen('destroy');
+                $(element).chosen();
+                var removeTemp = element.parentElement.getElementsByClassName('chosen-container');
+                removeTemp[1].remove();
+            });
+            getGlobalHTML = undefined;
+
+
         }
 
         function disableTemplateData(event) {
@@ -269,6 +295,11 @@
             });
         }
 
+
+
+
+
+
         function addTemplate() {
             var formdata = new FormData();
             formdata.append('Template.TemplateTypeID', $('#Template_TemplateTypeID').val());
@@ -287,7 +318,9 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    data == true ? alert("Success") : alert("Something went wrong!")
+                    toastr.success('record updated')
+                    $("#DataLookup").empty();
+                    $("#DataLookup").append(data);
                 },
                 error: function () {
                     alert("Content load failed.");
@@ -296,7 +329,13 @@
         }
 
         $(document).on("click", ".addTemplateData", function () {
+            var getHTML = document.getElementById("DataLookup").innerHTML;
+            debugger
+            getGlobalHTML = getHTML;
             var TemplateID = $(this).data('info');
+            debugger
+
+
                 var options = {
                     "backdrop": "static",
                     keyboard: true
@@ -306,9 +345,12 @@
                     url: '/admin/dynamictemplate/addtemplatedata',
                     data: { templateId: TemplateID },
                     success: function (data) {
-                        $('#addModalBody').html(data);
-                        $('#addModal').modal(options);
-                        $('#addModal').modal('show');
+                        debugger
+                        //$('#addModalBody').html(data);
+                        //$('#addModal').modal(options);
+                        //$('#addModal').modal('show');
+                       // $("#DataLookup").empty();
+                        $("#DataLookup").html(data);
                         $('.tryMultiselect').chosen();
                     },
                     error: function () {
@@ -316,29 +358,59 @@
                     }
                 });
         });
+
+
+
         $(document).on("click", ".addTemplateDetail", function () {
-                 var formdata = new FormData($('#addTemplateDetailFrm').get("0"));
-                 for (var pair of formdata.entries()) {
-                 console.log(pair[0] + ', ' + pair[1]);
-                 }
-                var options = {
-                    "backdrop": "static",
-                    keyboard: true
-                };
-                $.ajax({
-                      type: "POST",
+            //debugger
+            var values = $(this).attr("data-catch")
+            //alert(values);
+            // var fields = values.split('>>');
+            //var temptype = fields[0];
+            //var subtemptype = fields[1];
+            //console.log(fields);
+            //return false;
+              var formdata = new FormData($('#addTemplateDetailFrm').get("0"));
+              $.ajax({
+                type: 'POST',
                 url: '/admin/dynamictemplate/addtemplatedetail',
                 data: formdata,
+                dataType: "json",
                 processData: false,
                 contentType: false,
-                success: function (data) {
-                    data == true ? alert("Success") : alert("Something went wrong!")
+                  success: function (response) {
+                      if (response == true) {
+                          toastr.info('Record saved');
+                          GetTemplateDetail(values);
+                      }
                 },
-                error: function () {
-                    alert("Content load failed.");
+                  error: function (XMLHttpRequest, textStatus, errorThrown) {
+                     GetTemplateDetail(values);
+                    toastr.error('Something went wrong');
                 }
-                });
+              });
+            GetTemplateDetailFix(values);
         });
+
+            function GetTemplateDetailFix(type) {
+            var fields = type.split('>>');
+            var temptype = fields[0];
+            var subtemptype = fields[1];
+		$.ajax({
+			url: '/admin/dynamictemplate/getdynamictemplate?temptype=' + temptype + "&subtemptype=" + subtemptype,
+			contentType: 'application/json; charse=utf-8',
+			type: 'get',
+			success: function (result) {
+				debugger
+                $("#DataLookup").empty();
+                $("#DataLookup").append(result);
+                $('.tryMultiselect').chosen();
+			},
+			error: function (xhr, status) {
+				alert(status)
+			}
+		});
+	}
 
 
         $(function () {
@@ -508,9 +580,10 @@
 
         $(document).on("click", "#closeModal", function () {
             debugger
-             $('#addMasterModal').modal('hide');
-             $('#addModal').modal('hide');
+             $("#DataLookup").empty();
+
         });
+
         function CustomRemoteValidations() {
             var Type = $("#Type").val();
             $.ajax({
@@ -528,14 +601,89 @@
         var maxFields = 5; //Maximum number of formRows allowed (global variable)
 
         function AddField() {
+            debugger
             var $tableBody = $('#relative-table').find("tfoot");
             $trLast = $tableBody.find("tr:last");
             $trNew = $trLast.clone();
             $trNew.find(':text').val('');
             $trLast.after($trNew);
         }
-          function RemoveField(event) {
+        function RemoveField(event) {
             $(event).parents("tr").remove();
         }
+
+
+        function TempID(Id)
+        {
+            getGlobalHTML = document.getElementById("DataLookup").innerHTML;
+            debugger
+            var Id;
+            debugger
+
+            $.ajax({
+			url: '/admin/dynamictemplate/UpdateTemplate?ID='+ Id,
+			contentType: 'application/json; charse=utf-8',
+			type: 'get',
+			success: function (result) {
+				debugger
+                $("#DataLookup").empty();
+                $("#DataLookup").append(result);
+			},
+			error: function (xhr, status) {
+				alert(status)
+			}
+		});
+        }
+
+
+        function updateTemplateCol() {
+            debugger
+            var formdata = new FormData();
+            debugger
+            formdata.append('Template.ID', $('#Template_ID').val());
+            formdata.append('Template.TemplateTypeID', $('#Template_TemplateTypeID').val());
+            formdata.append('Template.SubTemplateTypeID', $('#Template_SubTemplateTypeID').val());
+
+              $('#relative-table tfoot tr').each(function (a, b) {
+                  var fields = $(this).find(":input");
+                  debugger
+                  formdata.append("TemplateColumns[" + a + "].TemplateFieldID", fields.eq(0).val());
+                  formdata.append("TemplateColumns[" + a + "].DisplayName", fields.eq(1).val());
+                  formdata.append("TemplateColumns["+ a +"].TemplateID", $('#UpdtTemplateID').val());
+              });
+
+            $.ajax({
+                type: "POST",
+                url: '/admin/dynamictemplate/UpdateTemplate',
+                data: formdata,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log(data);
+                    toastr.success('record updated')
+                    $("#DataLookup").empty();
+                    $("#DataLookup").append(data);
+                    //data == true ? alert("Success") : alert("Something went wrong!")
+                    //data == true ? toastr.success('record updated') : toastr.error('Something went wrong');
+                },
+                error: function () {
+                    alert("Content load failed.");
+                }
+            });
+        }
+
+
+        $(document).on("click", ".backToTemplate", function () {
+            debugger
+            document.getElementById("DataLookup").innerHTML = getGlobalHTML;
+            debugger
+            $("#DataLookup").find('.tryMultiselect').each(function (i, element) {
+                $(element).chosen('destroy');
+                $(element).chosen();
+                var removeTemp = element.parentElement.getElementsByClassName('chosen-container');
+                removeTemp[1].remove();
+            });
+            getGlobalHTML = undefined;
+        });
     </script>
 }

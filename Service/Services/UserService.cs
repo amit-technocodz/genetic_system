@@ -85,12 +85,12 @@ namespace Service.Services
         {
             int role = db.Role.Get().Where(x => x.Name.Contains("Patient")).FirstOrDefault().ID;
             var result = db.User.Get().Where(x => x.IsActive == true && x.RoleID == role).Include(x => x.PatientPersonalInformation.BloodGroup)
-                .Include(x => x.PatientPersonalInformation.City).Include(x => x.PatientPersonalInformation.PatientType).Include(x=>x.PatientPersonalInformation.EmployeeType).Include(x => x.Status).ToList();
+                .Include(x => x.PatientPersonalInformation.City).Include(x => x.PatientPersonalInformation.PatientType).Include(x => x.PatientPersonalInformation.EmployeeType).Include(x => x.Status);
             return result;
         }
         public IEnumerable<User> GetByRole(int roleID)
         {
-            return db.User.Get().Where(x => x.RoleID == roleID).Include(x => x.PersonalInformation).ToList();
+            return db.User.Get().Where(x => x.RoleID == roleID).Include(x => x.PersonalInformation);
         }
 
         public IEnumerable<User> Search()

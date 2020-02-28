@@ -2930,6 +2930,15 @@
           }
         }
       },
+      "morelinq/3.3.2": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/MoreLinq.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/MoreLinq.dll": {}
+        }
+      },
       "Nancy/2.0.0": {
         "type": "package",
         "dependencies": {
@@ -8381,6 +8390,27 @@
         "version.txt"
       ]
     },
+    "morelinq/3.3.2": {
+      "sha512": "MQc8GppZJLmjvcpEdf3EkC6ovsp7gRWt2e5mC7dcIOrgwSc+yjFd3JQ0iRqr3XrUT6rb/phv0IkEmBtbfVA7AQ==",
+      "type": "package",
+      "path": "morelinq/3.3.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "COPYING.txt",
+        "lib/net451/MoreLinq.dll",
+        "lib/net451/MoreLinq.pdb",
+        "lib/net451/MoreLinq.xml",
+        "lib/netstandard1.0/MoreLinq.dll",
+        "lib/netstandard1.0/MoreLinq.pdb",
+        "lib/netstandard1.0/MoreLinq.xml",
+        "lib/netstandard2.0/MoreLinq.dll",
+        "lib/netstandard2.0/MoreLinq.pdb",
+        "lib/netstandard2.0/MoreLinq.xml",
+        "morelinq.3.3.2.nupkg.sha512",
+        "morelinq.nuspec"
+      ]
+    },
     "Nancy/2.0.0": {
       "sha512": "z2GMxQFbDbxqzCfkomyeqLNXW4G2NdvU727HBaP+QQ0/hm1jw9PTqHyzoB2M9aKeC5AKYmQmt9GvwR5CHL/ReA==",
       "type": "package",
@@ -13748,7 +13778,8 @@
       "System.Security.Cryptography.ProtectedData >= 4.6.0",
       "X.PagedList >= 7.9.0",
       "X.PagedList.Mvc.Core >= 7.9.1",
-      "jQuery >= 3.4.1"
+      "jQuery >= 3.4.1",
+      "morelinq >= 3.3.2"
     ]
   },
   "packageFolders": {
@@ -13757,11 +13788,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\GeneticGit\\GeneticSystem\\HISSystem\\GeneticSystem.csproj",
+      "projectUniqueName": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\HISSystem\\GeneticSystem.csproj",
       "projectName": "GeneticSystem",
-      "projectPath": "E:\\GeneticGit\\GeneticSystem\\HISSystem\\GeneticSystem.csproj",
+      "projectPath": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\HISSystem\\GeneticSystem.csproj",
       "packagesPath": "C:\\Users\\anirudh.sharma\\.nuget\\packages\\",
-      "outputPath": "E:\\GeneticGit\\GeneticSystem\\HISSystem\\obj\\",
+      "outputPath": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\HISSystem\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\anirudh.sharma\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -13777,11 +13808,11 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "E:\\GeneticGit\\GeneticSystem\\Repository\\Repository.csproj": {
-              "projectPath": "E:\\GeneticGit\\GeneticSystem\\Repository\\Repository.csproj"
+            "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Repository\\Repository.csproj": {
+              "projectPath": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Repository\\Repository.csproj"
             },
-            "E:\\GeneticGit\\GeneticSystem\\Service\\Service.csproj": {
-              "projectPath": "E:\\GeneticGit\\GeneticSystem\\Service\\Service.csproj"
+            "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Service\\Service.csproj": {
+              "projectPath": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Service\\Service.csproj"
             }
           }
         }
@@ -13859,6 +13890,10 @@
           "jQuery": {
             "target": "Package",
             "version": "[3.4.1, )"
+          },
+          "morelinq": {
+            "target": "Package",
+            "version": "[3.3.2, )"
           }
         },
         "imports": [

@@ -22,6 +22,8 @@ namespace Service.Services
         {
             try
             {
+                clientOrder.User = null;
+                clientOrder.Doctor = null;
                 db.ClientOrder.Insert(clientOrder);
 
                 return clientOrder;
@@ -37,7 +39,15 @@ namespace Service.Services
         {
             try
             {
-                return db.ClientOrder.Get().Where(x => x.ID == id).Include(x => x.ClientOrderData.Where(y => y.IsActive == true)).FirstOrDefault();
+                var result = db.ClientOrder.Get().Where(x => x.ID == id).Include(x => x.ClientOrderData/*.Where(y => y.IsActive == true)*/).Include(x => x.Template).FirstOrDefault();
+
+                    if (result.FollowUp != null)
+                        result.FollowUpArray = result.FollowUp.Split(",");
+                    
+                if(result.TestType != null)
+                    result.TestTypeArray = result.TestType.Split(",");
+                
+                return result;
             }
             catch (Exception ex)
             {
@@ -46,19 +56,41 @@ namespace Service.Services
 
         }
 
-        public IEnumerable<ClientOrder> GetClientOrderList()
+        public IQueryable<ClientOrder> GetClientOrderList()
         {
             try
             {
                 ApplicationContext context = new ApplicationContext();
-                var list = db.ClientOrder.Get().ToList();
-                var anotherList = context.ClientOrder.ToList();
-                var xray = anotherList;
-                return list;
+                return context.ClientOrder.OrderByDescending(x => x.ID).Take(50).Include(x =>x.Doctor).Include(x => x.User).AsNoTracking();
             }
             catch (Exception ex)
             {
                 return null;
+            }
+        }
+        public IQueryable<ClientOrderData> GetClientOrderDataByOrderID (int orderId)
+        {
+            try
+            {
+                ApplicationContext context = new ApplicationContext();
+                return context.ClientOrderData.Where(x => x.ClientOrderID == orderId);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public void RemoveClientOrderDataList(List<ClientOrderData> orderDataList)
+        {
+            try
+            {
+                ApplicationContext context = new ApplicationContext();
+                context.ClientOrderData.RemoveRange(orderDataList);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
             }
         }
 

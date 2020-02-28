@@ -14,7 +14,6 @@ namespace Service.Services
     public class AppointmentService : IAppointmentService
     {
         private IUnitOfWork db;
-        private ApplicationContext _context;
         public AppointmentService(IUnitOfWork db)
         {
             this.db = db;

@@ -104,3 +104,11 @@ E:\Projects\GeneticSystem\19-02-2020\GeneticSystem\GeneticSystem\Data\obj\Releas
 E:\Projects\GeneticSystem\19-02-2020\GeneticSystem\GeneticSystem\Data\obj\Release\netcoreapp2.2\Data.AssemblyInfo.cs
 E:\Projects\GeneticSystem\19-02-2020\GeneticSystem\GeneticSystem\Data\obj\Release\netcoreapp2.2\Data.dll
 E:\Projects\GeneticSystem\19-02-2020\GeneticSystem\GeneticSystem\Data\obj\Release\netcoreapp2.2\Data.pdb
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\bin\Release\netcoreapp2.2\Data.deps.json
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\bin\Release\netcoreapp2.2\Data.dll
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\bin\Release\netcoreapp2.2\Data.pdb
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Release\netcoreapp2.2\Data.csprojAssemblyReference.cache
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Release\netcoreapp2.2\Data.AssemblyInfoInputs.cache
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Release\netcoreapp2.2\Data.AssemblyInfo.cs
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Release\netcoreapp2.2\Data.dll
+E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Release\netcoreapp2.2\Data.pdb

@@ -17,7 +17,6 @@ namespace HISSystem.Controllers
         private readonly IUnitOfService db;
         public AccountController(IUnitOfService db)
         {
-            //some random comment.. you may find somewhere
             this.db = db;
         }
 

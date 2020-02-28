@@ -36,10 +36,26 @@ namespace Service.UnitOfServices
         private PatientOrderService _PatientOrderService;
         private DynamicTemplateService _DynamicTemplateService;
         private ClientOrderService _ClientOrderService;
+        private MedicalDictionaryService _MedicalDictionaryService;
 
         public UnitOfService()
         {
             this._rep = new UnitOfWork();
+        }
+        public MedicalDictionaryService MedicalDictionaryService
+        {
+            get
+            {
+                if (_MedicalDictionaryService != null)
+                {
+                    return _MedicalDictionaryService;
+                }
+                else
+                {
+                    _MedicalDictionaryService = new MedicalDictionaryService(_rep);
+                    return _MedicalDictionaryService;
+                }
+            }
         }
         public ClientOrderService ClientOrderService
         {

@@ -22,9 +22,15 @@ namespace Service.Services
         {
             return db.Lookup.Get().Include(x => x.ParentFK).ToList();
         }
-        public IAsyncEnumerable<Lookup> GetLookupList()
+        public IQueryable<Lookup>GetLookupList()
         {
-            return db.Lookup.Get().Include(x => x.ParentFK).ToAsyncEnumerable();
+            return db.Lookup.Get().Include(x => x.ParentFK).AsNoTracking();
+        }
+        public IQueryable<Lookup> GetLookUpByTypeName(string Type)
+        {
+            ApplicationContext context = new ApplicationContext();
+
+            return context.Lookup.Where(x => x.Type == Type).AsNoTracking();
         }
         public Lookup GetLookup(long id)
         {

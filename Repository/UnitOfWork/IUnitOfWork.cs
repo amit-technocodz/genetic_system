@@ -80,6 +80,7 @@ namespace Repository.UnitOfWork
         IRepository<TemplateData> TemplateData { get; }
         IRepository<ClientOrder> ClientOrder { get; }
         IRepository<ClientOrderData> ClientOrderData { get; }
-
+        IRepository<MedicalDictionary> MedicalDictionary { get; }
+        IRepository<MedicalDictionarySpecialty> MedicalDictionarySpecialty { get; }
     }
 }

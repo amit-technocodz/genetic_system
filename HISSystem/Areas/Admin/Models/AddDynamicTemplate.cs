@@ -8,6 +8,13 @@ namespace GeneticSystem.Areas.Admin.Models
 {
     public class AddDynamicTemplate
     {
+        public AddDynamicTemplate()
+        {
+            this.Template = new Template();
+            this.TemplateColumns = new List<TemplateColumn>();
+            this.TemplateData = new TemplateData();
+            this.TemplateDataList = new List<TemplateData>();
+        }
         public Template Template { get; set; }
         public List<TemplateColumn> TemplateColumns { get; set; }
         public TemplateData TemplateData { get; set; }

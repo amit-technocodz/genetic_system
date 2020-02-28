@@ -17,16 +17,17 @@ namespace Service.Services
             this.db = db;
         }
 
-        public bool AddTemplate(Template model)
+        public Template AddTemplate(Template model)
         {
             try
             {
                 db.Template.Insert(model);
-                return true;
+                return model;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return false;
+                Console.WriteLine(ex);
+                return null;
             }
         }
 
@@ -34,6 +35,12 @@ namespace Service.Services
         {
 
             return db.Template.Get().Include(x => x.TemplateType).Include(x => x.SubTemplateType).Include(x => x.TemplateColumns).ThenInclude(x => x.TemplateField);
+        }
+
+        public IQueryable<Template> GetAllTemplateByTempID(int tmpId)
+        {
+
+            return db.Template.Get().Where(x => x.TemplateTypeID == tmpId).Include(x => x.TemplateType).Include(x => x.SubTemplateType).Include(x => x.TemplateColumns).ThenInclude(x => x.TemplateField);
         }
 
         public Template GetTemplateByName(string temptype, string subtemptype)
@@ -46,16 +53,17 @@ namespace Service.Services
             return db.Template.Get().Where(x => x.ID == Id).Include(x => x.TemplateType).Include(x => x.SubTemplateType).Include(x => x.TemplateColumns).FirstOrDefault();
         }
 
-        public bool SaveTemplateData(TemplateData templateData)
+        public TemplateData SaveTemplateData(TemplateData templateData)
         {
             try
             {
                 db.TemplateData.Insert(templateData);
-                return true;
+                return templateData;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return false;
+                Console.WriteLine(ex);
+                return null;
             }
         }
 
@@ -75,16 +83,16 @@ namespace Service.Services
 
         public List<TemplateData> GetTemplateDataID(int Id)
         {
-            var result = db.TemplateData.Get().Where(x => x.TemplateID == Id).ToList();
+            var result = db.TemplateData.Get().Where(x => x.TemplateID == Id).AsNoTracking().ToList();
 
             if (result == null)
                 return new List<TemplateData>();
             else
-            { 
-                for(int i = 0; i < result.Count(); i++)
+            {
+                for (int i = 0; i < result.Count(); i++)
                 {
-                    if(result[i].GeneID != null)
-                    result[i].Genes = result[i].GeneID.Split(",");
+                    if (result[i].GeneID != null)
+                        result[i].Genes = result[i].GeneID.Split(",");
                 }
                 return result;
             }
@@ -111,11 +119,46 @@ namespace Service.Services
                 db.TemplateData.Update(result);
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }
         }
+
+
+        public bool DeleteTemplateColumnsByID(double Id)
+        {
+            try
+            {
+                ApplicationContext context = new ApplicationContext();
+                context.TemplateColumn.RemoveRange(context.TemplateColumn.Where(x => x.TemplateID == Id));
+                context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+
+
+        public List<TemplateColumn> InsertTemplateColumn(List<TemplateColumn> model)
+        {
+            try
+            {
+                ApplicationContext context = new ApplicationContext();
+                context.TemplateColumn.AddRange(model);
+                context.SaveChangesAsync();
+                return model;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
+
 
     }
 }
