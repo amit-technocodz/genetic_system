@@ -331,20 +331,23 @@ namespace HISSystem.Areas.Admin.Controllers
                 db.UserService.UpdatePatientRelative(usermodel.PatientRelative);
             }
 
-            var lookup = db.LookupService.GetLookups().ToList();
             ViewBag.Country = db.CountryService.GetAll();
-            ViewBag.AddedBy = LoginID;
-            ViewBag.Gender = lookup.Where(x => x.Type.Contains("Gender")).ToList();
-            ViewBag.BloodGroup = lookup.Where(x => x.Type.Contains("BloodGroup")).ToList();
-            ViewBag.SirName = lookup.Where(x => x.Type.Contains("Title")).ToList();
-            ViewBag.SocialStatus = lookup.Where(x => x.Type.Contains("SocialStatus")).ToList();
-            ViewBag.SecurityGroup = lookup.Where(x => x.Type.Contains("SecurityGroup")).ToList();
             ViewBag.City = db.CityService.GetAll();
-            ViewBag.IdentificationType = lookup.Where(x => x.Type.Contains("IdentificationType")).ToList();
-            ViewBag.Status = lookup.Where(x => x.Type.Contains("Status")).ToList();
-            ViewBag.Religion = lookup.Where(x => x.Type.Contains("Religion")).ToList();
-            ViewBag.EmployeeType = lookup.Where(x => x.Type.Contains("EmployeeType")).ToList();
-            ViewBag.InsuranceCompany = lookup.Where(x => x.Type.Contains("InsuranceCompany"));
+            ViewBag.AddedBy = LoginID;
+
+
+            ViewBag.Gender = db.LookupService.GetLookUpByTypeName("Gender");
+            ViewBag.EmployeeType = db.LookupService.GetLookUpByTypeName("EmployeeType");
+            ViewBag.InsuranceCompany = db.LookupService.GetLookUpByTypeName("InsuranceCompany");
+            ViewBag.BloodGroup = db.LookupService.GetLookUpByTypeName("BloodGroup");
+            ViewBag.SirName = db.LookupService.GetLookUpByTypeName("Title");
+            ViewBag.SocialStatus = db.LookupService.GetLookUpByTypeName("SocialStatus");
+            ViewBag.PlaceOfBirth = db.LookupService.GetLookUpByTypeName("PlaceOfBirth");
+            ViewBag.SecurityGroup = db.LookupService.GetLookUpByTypeName("SecurityGroup");
+            ViewBag.IdentificationType = db.LookupService.GetLookUpByTypeName("IdentificationType");
+            ViewBag.Status = db.LookupService.GetLookUpByTypeName("Status");
+            ViewBag.Religion = db.LookupService.GetLookUpByTypeName("Religion");
+
             return Json(result);
         }
 
@@ -352,20 +355,23 @@ namespace HISSystem.Areas.Admin.Controllers
         {
             var LoginID = Request.Cookies["ID"];
             ViewBag.UserName = Request.Cookies["UserName"];
-            var lookup = db.LookupService.GetLookups().ToList();
+
+
+            ViewBag.Gender = db.LookupService.GetLookUpByTypeName("Gender");
+            ViewBag.EmployeeType = db.LookupService.GetLookUpByTypeName("EmployeeType");
+            ViewBag.InsuranceCompany = db.LookupService.GetLookUpByTypeName("InsuranceCompany");
+            ViewBag.BloodGroup = db.LookupService.GetLookUpByTypeName("BloodGroup");
+            ViewBag.SirName = db.LookupService.GetLookUpByTypeName("Title");
+            ViewBag.SocialStatus = db.LookupService.GetLookUpByTypeName("SocialStatus");
+            ViewBag.PlaceOfBirth = db.LookupService.GetLookUpByTypeName("PlaceOfBirth");
+            ViewBag.SecurityGroup = db.LookupService.GetLookUpByTypeName("SecurityGroup");
+            ViewBag.IdentificationType = db.LookupService.GetLookUpByTypeName("IdentificationType");
+            ViewBag.Status = db.LookupService.GetLookUpByTypeName("Status");
+            ViewBag.Religion = db.LookupService.GetLookUpByTypeName("Religion");
+
             ViewBag.Country = db.CountryService.GetAll();
-            ViewBag.Gender = lookup.Where(x => x.Type.Contains("Gender")).ToList();
-            ViewBag.BloodGroup = lookup.Where(x => x.Type.Contains("BloodGroup")).ToList();
-            ViewBag.EmployeeType = lookup.Where(x => x.Type.Contains("EmployeeType")).ToList();
-            ViewBag.InsuranceCompany = lookup.Where(x => x.Type.Contains("InsuranceCompany"));
-            ViewBag.SirName = lookup.Where(x => x.Type.Contains("Title")).ToList();
-            ViewBag.SocialStatus = lookup.Where(x => x.Type.Contains("SocialStatus")).ToList();
-            ViewBag.SecurityGroup = lookup.Where(x => x.Type.Contains("SecurityGroup")).ToList();
             ViewBag.City = db.CityService.GetAll();
-            ViewBag.IdentificationType = lookup.Where(x => x.Type.Contains("IdentificationType")).ToList();
-            ViewBag.PlaceOfBirth = lookup.Where(x => x.Type.Contains("PlaceOfBirth")).ToList();
-            ViewBag.Status = lookup.Where(x => x.Type.Contains("Status")).ToList();
-            ViewBag.Religion = lookup.Where(x => x.Type.Contains("Religion")).ToList();
+          
             var result = db.UserService.GetUser(id);
             result.Password = "12345";
 
