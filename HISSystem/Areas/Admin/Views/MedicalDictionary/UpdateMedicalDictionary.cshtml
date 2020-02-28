@@ -140,14 +140,15 @@
                                                                 <div class="form-group">
                                                                     <label for="Type">Specialty</label>
                                                                     @*<div>
-                                                                            @Html.ListBox("Specialty", new SelectList(ViewBag.Specialty, "ID", "Name", Model.Specialty.ToArray()), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
-                                                                        </div>*@
+                        @Html.ListBox("Specialty", new SelectList(ViewBag.Specialty, "ID", "Name", Model.Specialty.ToArray()), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
+                    </div>*@
                                                                     @*<div>
-                                                                            @Html.DropDownListFor(m => m.MedicalDictionarySpecialty, Model.MedicalDictionarySpecialty.Select(x => new SelectListItem {Text = x.Specialty.ToString(), Value = x.SpecialtyID.ToString()}), new { @class = "form-control chosen-select", @multiple = "true"})
-                                                                        </div>*@
+                        @Html.DropDownListFor(m => m.MedicalDictionarySpecialty, Model.MedicalDictionarySpecialty.Select(x => new SelectListItem {Text = x.Specialty.ToString(), Value = x.SpecialtyID.ToString()}), new { @class = "form-control chosen-select", @multiple = "true"})
+                    </div>*@
                                                                     <div>
                                                                         @Html.DropDownList("something", new SelectList(ViewBag.Specialty, "ID", "Name"), htmlAttributes: new { @class = "selectpicker tryMultiselect", multiple = "multiple" })
-
+                                                                        @*@Html.DropDownListFor(model => model.MedicalDictionarySpecialty, (IEnumerable<SelectListItem>)ViewBag.Specialty)*@
+                                                                        @*@Html.ListBox("Countries", ViewBag.Specialty as MultiSelectList , new { @class = "chzn-select"})*@
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -159,19 +160,30 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <div class="col-md-10">
+                                                            <h5>Location</h5>
+                                                            <div class="col-md-6">
                                                                 @*<label for="Type">Location</label>
-                                                                    <input type="text" id="mapLat" value="">
-                                                                    <input type="text" id="mapLng" value="">*@
-                                                                @Html.TextBoxFor(m => m.Latitude, new { @Class = "form-control", id = "mapLat" })
-                                                                @Html.TextBoxFor(m => m.Longitude, new { @Class = "form-control", id = "mapLng" })
-                                                                @*<button type="button" onclick="initialize()">Search</button>*@
-                                                                @*<input type="button" onclick="initialize()" id="getinitialize"/>*@
+                <input type="text" id="mapLat" value="">
+                     <input type="text" id="mapLng" value="">*@
+
+                                                                <label for="Type">Latitude</label>
+                                                                @Html.TextBoxFor(m => m.Latitude, null, new { @Class = "form-control", @id = "mapLat", @onchange = "onchangelocation();" })
+                                                                @Html.ValidationMessageFor(m => m.Latitude)
+                                                                @*<button onclick="initialize()">Search</button>*@
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="Type">Longitude</label>
+                                                                @Html.TextBoxFor(m => m.Longitude, null, new { @Class = "form-control", id = "mapLng", @onchange = "onchangelocation();" })
+                                                                @Html.ValidationMessageFor(m => m.Longitude)
+                                                            </div>
+                                                        </div>
+                                                        &nbsp;
+                                                        <div class="col-md-7">
+                                                            &nbsp;
+                                                            <div id="map-canvas">
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div id="map-canvas">
                                                 </div>
                                             </div>
                                         </div>
@@ -188,19 +200,15 @@
 </form>
 
 
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>*@
 
 @section scripts{
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-
-
-
 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUakSTaXSqDmWWAhpmhqKFuKtYKkIcvWw"></script>
-    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.js" integrity="sha256-TDtzz+WOGufaQuQzqpEnnxdJQW5xrU+pzjznwBtaWs4=" crossorigin="anonymous"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.js" integrity="sha256-TDtzz+WOGufaQuQzqpEnnxdJQW5xrU+pzjznwBtaWs4=" crossorigin="anonymous"></script>
 
     <script type="text/javascript">
         $("#display-img").click(function () {
@@ -225,14 +233,14 @@
 
 
     <script>
-        //function loadChosen() {
-        //    $('.tryMultiselect').chosen();
-        //}
+        function loadChosen() {
+            $('.tryMultiselect').chosen();
+        }
 
 
-        //$(document).ready(function () {
-        //    loadChosen();
-        //});
+        $(document).ready(function () {
+            loadChosen();
+        });
 
         $(document).ready(function () {
          var xray = @Html.Raw(Json.Serialize(Model.MedicalDictionarySpecialty));
@@ -277,6 +285,13 @@
         function saveOrderFunction() {
             var formdata = new FormData($('form').get(0));
             formdata.append("GeneTemplateId", $("#TestType").val());
+            $(".tryMultiselect option:selected").each(function () {
+                debugger
+                var $this = $(this);
+
+                formdata.append("Specialty", $this.val());
+                i++;
+            });
             for (var pair of formdata.entries()) {
                 console.log(pair[0] + ', ' + pair[1]);
             }

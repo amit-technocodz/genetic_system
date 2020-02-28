@@ -121,25 +121,31 @@
     }
 
     function getEnName(i) {
-            debugger
-            var Page = i;
+        debugger
+        var Page = i;
         var searchstringen = $("#search1").val();
         var searchstringar = $("#search2").val();
+        var searchstringcity = $("#CityNamesID option:selected").val();
 
-            $.ajax({
-                        url: '/admin/medicaldictionary/SearchEnName?page=' +Page+'&searchstringen='+searchstringen+'&searchstringar='+searchstringar,
-                        type: 'GET',
-                    success: function (result) {
-                        debugger
-                         $(".unseen").html(result)
-                          },
-                        error: function (xhr, status) {
-                            toastr.error('Something went wrong');
-                        }
-                       });
+        $.ajax({
+            url: '/admin/medicaldictionary/SearchEnName?page=' + Page + '&searchstringen=' + searchstringen + '&searchstringar=' + searchstringar,
+            type: 'GET',
+            success: function (result) {
+                debugger
+                $(".unseen").html(result)
+            },
+            error: function (xhr, status) {
+                toastr.error('Something went wrong');
+            }
+        });
 
 
 
+    }
+
+    function patientSearch() {
+        var xray = $("#CityNamesID option:selected").val();
+        debugger
     }
 
 </script>

@@ -171,3 +171,11 @@ E:\Genetic\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.AssemblyInfoInputs.c
 E:\Genetic\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.AssemblyInfo.cs
 E:\Genetic\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.dll
 E:\Genetic\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.pdb
+J:\GitHub\genetic_system\Data\bin\Debug\netcoreapp2.2\Data.deps.json
+J:\GitHub\genetic_system\Data\bin\Debug\netcoreapp2.2\Data.dll
+J:\GitHub\genetic_system\Data\bin\Debug\netcoreapp2.2\Data.pdb
+J:\GitHub\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.csprojAssemblyReference.cache
+J:\GitHub\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.AssemblyInfoInputs.cache
+J:\GitHub\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.AssemblyInfo.cs
+J:\GitHub\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.dll
+J:\GitHub\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.pdb
