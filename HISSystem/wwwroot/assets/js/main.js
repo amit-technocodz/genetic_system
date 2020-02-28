@@ -183,7 +183,7 @@
 					}).scrollSpy();;
 					$(this).scrollSpy();
 				});
-				$('.prtm-loader-wrap').fadeOut(300);
+				$('.prtm-loader-wrap').fadeOut(200);
 				$(window).resize();
 			});
 		},
