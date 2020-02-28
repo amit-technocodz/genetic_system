@@ -136,7 +136,8 @@ namespace HISSystem.Areas.Admin.Controllers
                     break;
             }
 
-            Int32 result = db.LookupService.GetLookups().Where(x => x.Type.Contains(lookupName)).ToList().Max(x => x.TypeID);
+            //Int32 result = db.LookupService.GetLookups().Where(x => x.Type.Contains(lookupName)).ToList().Max(x => x.TypeID);
+            int result = db.LookupService.GetLookUpByTypeName(lookupName).Max(x => x.TypeID);
             Lookup lookup = new Lookup();
             lookup.TypeID = (++result);
             lookup.Type = lookupName;

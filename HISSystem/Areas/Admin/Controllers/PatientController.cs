@@ -248,27 +248,25 @@ namespace HISSystem.Areas.Admin.Controllers
         #region Add and Update delete
         public IActionResult Add()
         {
-            //  User model = new User();
-            var LoginID = Request.Cookies["ID"];
             ViewBag.UserName = Request.Cookies["UserName"];
-            var lookup = db.LookupService.GetLookups().ToList();
             ViewBag.Country = db.CountryService.GetAll();
-            ViewBag.Gender = lookup.Where(x => x.Type.Contains("Gender")).ToList();
-            ViewBag.EmployeeType = lookup.Where(x => x.Type.Contains("EmployeeType")).ToList();
-            ViewBag.InsuranceCompany = lookup.Where(x => x.Type.Contains("InsuranceCompany"));
-           
-           ViewBag.BloodGroup = lookup.Where(x => x.Type.Contains("BloodGroup")).ToList();
-            ViewBag.SirName = lookup.Where(x => x.Type.Contains("Title")).ToList();
-            ViewBag.SocialStatus = lookup.Where(x => x.Type.Contains("SocialStatus")).ToList();
-            ViewBag.PlaceOfBirth = lookup.Where(x => x.Type.Contains("PlaceOfBirth")).ToList();
-            ViewBag.SecurityGroup = lookup.Where(x => x.Type.Contains("SecurityGroup")).ToList();
             ViewBag.City = db.CityService.GetAll();
+
+            ViewBag.Gender = db.LookupService.GetLookUpByTypeName("Gender");
+            ViewBag.EmployeeType = db.LookupService.GetLookUpByTypeName("EmployeeType");
+            ViewBag.InsuranceCompany = db.LookupService.GetLookUpByTypeName("InsuranceCompany");
+            ViewBag.BloodGroup = db.LookupService.GetLookUpByTypeName("BloodGroup");
+            ViewBag.SirName = db.LookupService.GetLookUpByTypeName("Title");
+            ViewBag.SocialStatus = db.LookupService.GetLookUpByTypeName("SocialStatus");
+            ViewBag.PlaceOfBirth = db.LookupService.GetLookUpByTypeName("PlaceOfBirth");
+            ViewBag.SecurityGroup = db.LookupService.GetLookUpByTypeName("SecurityGroup");
+            ViewBag.IdentificationType = db.LookupService.GetLookUpByTypeName("IdentificationType");
+            ViewBag.Status = db.LookupService.GetLookUpByTypeName("Status");
+            ViewBag.Religion = db.LookupService.GetLookUpByTypeName("Religion");
+
             var model = new User();
             model.RegisterationNo = "";
             model.UserName = "";
-            ViewBag.IdentificationType = lookup.Where(x => x.Type.Contains("IdentificationType")).ToList();
-            ViewBag.Status = lookup.Where(x => x.Type.Contains("Status")).ToList();
-            ViewBag.Religion = lookup.Where(x => x.Type.Contains("Religion")).ToList();
             model.AddedDate = DateTime.UtcNow;
             ViewBag.AppointmentStatus = "Pending";
             return View(model);

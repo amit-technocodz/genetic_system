@@ -5464,19 +5464,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\anirudh.sharma\\.nuget\\packages\\": {}
+    "C:\\Users\\Warsaw\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Service\\Service.csproj",
+      "projectUniqueName": "E:\\Genetic\\genetic_system\\Service\\Service.csproj",
       "projectName": "Service",
-      "projectPath": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Service\\Service.csproj",
-      "packagesPath": "C:\\Users\\anirudh.sharma\\.nuget\\packages\\",
-      "outputPath": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Service\\obj\\",
+      "projectPath": "E:\\Genetic\\genetic_system\\Service\\Service.csproj",
+      "packagesPath": "C:\\Users\\Warsaw\\.nuget\\packages\\",
+      "outputPath": "E:\\Genetic\\genetic_system\\Service\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\anirudh.sharma\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Warsaw\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5489,11 +5493,11 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Data\\Data.csproj": {
-              "projectPath": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Data\\Data.csproj"
+            "E:\\Genetic\\genetic_system\\Data\\Data.csproj": {
+              "projectPath": "E:\\Genetic\\genetic_system\\Data\\Data.csproj"
             },
-            "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Repository\\Repository.csproj": {
-              "projectPath": "E:\\GeneticSystem Unified\\GC 21.2.20 J\\GeneticSystem\\Repository\\Repository.csproj"
+            "E:\\Genetic\\genetic_system\\Repository\\Repository.csproj": {
+              "projectPath": "E:\\Genetic\\genetic_system\\Repository\\Repository.csproj"
             }
           }
         }
