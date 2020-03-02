@@ -23,7 +23,7 @@ namespace Service.Services
 
         public List<MedicalDictionary> GetMedicalDictionary()
         {
-            return db.MedicalDictionary.Get().Where(x => x.IsActive == true).Include(x => x.Type).Include(x => x.City).ToList();
+            return db.MedicalDictionary.Get().Where(x => x.IsActive == true).Include(x => x.MedicalDictionarySpecialty).Include(x =>x.Type).ToList();
         }
 
         //public PatientOrder AddOrder(PatientOrder model)
@@ -39,7 +39,7 @@ namespace Service.Services
             return medicalDictionary;
         }
 
-        public void Delete(long id)
+        public void DeleteMedicalDictionary(long id)
         {
             var result = db.MedicalDictionary.Get().Where(x => x.ID == id).FirstOrDefault();
                 result.IsActive = false;
@@ -49,7 +49,10 @@ namespace Service.Services
 
         public MedicalDictionary GetMedicalDictionaryById(int Id)
         {
-            return db.MedicalDictionary.Get().Where(x => x.IsActive == true && x.ID ==Id).Include(x => x.MedicalDictionarySpecialty).FirstOrDefault();
+            var result = db.MedicalDictionary.Get().Where(x => x.IsActive == true && x.ID ==Id).Include(x => x.MedicalDictionarySpecialty).FirstOrDefault();
+            
+                result.Specialty = result.MedicalDictionarySpecialty.Where(x=>x.IsActive==true).Select(x => x.SpecialtyID.ToString()).ToArray();
+            return result;
         }
 
         public List<MedicalDictionarySpecialty> GetMedicalDictionarySpecialtyById(int Id)
@@ -79,7 +82,7 @@ namespace Service.Services
             foreach (var item in result)
             {
                 item.IsActive = false;
-                db.MedicalDictionarySpecialty.Update(item);
+                db.MedicalDictionarySpecialty.Delete(item);
                 db.MedicalDictionarySpecialty.SaveChanges();
             }
         }

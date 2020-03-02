@@ -23,12 +23,13 @@ namespace GeneticSystem.Areas.Admin.Models
         public DateTime? CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public int ClassID { get; set; }
-        public string ImagePath { get; set; }
+        public byte[] ImagePath { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
         public virtual Lookup Type { get; set; }
         public List<MedicalDictionarySpecialty> MedicalDictionarySpecialty { get; set; }
         public string[] Specialty { get; set; }
         //public virtual Lookup Class { get; set; }
+        public string ImageString { get; set; }
     }
 }

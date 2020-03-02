@@ -21,25 +21,25 @@
             <tr>
                 <td><div class="form-check"><label><input type="checkbox" id="select-id" onclick="GetID(@item.ID)"><span class="label-text"></span></label></div></td>
                 <td>
-                    @item.Type.Name
+                    @item?.Type?.Name
                 </td>
                 <td>
-                    @item.EnName
+                    @item?.EnName
                 </td>
                 <td>
-                    @item.ArName
+                    @item?.ArName
                 </td>
                 <td>
-                    @item.Telephone
+                    @item?.Telephone
                 </td>
                 <td>
-                    @item.Mobile
+                    @item?.Mobile
                 </td>
                 <td>
-                    @item.Address
+                    @item?.Address
                 </td>
                 <td>
-                    @item.City.Name
+                    @item?.City?.Name
                 </td>
                 <td>
                     @Html.ActionLink("", "UpdateMedicalDictionary", "MedicalDictionary", new { id = item.ID }, new { @Class = "fa fa-pencil", data_toggle = "tooltip", data_placement = "top", title = "Update" })
