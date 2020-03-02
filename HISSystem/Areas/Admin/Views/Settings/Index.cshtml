@@ -31,6 +31,9 @@
         border: 0px;
         border-radius: 0px;
     }
+    .d-block{
+        display:block;
+    }
 </style>
 @using (Html.BeginForm("Add", "Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
@@ -60,15 +63,24 @@
                                         </label>
                                         @Html.DropDownListFor(m => m.ImageType, new SelectList(ViewBag.ImagesForList, "ID", "Name"), "-Select-", new { @Class = "form-control" })
                                     </div>
-                                    <div class="col-md-5 col-lg-5">
+                                    <div class="col-md-3 col-lg-3">
+                                        <label>
+                                            &nbsp;
+                                        </label>
                                         <div id="ImgDiv" class="btn-group btn-group-justified mrgn-b-xs">
-                                            <label for="fileUpload" class="file-upload btn btn-primary btn-block rounded-pill shadow">
+                                            <label for="fileUpload" class="file-upload btn btn-primary btn-block btn-xs rounded-pill shadow">
                                                 <i class="fa fa-upload mr-2"></i> Click to browse...
                                                 <input id="fileUpload" name="file" type="file" disabled>
                                             </label>
                                         </div>
                                     </div>
-                                    <button class="btn btn-xs btn-warning " type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Save </button>
+
+                                    <div class="col-md-3">
+                                        <label class="d-block">
+                                            &nbsp;
+                                        </label>
+                                        <button class="btn btn-xs btn-warning " type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Save </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

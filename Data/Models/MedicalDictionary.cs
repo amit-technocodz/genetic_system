@@ -16,13 +16,13 @@ namespace Data.Models
         public string Mobile { get; set; }
         public string Mobile2 { get; set; }
         public string Address { get; set; }
-        public int CityID { get; set; }
+        public int? CityID { get; set; }
         public string Email { get; set; }
         public bool IsActive { get; set; }
         public DateTime? CreatedOn { get; set; } 
         public DateTime? UpdatedOn { get; set; }
-        public int ClassID { get; set; }
-        public string ImagePath { get; set; }
+        public int? ClassID { get; set; }
+        public byte[] ImagePath { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
         public virtual Lookup Type { get; set; }
@@ -30,6 +30,8 @@ namespace Data.Models
         public virtual List<MedicalDictionarySpecialty> MedicalDictionarySpecialty { get; set; }
         [NotMapped]
         public string[] Specialty { get; set; }
+        [NotMapped]
+        public string ImageString { get; set; }
 
 
 

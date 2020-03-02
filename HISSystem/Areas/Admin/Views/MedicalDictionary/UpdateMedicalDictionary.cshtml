@@ -19,7 +19,7 @@
     }
 </style>
 
-<form asp-action="Add" class="form-elments1" role="form" method="post" enctype="multipart/form-data">
+<form>
     <div class="prtm-content">
         <div class="prtm-page-bar">
             <ul class="breadcrumb">
@@ -31,7 +31,7 @@
         </div>
         <div class="row mrgn-b-sm">
             <div class="col-md-5 col-lg-5">
-                <input type="submit" name="submit" value="Save" class="btn btn-xs btn-primary" onclick="saveOrderFunction();" />
+                <input type="button" name="submit" value="Save" class="btn btn-xs btn-primary" onclick="saveOrderFunction();" />
                 <input type="button" name="Update" value="Update" class="btn btn-xs btn-warning" disabled />
                 <input type="button" name="History" value="History" class="btn btn-xs btn-info" />
             </div>
@@ -58,9 +58,11 @@
                                 <div class="col-md-8 col-lg-2">
                                     <input type="file" name="file" multiple onchange="show(this,1)" style="display:none;" id="fileimage" />
                                     <div id="display-img" class="img-div">
-                                        @if (Model.ImagePath != null)
+                                        @*@Html.HiddenFor(m=>m.ImageString)
+                                        @Html.HiddenFor(m=>m.ImagePath)*@
+                                        @if (Model.ImageString != null)
                                         {
-                                            <img src="@Model.ImagePath" alt="Image" id="user_img" />
+                                            <img src="@Model.ImageString" alt="Image" id="user_img" />
                                         }
                                         else
                                         {
@@ -95,6 +97,7 @@
                                                             <div class="col-md-10">
                                                                 <div class="form-group">
                                                                     @Html.HiddenFor(m => m.ID)
+                                                                    @Html.HiddenFor(m=> m.ImagePath)
                                                                     <label for="Type">Telephone</label>
                                                                     @Html.TextBoxFor(m => m.Telephone, null, new { @Class = "form-control" })
                                                                 </div>
@@ -139,16 +142,8 @@
                                                             <div class="col-md-10">
                                                                 <div class="form-group">
                                                                     <label for="Type">Specialty</label>
-                                                                    @*<div>
-                        @Html.ListBox("Specialty", new SelectList(ViewBag.Specialty, "ID", "Name", Model.Specialty.ToArray()), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
-                    </div>*@
-                                                                    @*<div>
-                        @Html.DropDownListFor(m => m.MedicalDictionarySpecialty, Model.MedicalDictionarySpecialty.Select(x => new SelectListItem {Text = x.Specialty.ToString(), Value = x.SpecialtyID.ToString()}), new { @class = "form-control chosen-select", @multiple = "true"})
-                    </div>*@
                                                                     <div>
-                                                                        @Html.DropDownList("something", new SelectList(ViewBag.Specialty, "ID", "Name"), htmlAttributes: new { @class = "selectpicker tryMultiselect", multiple = "multiple" })
-                                                                        @*@Html.DropDownListFor(model => model.MedicalDictionarySpecialty, (IEnumerable<SelectListItem>)ViewBag.Specialty)*@
-                                                                        @*@Html.ListBox("Countries", ViewBag.Specialty as MultiSelectList , new { @class = "chzn-select"})*@
+                                                                        @Html.ListBoxFor(m => m.Specialty, new MultiSelectList(ViewBag.Specialty, "ID", "Name"), htmlAttributes: new { @class = "selectpicker tryMultiselect form-control", multiple = "multiple" })
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -162,19 +157,12 @@
                                                         <div class="col-md-4">
                                                             <h5>Location</h5>
                                                             <div class="col-md-6">
-                                                                @*<label for="Type">Location</label>
-                <input type="text" id="mapLat" value="">
-                     <input type="text" id="mapLng" value="">*@
-
                                                                 <label for="Type">Latitude</label>
                                                                 @Html.TextBoxFor(m => m.Latitude, null, new { @Class = "form-control", @id = "mapLat", @onchange = "onchangelocation();" })
-                                                                @Html.ValidationMessageFor(m => m.Latitude)
-                                                                @*<button onclick="initialize()">Search</button>*@
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label for="Type">Longitude</label>
                                                                 @Html.TextBoxFor(m => m.Longitude, null, new { @Class = "form-control", id = "mapLng", @onchange = "onchangelocation();" })
-                                                                @Html.ValidationMessageFor(m => m.Longitude)
                                                             </div>
                                                         </div>
                                                         &nbsp;
@@ -242,24 +230,6 @@
             loadChosen();
         });
 
-        $(document).ready(function () {
-         var xray = @Html.Raw(Json.Serialize(Model.MedicalDictionarySpecialty));
-            console.log(xray);
-            if (xray != null) {
-                $.each(xray, function (i, e) {
-                    console.log(xray);
-                    $("#something option[value='" + e.specialtyID + "']").prop("selected", true);
-                    debugger
-            });
-            }
-        $("select").prop('class', 'selectpicker show-tick form-control');
-        $("select").attr('data-live-search', true);
-    });
-
-
-
-
-
 
         initialize();
         function initialize() {
@@ -284,23 +254,23 @@
 
         function saveOrderFunction() {
             var formdata = new FormData($('form').get(0));
-            formdata.append("GeneTemplateId", $("#TestType").val());
-            $(".tryMultiselect option:selected").each(function () {
-                debugger
-                var $this = $(this);
+            //formdata.append("GeneTemplateId", $("#TestType").val());
+            //$(".tryMultiselect option:selected").each(function () {
+            //    debugger
+            //    var $this = $(this);
 
-                formdata.append("Specialty", $this.val());
-                i++;
-            });
-            for (var pair of formdata.entries()) {
-                console.log(pair[0] + ', ' + pair[1]);
-            }
+            //    formdata.append("Specialty", $this.val());
+            //    i++;
+            //});
+            //for (var pair of formdata.entries()) {
+            //    console.log(pair[0] + ', ' + pair[1]);
+            //}
 
             $.ajax({
                 type: 'POST',
                 url: "/admin/medicaldictionary/UpdateMedicalDictionary",
                 data: formdata,
-                dataType: "json",
+                dataType: "text",
                 processData: false,
                 contentType: false,
                 success: function (response) {

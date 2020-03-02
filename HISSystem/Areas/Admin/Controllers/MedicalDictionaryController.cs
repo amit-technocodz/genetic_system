@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Service.UnitOfServices;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using GeneticSystem.Helper;
 
 namespace GeneticSystem.Areas.Admin.Controllers
 {
@@ -29,10 +30,13 @@ namespace GeneticSystem.Areas.Admin.Controllers
         {
             var medicalDictionaryList = new PagedData<MedicalDictionary>();
 
-            var getmedicalDictionaryList = db.MedicalDictionaryService.GetMedicalDictionary().ToList();
+            var getmedicalDictionaryList = db.MedicalDictionaryService.GetMedicalDictionary().OrderByDescending(x=>x.CreatedOn).ToList();
 
-            ViewBag.City = db.CityService.GetAll().ToList();
-            medicalDictionaryList.Data = getmedicalDictionaryList;
+            ViewBag.City = db.CityService.GetAll().Where(x=>x.ID!=null).ToList();
+            var getLookupsList = db.LookupService.GetLookups().ToList();
+            ViewBag.Types = getLookupsList.Where(x => x.Type == "Type").ToList();
+
+            //medicalDictionaryList.Data = getmedicalDictionaryList;
             medicalDictionaryList.Data = (getmedicalDictionaryList).Take(PageSize);
             medicalDictionaryList.NumberOfPages = Convert.ToInt32(Math.Ceiling((double)getmedicalDictionaryList.Count() / PageSize));
             return View(medicalDictionaryList);
@@ -43,7 +47,10 @@ namespace GeneticSystem.Areas.Admin.Controllers
         {
             var medicalDictionaryList = new PagedData<MedicalDictionary>();
 
-            var getmedicalDictionaryList = db.MedicalDictionaryService.GetMedicalDictionary().ToList();
+            var getmedicalDictionaryList = db.MedicalDictionaryService.GetMedicalDictionary().OrderByDescending(x=>x.CreatedOn).ToList();
+            
+            var getLookupsList = db.LookupService.GetLookups().ToList();
+            ViewBag.Types = getLookupsList.Where(x => x.Type == "Type").ToList();
 
             medicalDictionaryList.Data = getmedicalDictionaryList;
             medicalDictionaryList.Data = (getmedicalDictionaryList).Take(PageSize);
@@ -86,43 +93,54 @@ namespace GeneticSystem.Areas.Admin.Controllers
             addmedicalDictionary.Latitude= medicalDictionaryViewModel.Latitude;
             addmedicalDictionary.Longitude= medicalDictionaryViewModel.Longitude;
 
-            if (file != null)
-            {
-                var path = Path.Combine(_appEnvironment.WebRootPath, "Uploaded", file.FileName);
+            //if (file != null)
+            //{
+            //    var path = Path.Combine(_appEnvironment.WebRootPath, "Uploaded", file.FileName);
 
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    file.CopyToAsync(stream);
-                    addmedicalDictionary.ImagePath = "/uploaded/" + file.FileName;
-                }
+            //    using (var stream = new FileStream(path, FileMode.Create))
+            //    {
+            //        file.CopyToAsync(stream);
+            //        addmedicalDictionary.ImagePath = "/uploaded/" + file.FileName;
+            //    }
+            //}
+
+
+            if (file!=null)
+            {
+
+                ImageToByte fConvert = new ImageToByte();
+                byte[] bytedata = fConvert.GetFileBits(file);
+                addmedicalDictionary.ImagePath = bytedata;
+                //saveModel.CompanyId = service.CompanyProfileService.GetAll().FirstOrDefault().ID;
+                //service.CompanyProfileService.AddImage(saveModel);
+                //var logo = service.CompanyProfileService.GetImageByTypeId(181);
+                //string something = String.Format("data:image/gif;base64,{0}", logo);
             }
-            var addmedicalDictionaryData = db.MedicalDictionaryService.AddMedicalDictionary(addmedicalDictionary);
-            var getmedicalDictionaryID = addmedicalDictionaryData.ID;
 
             if(medicalDictionaryViewModel.Specialty != null)
             {
 
             
-            var medicalDictionarySpeciality = medicalDictionaryViewModel.Specialty.Select((p, i) => new MedicalDictionarySpecialty
+            var medicalDictionarySpecialityList = medicalDictionaryViewModel.Specialty.Select((p, i) => new MedicalDictionarySpecialty
             {
                 ID = 0,
                 IsActive = true,
                 UpdatedOn = currentDate,
                 CreatedOn = currentDate,
-                MedicalDictionaryID = getmedicalDictionaryID,
+                MedicalDictionaryID = 0,
                 SpecialtyID = int.Parse(p)
             }).ToList();
-                db.MedicalDictionaryService.AddMedicalDictionaryService(medicalDictionarySpeciality);
+                
+                addmedicalDictionary.MedicalDictionarySpecialty = medicalDictionarySpecialityList;
             }
 
-           
-
-            return Json(true);
+            var addmedicalDictionaryData = db.MedicalDictionaryService.AddMedicalDictionary(addmedicalDictionary);
+            return RedirectToAction("Index");
         }
 
         public IActionResult DeleteMedicalDictionary(int id)
         {
-            db.MedicalDictionaryService.Delete(id);
+            db.MedicalDictionaryService.DeleteMedicalDictionary(id);
             return Json(true);
         }
 
@@ -137,10 +155,25 @@ namespace GeneticSystem.Areas.Admin.Controllers
             var currentDate = DateTime.UtcNow;
 
             var model = db.MedicalDictionaryService.GetMedicalDictionaryById(id);
+            model.MedicalDictionarySpecialty.Where(x => x.IsActive == true);
+            if (model.ImagePath!=null)
+            {
+                var getImageString = Convert.ToBase64String(model.ImagePath);
+            //    var logo = service.CompanyProfileService.GetImageByTypeId(181);
+            //string something = String.Format("data:image/gif;base64,{0}", logo);
+            //HttpContext.Session.SetString("logo", something);
+                model.ImageString = string.Format("data:image/gif;base64,{0}",getImageString);
+            }
+            else
+            {
+                model.ImageString = null;
+            }
+            
+
             //model.Specialty = new string[model.MedicalDictionarySpecialty.Count()];
 
-            model.Specialty = new string[1];
-            model.Specialty[0] = "0";
+            //model.Specialty = new string[1];
+            //model.Specialty[0] = "0";
 
             //for (var i = 0; i < model.MedicalDictionarySpecialty.Count(); i++)
             //{
@@ -174,76 +207,62 @@ namespace GeneticSystem.Areas.Admin.Controllers
             addmedicalDictionary.Latitude = medicalDictionaryViewModel.Latitude;
             addmedicalDictionary.Longitude = medicalDictionaryViewModel.Longitude;
 
-            if (file != null)
+            if (file!=null)
             {
-                var path = Path.Combine(_appEnvironment.WebRootPath, "Uploaded", file.FileName);
-
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    file.CopyToAsync(stream);
-                    addmedicalDictionary.ImagePath = "/uploaded/" + file.FileName;
-                }
+                ImageToByte fConvert = new ImageToByte();
+                byte[] bytedata = fConvert.GetFileBits(file);
+                addmedicalDictionary.ImagePath = bytedata;
             }
-
-
-            //if (model.File != null)
-            //{
-            //    var path = Path.Combine(_appEnvironment.WebRootPath, "Uploaded", model.File.FileName);
-
-            //    using (var stream = new FileStream(path, FileMode.Create))
-            //    {
-            //        model.File.CopyToAsync(stream);
-            //        usermodel.ImagePath = "/uploaded/" + model.File.FileName;
-            //    }
-            //}
-
-            var addmedicalDictionaryData = db.MedicalDictionaryService.UpdatMedicalDictionary(addmedicalDictionary);
-            var getmedicalDictionaryID = addmedicalDictionaryData.ID;
-
-            db.MedicalDictionaryService.DeleteMedicalDictionarySpecialty(getmedicalDictionaryID);
+            else
+            {
+                addmedicalDictionary.ImagePath = medicalDictionaryViewModel.ImagePath;
+            }
 
             if(medicalDictionaryViewModel.Specialty != null)
             {
-                var medicalDictionarySpeciality = medicalDictionaryViewModel.Specialty.Select((p, i) => new MedicalDictionarySpecialty
+                db.MedicalDictionaryService.DeleteMedicalDictionarySpecialty(addmedicalDictionary.ID);
+
+                var medicalDictionarySpecialityList = medicalDictionaryViewModel.Specialty.Select((p, i) => new MedicalDictionarySpecialty
                 {
                     ID = 0,
                     IsActive = true,
                     UpdatedOn = currentDate,
                     CreatedOn = currentDate,
-                    MedicalDictionaryID = medicalDictionaryViewModel.ID,
+                    MedicalDictionaryID = 0,
                     SpecialtyID = int.Parse(p)
                 }).ToList();
 
-                db.MedicalDictionaryService.AddMedicalDictionaryService(medicalDictionarySpeciality);
-            }
+                addmedicalDictionary.MedicalDictionarySpecialty = medicalDictionarySpecialityList;
 
-            return Json(true);
+            }
+            var addmedicalDictionaryData = db.MedicalDictionaryService.UpdatMedicalDictionary(addmedicalDictionary);
+
+
+            return RedirectToAction("Index");
         }
 
         //Added this 228
         [HttpGet]
-        public IActionResult SearchEnName(int page, string searchstringen, string searchstringar)
+        public IActionResult SearchEnName(int page, string searchstringen, string searchstringar, int cityID, int typeID)
         {
             var searchList = new PagedData<MedicalDictionary>();
-            var medicalDictionaryList = db.MedicalDictionaryService.GetMedicalDictionary().Where(x => x.IsActive == true).ToList();
+            var medicalDictionaryList = db.MedicalDictionaryService.GetMedicalDictionary().Where(x => x.IsActive == true);
 
-            if (searchstringen != null)
+            if (!string.IsNullOrEmpty(searchstringen))
             {
-                var searchstring = searchstringen;
-                if (!string.IsNullOrEmpty(searchstring))
-                {
-                    medicalDictionaryList = medicalDictionaryList.Where(x => x.EnName != null && x.EnName.Contains(searchstring.ToString(), StringComparison.OrdinalIgnoreCase)
-                    || (x.ArName != null && x.ArName.Contains(searchstring, StringComparison.OrdinalIgnoreCase))).ToList();
-                }
+                medicalDictionaryList = medicalDictionaryList.Where(x => x.EnName != null && x.EnName.Contains(searchstringen.ToString(), StringComparison.OrdinalIgnoreCase));
             }
-            else if (searchstringar != null)
+            if (!string.IsNullOrEmpty(searchstringar))
             {
-                var searchstring = searchstringar;
-                if (!string.IsNullOrEmpty(searchstring))
-                {
-                    medicalDictionaryList = medicalDictionaryList.Where(x => x.EnName != null && x.EnName.Contains(searchstring.ToString(), StringComparison.OrdinalIgnoreCase)
-                    || (x.ArName != null && x.ArName.Contains(searchstring, StringComparison.OrdinalIgnoreCase))).ToList();
-                }
+                medicalDictionaryList = medicalDictionaryList.Where(x => x.ArName != null && x.ArName.Contains(searchstringar, StringComparison.OrdinalIgnoreCase));
+            }
+            if (cityID != 0)
+            {
+                medicalDictionaryList = medicalDictionaryList.Where(x => x.CityID != null && x.CityID == cityID);
+            }
+            if (typeID != 0)
+            {
+                medicalDictionaryList = medicalDictionaryList.Where(x => x.TypeID != 0 && x.TypeID == typeID); ;
             }
 
 

@@ -211,5 +211,30 @@ namespace GeneticSystem.Areas.Admin.Controllers
 
             return PartialView("_Index", pagedClients);
         }
+
+        [HttpGet]
+        public IActionResult DeleteOrder(int orderId)
+        {
+            bool result = db.ClientOrderService.DeleteClientOrder(orderId);
+
+            if(result == true)
+            {
+                var clientOrderList = db.ClientOrderService.GetClientOrderList();
+                var clientOrders = new PagedData<ClientOrder>();
+                clientOrders.Data = (clientOrderList).Take(PageSize);
+                clientOrders.NumberOfPages = Convert.ToInt32(Math.Ceiling((double)clientOrderList.Count() / PageSize));
+                return PartialView("_Index",clientOrders);
+            }
+            else
+            return null;
+        }
+        [HttpGet]
+        public IActionResult Attachment(int userID)
+        {
+            var result = db.AttachmentService.GetById(userID, "ClientOrder");
+            ViewBag.UserID = userID;
+            ViewBag.TableName = "ClientOrder";
+            return PartialView("_Attachment", result);
+        }
     }
 }

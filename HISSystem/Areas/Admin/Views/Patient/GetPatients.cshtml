@@ -15,7 +15,7 @@
                 <th class="numeric">Employee Type</th>
                 <th class="numeric">Active</th>
                 <th class="numeric">Actions</th>
-                <th class="numeric">Time Line</th>
+                @*<th class="numeric">Time Line</th>*@
 
             </tr>
         </thead>
@@ -84,15 +84,19 @@
                     }
                 </td>
                 <td>
-                    <input type="button" name="submit" value="Action" class="btn btn-xs btn-info" />
-
+                    @*<input type="button" name="submit" value="Add Reminder" class="btn btn-xs btn-app" />
+        <input type="button" name="submit" value="Add Test" class="btn btn-xs btn-base" />
+        <input type="button" name="submit" value="Add Appointment" class="btn btn-xs btn-warning" />
+        <input type="button" name="submit" value="Add Order" class="btn btn-xs btn-info" />*@
+                    <button type="button" class="btn btn-xs btn-warning UpdtOrdrBtn" value=""><i class="fa fa-plus" aria-hidden="true"></i> Reminder</button>
+                    <button type="button" class="btn btn-xs btn-success DltOrdrBtn" value=""><i class="fa fa-plus" aria-hidden="true"></i> Test</button>
+                    <button type="button" class="btn btn-xs btn-danger AttchOrdrBtn" value=""><i class="fa fa-plus" aria-hidden="true"></i> Order</button>
+                    <button type="button" class="btn btn-xs btn-info AttchOrdrBtn" value=""><i class="fa fa-history" aria-hidden="true"></i> Timeline</button>
 
                 </td>
-                <td>
+                @*<td>
                     <input type="button" name="submit" value="Time Line" class="btn btn-xs btn-success"  />
-
-
-                </td>
+                </td>*@
             </tr>
         }
         </tbody>
