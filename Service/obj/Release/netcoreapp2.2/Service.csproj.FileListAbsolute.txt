@@ -182,3 +182,16 @@ E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\obj\Release\netcorea
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\obj\Release\netcoreapp2.2\Service.csproj.CopyComplete
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\obj\Release\netcoreapp2.2\Service.dll
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Service\obj\Release\netcoreapp2.2\Service.pdb
+E:\GeneticGit\GeneticGit\genetic_system\Service\bin\Release\netcoreapp2.2\Service.deps.json
+E:\GeneticGit\GeneticGit\genetic_system\Service\bin\Release\netcoreapp2.2\Service.dll
+E:\GeneticGit\GeneticGit\genetic_system\Service\bin\Release\netcoreapp2.2\Service.pdb
+E:\GeneticGit\GeneticGit\genetic_system\Service\bin\Release\netcoreapp2.2\Data.dll
+E:\GeneticGit\GeneticGit\genetic_system\Service\bin\Release\netcoreapp2.2\Repository.dll
+E:\GeneticGit\GeneticGit\genetic_system\Service\bin\Release\netcoreapp2.2\Data.pdb
+E:\GeneticGit\GeneticGit\genetic_system\Service\bin\Release\netcoreapp2.2\Repository.pdb
+E:\GeneticGit\GeneticGit\genetic_system\Service\obj\Release\netcoreapp2.2\Service.csprojAssemblyReference.cache
+E:\GeneticGit\GeneticGit\genetic_system\Service\obj\Release\netcoreapp2.2\Service.AssemblyInfoInputs.cache
+E:\GeneticGit\GeneticGit\genetic_system\Service\obj\Release\netcoreapp2.2\Service.AssemblyInfo.cs
+E:\GeneticGit\GeneticGit\genetic_system\Service\obj\Release\netcoreapp2.2\Service.csproj.CopyComplete
+E:\GeneticGit\GeneticGit\genetic_system\Service\obj\Release\netcoreapp2.2\Service.dll
+E:\GeneticGit\GeneticGit\genetic_system\Service\obj\Release\netcoreapp2.2\Service.pdb

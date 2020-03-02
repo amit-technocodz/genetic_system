@@ -112,3 +112,11 @@ E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Release\netcoreapp2
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Release\netcoreapp2.2\Data.AssemblyInfo.cs
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Release\netcoreapp2.2\Data.dll
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Release\netcoreapp2.2\Data.pdb
+E:\GeneticGit\GeneticGit\genetic_system\Data\bin\Release\netcoreapp2.2\Data.deps.json
+E:\GeneticGit\GeneticGit\genetic_system\Data\bin\Release\netcoreapp2.2\Data.dll
+E:\GeneticGit\GeneticGit\genetic_system\Data\bin\Release\netcoreapp2.2\Data.pdb
+E:\GeneticGit\GeneticGit\genetic_system\Data\obj\Release\netcoreapp2.2\Data.csprojAssemblyReference.cache
+E:\GeneticGit\GeneticGit\genetic_system\Data\obj\Release\netcoreapp2.2\Data.AssemblyInfoInputs.cache
+E:\GeneticGit\GeneticGit\genetic_system\Data\obj\Release\netcoreapp2.2\Data.AssemblyInfo.cs
+E:\GeneticGit\GeneticGit\genetic_system\Data\obj\Release\netcoreapp2.2\Data.dll
+E:\GeneticGit\GeneticGit\genetic_system\Data\obj\Release\netcoreapp2.2\Data.pdb

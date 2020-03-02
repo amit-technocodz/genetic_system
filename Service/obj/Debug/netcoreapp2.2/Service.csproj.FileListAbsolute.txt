@@ -300,3 +300,16 @@ E:\Genetic\genetic_system\Service\obj\Debug\netcoreapp2.2\Service.AssemblyInfo.c
 E:\Genetic\genetic_system\Service\obj\Debug\netcoreapp2.2\Service.csproj.CopyComplete
 E:\Genetic\genetic_system\Service\obj\Debug\netcoreapp2.2\Service.dll
 E:\Genetic\genetic_system\Service\obj\Debug\netcoreapp2.2\Service.pdb
+E:\GeneticGit\GeneticGit\genetic_system\Service\bin\Debug\netcoreapp2.2\Service.deps.json
+E:\GeneticGit\GeneticGit\genetic_system\Service\bin\Debug\netcoreapp2.2\Service.dll
+E:\GeneticGit\GeneticGit\genetic_system\Service\bin\Debug\netcoreapp2.2\Service.pdb
+E:\GeneticGit\GeneticGit\genetic_system\Service\bin\Debug\netcoreapp2.2\Data.dll
+E:\GeneticGit\GeneticGit\genetic_system\Service\bin\Debug\netcoreapp2.2\Repository.dll
+E:\GeneticGit\GeneticGit\genetic_system\Service\bin\Debug\netcoreapp2.2\Data.pdb
+E:\GeneticGit\GeneticGit\genetic_system\Service\bin\Debug\netcoreapp2.2\Repository.pdb
+E:\GeneticGit\GeneticGit\genetic_system\Service\obj\Debug\netcoreapp2.2\Service.csprojAssemblyReference.cache
+E:\GeneticGit\GeneticGit\genetic_system\Service\obj\Debug\netcoreapp2.2\Service.AssemblyInfoInputs.cache
+E:\GeneticGit\GeneticGit\genetic_system\Service\obj\Debug\netcoreapp2.2\Service.AssemblyInfo.cs
+E:\GeneticGit\GeneticGit\genetic_system\Service\obj\Debug\netcoreapp2.2\Service.csproj.CopyComplete
+E:\GeneticGit\GeneticGit\genetic_system\Service\obj\Debug\netcoreapp2.2\Service.dll
+E:\GeneticGit\GeneticGit\genetic_system\Service\obj\Debug\netcoreapp2.2\Service.pdb

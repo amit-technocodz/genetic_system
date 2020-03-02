@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Genetic\\genetic_system\\Service\\Service.csproj": {}
+    "E:\\GeneticGit\\GeneticGit\\genetic_system\\Service\\Service.csproj": {}
   },
   "projects": {
-    "E:\\Genetic\\genetic_system\\Data\\Data.csproj": {
+    "E:\\GeneticGit\\GeneticGit\\genetic_system\\Data\\Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Genetic\\genetic_system\\Data\\Data.csproj",
+        "projectUniqueName": "E:\\GeneticGit\\GeneticGit\\genetic_system\\Data\\Data.csproj",
         "projectName": "Data",
-        "projectPath": "E:\\Genetic\\genetic_system\\Data\\Data.csproj",
-        "packagesPath": "C:\\Users\\Warsaw\\.nuget\\packages\\",
-        "outputPath": "E:\\Genetic\\genetic_system\\Data\\obj\\",
+        "projectPath": "E:\\GeneticGit\\GeneticGit\\genetic_system\\Data\\Data.csproj",
+        "packagesPath": "C:\\Users\\anirudh.sharma\\.nuget\\packages\\",
+        "outputPath": "E:\\GeneticGit\\GeneticGit\\genetic_system\\Data\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Warsaw\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\anirudh.sharma\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -70,20 +67,17 @@
         }
       }
     },
-    "E:\\Genetic\\genetic_system\\Repository\\Repository.csproj": {
+    "E:\\GeneticGit\\GeneticGit\\genetic_system\\Repository\\Repository.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Genetic\\genetic_system\\Repository\\Repository.csproj",
+        "projectUniqueName": "E:\\GeneticGit\\GeneticGit\\genetic_system\\Repository\\Repository.csproj",
         "projectName": "Repository",
-        "projectPath": "E:\\Genetic\\genetic_system\\Repository\\Repository.csproj",
-        "packagesPath": "C:\\Users\\Warsaw\\.nuget\\packages\\",
-        "outputPath": "E:\\Genetic\\genetic_system\\Repository\\obj\\",
+        "projectPath": "E:\\GeneticGit\\GeneticGit\\genetic_system\\Repository\\Repository.csproj",
+        "packagesPath": "C:\\Users\\anirudh.sharma\\.nuget\\packages\\",
+        "outputPath": "E:\\GeneticGit\\GeneticGit\\genetic_system\\Repository\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Warsaw\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\anirudh.sharma\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -96,8 +90,8 @@
         "frameworks": {
           "netcoreapp2.2": {
             "projectReferences": {
-              "E:\\Genetic\\genetic_system\\Data\\Data.csproj": {
-                "projectPath": "E:\\Genetic\\genetic_system\\Data\\Data.csproj"
+              "E:\\GeneticGit\\GeneticGit\\genetic_system\\Data\\Data.csproj": {
+                "projectPath": "E:\\GeneticGit\\GeneticGit\\genetic_system\\Data\\Data.csproj"
               }
             }
           }
@@ -144,20 +138,17 @@
         }
       }
     },
-    "E:\\Genetic\\genetic_system\\Service\\Service.csproj": {
+    "E:\\GeneticGit\\GeneticGit\\genetic_system\\Service\\Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Genetic\\genetic_system\\Service\\Service.csproj",
+        "projectUniqueName": "E:\\GeneticGit\\GeneticGit\\genetic_system\\Service\\Service.csproj",
         "projectName": "Service",
-        "projectPath": "E:\\Genetic\\genetic_system\\Service\\Service.csproj",
-        "packagesPath": "C:\\Users\\Warsaw\\.nuget\\packages\\",
-        "outputPath": "E:\\Genetic\\genetic_system\\Service\\obj\\",
+        "projectPath": "E:\\GeneticGit\\GeneticGit\\genetic_system\\Service\\Service.csproj",
+        "packagesPath": "C:\\Users\\anirudh.sharma\\.nuget\\packages\\",
+        "outputPath": "E:\\GeneticGit\\GeneticGit\\genetic_system\\Service\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Warsaw\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\anirudh.sharma\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -170,11 +161,11 @@
         "frameworks": {
           "netcoreapp2.2": {
             "projectReferences": {
-              "E:\\Genetic\\genetic_system\\Data\\Data.csproj": {
-                "projectPath": "E:\\Genetic\\genetic_system\\Data\\Data.csproj"
+              "E:\\GeneticGit\\GeneticGit\\genetic_system\\Data\\Data.csproj": {
+                "projectPath": "E:\\GeneticGit\\GeneticGit\\genetic_system\\Data\\Data.csproj"
               },
-              "E:\\Genetic\\genetic_system\\Repository\\Repository.csproj": {
-                "projectPath": "E:\\Genetic\\genetic_system\\Repository\\Repository.csproj"
+              "E:\\GeneticGit\\GeneticGit\\genetic_system\\Repository\\Repository.csproj": {
+                "projectPath": "E:\\GeneticGit\\GeneticGit\\genetic_system\\Repository\\Repository.csproj"
               }
             }
           }

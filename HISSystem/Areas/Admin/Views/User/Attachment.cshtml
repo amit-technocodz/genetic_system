@@ -71,7 +71,6 @@
 	function CollectAttach() {
 		debugger
 		var fileUpload = $("#imgupload").get(0).files[0];
-		//$('#myTableAttch > #FirstBody:last-child').append('<tr id="Row"><td><input type="text" class="form-control" readonly="readonly" id="FileName" value="' + fileUpload.name + '" /></td><td class="text-left"><i class="fa fa-trash" id="DeleteRow" onclick="del(this)"></i></td></tr>');
 		var Data = new FormData();
 		Data.append("File", fileUpload);
 		Data.append("Id", $("#RecordID").val());
