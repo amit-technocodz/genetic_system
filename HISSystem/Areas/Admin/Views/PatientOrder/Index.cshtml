@@ -147,7 +147,7 @@
                         <div class="col-md-10 col-lg-10">
                             <div class="row">
                                 <div class="col-md-2 col-lg-2">
-                                    Registration No:
+                                    Order No:
                                     <input type="text" id="registerNo" name="register-no" class="form-control" onkeyup="patientSearch()" />
                                 </div>
                                 <div class="col-md-2 col-lg-2">
@@ -157,6 +157,14 @@
                                 <div class="col-md-2 col-lg-2">
                                     Patient Name:
                                     <input type="text" id="patientName" name="patient-name" class="form-control" autocomplete="off" onkeyup="patientSearch()" />
+                                </div>
+                                <div class="col-md-2 col-lg-2">
+                                    Patient Mobile:
+                                    <input type="text" id="patientMobile" name="patient-mobile" class="form-control" autocomplete="off" onkeyup="patientSearch()" />
+                                </div>
+                                <div class="col-md-2 col-lg-2">
+                                    Patient City:
+                                    <input type="text" id="patientCity" name="patient-city" class="form-control" autocomplete="off" onkeyup="patientSearch()" />
                                 </div>
                                 <div class="col-md-2 col-lg-2">
                                     Birth Date:
@@ -293,6 +301,8 @@
                 PatientName: $('input[name="patient-name"]').val(),
                 BirthDate: $('input[name="birth-date"]').val(),
                 Status: $('select[name="status"]').text(),
+                PatientMobile: $('#patientMobile').val(),
+                PatientCity: $('#patientCity').val()
             }
             debugger
             $.ajax({
@@ -361,14 +371,12 @@
                 url: url,
                 type: 'GET',
                 success: function (result) {
-                    debugger
                     $(".modal-content").html(result);
                     if (id == "admission") {
                         dynamicAdmissionFields();
                     }
                 },
                 error: function (xhr, status) {
-                    debugger
                     toastr.error('Something went wrong');
                 }
             });

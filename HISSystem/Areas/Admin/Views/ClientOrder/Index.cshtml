@@ -1,11 +1,13 @@
 ﻿@model Data.Helpers.PagedData<Data.Models.ClientOrder>
 
+
 @{
     ViewData["Title"] = "Order List";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 
 <style>
+
     .footer-wrapper {
         display: none;
         float: left;
@@ -52,11 +54,11 @@
                         <div class="col-md-10 col-lg-10">
                             <div class="row">
                                 <div class="col-md-2 col-lg-2">
-                                    Registration No:
-                                    <input type="text" id="registerNo" name="register-no" class="form-control" onkeyup="patientSearch()" />
+                                    Order No:
+                                    <input type="text" id="orderNo" name="order-no" class="form-control" onkeyup="patientSearch()" />
                                 </div>
                                 <div class="col-md-2 col-lg-2">
-                                    ID No:
+                                   Order ID No:
                                     <input type="text" id="id-no" name="id-no" class="form-control" autocomplete="off" onkeyup="patientSearch()" />
                                 </div>
                                 <div class="col-md-2 col-lg-2">
@@ -64,10 +66,17 @@
                                     <input type="text" id="patientName" name="patient-name" class="form-control" autocomplete="off" onkeyup="patientSearch()" />
                                 </div>
                                 <div class="col-md-2 col-lg-2">
+                                    Patient Mobile:
+                                    <input type="text" id="patientMobile" name="patient-mobile" class="form-control" autocomplete="off" onkeyup="patientSearch()" />
+                                </div>
+                                <div class="col-md-2 col-lg-2">
+                                    Patient City:
+                                    <input type="text" id="patientCity" name="patient-city" class="form-control" autocomplete="off" onkeyup="patientSearch()" />
+                                </div>
+                                <div class="col-md-2 col-lg-2">
                                     Birth Date:
                                     <input type="text" name="birth-date" class="form-control datepicker" autocomplete="off" onchange="patientSearch()" />
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -112,13 +121,13 @@
 
 @section Scripts{
     <script>
-   $(document).ajaxStart(function(){
-  $('body').append('<div class="prtm-loader-wrap"><div class="showbox"><div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg></div></div></div>');
-});
+        $(document).ajaxStart(function () {
+            $('body').append('<div class="prtm-loader-wrap"><div class="showbox"><div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg></div></div></div>');
+        });
 
-$(document).ajaxComplete(function(){
-  $('.prtm-loader-wrap').fadeOut();
-});
+        $(document).ajaxComplete(function () {
+            $('.prtm-loader-wrap').fadeOut();
+        });
         var ListHtml;
 
         $(document).on("click", ".UpdtOrdrBtn", function () {
@@ -135,9 +144,9 @@ $(document).ajaxComplete(function(){
                     loadMultiSelect();
                     document.getElementById("postUpdatebtn").style.display = 'block';
                     document.getElementById("signupform").style.display = 'none';
-                                            document.getElementById("quickSearchBlock").hidden = true;
-                        document.getElementById("addClientOrderBtn").style.display = 'none';
-                        document.getElementById("cancelOrderBtn").style.display = 'block';
+                    document.getElementById("quickSearchBlock").hidden = true;
+                    document.getElementById("addClientOrderBtn").style.display = 'none';
+                    document.getElementById("cancelOrderBtn").style.display = 'block';
                     document.getElementById("postUpdatebtn").addEventListener("click", function () {
                         updateOrderData();
                     });
@@ -148,9 +157,9 @@ $(document).ajaxComplete(function(){
             });
         });
 
-        
+
         $(document).on("click", ".cancelEvent", function () {
-            document.getElementById('orderArea').innerHTML = ListHtml; 
+            document.getElementById('orderArea').innerHTML = ListHtml;
             document.getElementById("cancelOrderBtn").style.display = 'none';
             document.getElementById("addClientOrderBtn").style.display = 'block';
             document.getElementById("quickSearchBlock").hidden = false;
@@ -199,9 +208,9 @@ $(document).ajaxComplete(function(){
                 success: function (result) {
                     $('#orderArea').html(result);
                     loadMultiSelect();
-                   document.getElementById("quickSearchBlock").hidden = true;
-                   document.getElementById("addClientOrderBtn").style.display = 'none';
-                   document.getElementById("cancelOrderBtn").style.display = 'block';
+                    document.getElementById("quickSearchBlock").hidden = true;
+                    document.getElementById("addClientOrderBtn").style.display = 'none';
+                    document.getElementById("cancelOrderBtn").style.display = 'block';
                 },
                 error: function () {
                     alert("Content load failed.");
@@ -228,33 +237,30 @@ $(document).ajaxComplete(function(){
             });
         }
 
-           function test() {
-               var user = $("#clientOrder_ClientOrder_UserID").val();
-        $.ajax({
+        function test() {
+            var user = $("#clientOrder_ClientOrder_UserID").val();
+            $.ajax({
 
-            url: "/admin/patientorder/getpatientDetails",
-            type: "get",
-            data: { 'Id': user },
-            success: function (data) {
-                debugger
-                $("#clientOrder_ClientOrder_User_PatientPersonalInformation_DateOfBirth").val(data.patientPersonalInformation.dateOfBirth);
-                $("#clientOrder_ClientOrder_User_ID").val(user);
-                $("#clientOrder_ClientOrder_User_PatientPersonalInformation_BloodGroup_Name").val(data.patientPersonalInformation.bloodGroup.name);
-                $("#clientOrder_ClientOrder_User_RegisterationNo").val(data.registerationNo);
-                $("#clientOrder_ClientOrder_User_Address").val(data.address);
-                $("#clientOrder_ClientOrder_User_Mobile").val(data.patientPersonalInformation.City.Name);
-            },
-            error: function () {
-            }
-        });
-    }
+                url: "/admin/patientorder/getpatientDetails",
+                type: "get",
+                data: { 'Id': user },
+                success: function (data) {
+                    debugger
+                    $("#clientOrder_ClientOrder_User_PatientPersonalInformation_DateOfBirth").val(data.patientPersonalInformation.dateOfBirth);
+                    $("#clientOrder_ClientOrder_User_ID").val(user);
+                    $("#clientOrder_ClientOrder_User_PatientPersonalInformation_BloodGroup_Name").val(data.patientPersonalInformation.bloodGroup.name);
+                    $("#clientOrder_ClientOrder_User_RegisterationNo").val(data.registerationNo);
+                    $("#clientOrder_ClientOrder_User_Address").val(data.address);
+                    $("#clientOrder_ClientOrder_User_Mobile").val(data.patientPersonalInformation.City.Name);
+                },
+                error: function () {
+                }
+            });
+        }
 
         function saveOrderFunction() {
             var formdata = new FormData($('form').get(0));
             formdata.append("GeneTemplateId", $("#TestType").val());
-            //for (var pair of formdata.entries()) {
-            //    console.log(pair[0] + ', ' + pair[1]);
-            //}
             $.ajax({
                 type: 'POST',
                 url: "/admin/clientorder/AddOrder",
@@ -329,38 +335,27 @@ $(document).ajaxComplete(function(){
         }
 
         function patientSearch() {
-
-            var inpatient;
-            var outpatient;
-            var appointmentToday;
-
-            if ($('#inPatientCheckBox').prop("checked") == true) {
-                debugger
-                inpatient = $('#inPatientCheckBox').val();
-            }
-
-            if ($('#outPatientCheckBox').prop("checked") == true) {
-                outpatient = $('#outPatientCheckBox').val();
-            }
-
-            if ($('#appointmentTodayCheckBox').prop("checked") == true) {
-
-                appointmentToday = $('#appointmentTodayCheckBox').val();
-            }
+        //         public string RegistrationNo { get; set; }
+        //public int OrderNo { get; set; }
+        //public int ID { get; set; }
+        //public string PatientName { get; set; }
+        //public int PatientMobile { get; set; }
+        //public string PatientCity { get; set; }
+        //public string BirthDate { get; set; }
+        //public int Status { get; set; }
 
             var model = {
-                InPatient: inpatient,
-                OutPatient: outpatient,
-                appointmentToday: appointmentToday,
-                RegistrationNo: $('input[name="register-no"]').val(),
-                ID: $('#id-no').val(),
+                RegistrationNo: 0,
+                OrderNo: $('input[name="order-no"]').val(),
+                ID: $('input[name="id-no"]').val(),
                 PatientName: $('input[name="patient-name"]').val(),
+                PatientMobile: $('#patientMobile').val(),
+                PatientCity: $('#patientCity').val(),
                 BirthDate: $('input[name="birth-date"]').val(),
-                Status: $('select[name="status"]').text(),
             }
-            debugger
+
             $.ajax({
-                url: '/admin/patient/SearchPatient',
+                url: '/admin/clientorder/searchorder',
                 type: 'POST',
                 data: model,
                 success: function (result) {
@@ -624,8 +619,8 @@ $(document).ajaxComplete(function(){
                 sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
 
             return (sa);
-        }
-    </script>
+        }</script>
     <script src="https://cdn.jsdelivr.net/npm/chosen-js@1.8.7/chosen.jquery.js" integrity="sha256-TDtzz+WOGufaQuQzqpEnnxdJQW5xrU+pzjznwBtaWs4=" crossorigin="anonymous"></script>
+
 }
 

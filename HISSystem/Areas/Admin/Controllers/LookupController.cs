@@ -127,16 +127,15 @@ namespace HISSystem.Areas.Admin.Controllers
             switch (lookupName)
             {
                 case "Floor":
-                    ViewBag.Buildings = db.LookupService.GetLookups().Where(x => x.Type == "Building").ToList();
+                    ViewBag.Buildings = db.LookupService.GetLookUpByTypeName("Building");
                     break;
 
                 case "Room":
-                    ViewBag.Buildings = db.LookupService.GetLookups().Where(x => x.Type == "Building").ToList();
-                    ViewBag.Floors = db.LookupService.GetLookups().Where(x => x.Type == "Floor").ToList();
+                    ViewBag.Buildings = db.LookupService.GetLookUpByTypeName("Building");
+                    ViewBag.Floors = db.LookupService.GetLookUpByTypeName("Floor");
                     break;
             }
 
-            //Int32 result = db.LookupService.GetLookups().Where(x => x.Type.Contains(lookupName)).ToList().Max(x => x.TypeID);
             int result = db.LookupService.GetLookUpByTypeName(lookupName).Max(x => x.TypeID);
             Lookup lookup = new Lookup();
             lookup.TypeID = (++result);

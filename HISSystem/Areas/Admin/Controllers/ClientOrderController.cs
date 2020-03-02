@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Data.Helpers;
 using Data.Models;
 using GeneticSystem.Areas.Admin.Models;
+using HISSystem.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -76,7 +77,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
                 }
                 ClientOrder order = clientOrder.ClientOrder;
                 order.ClientOrderData = clientOrder.ClientOrderData;
-
+                order.OrderNo = db.ClientOrderService.GetMaxOrderNo();
                 db.ClientOrderService.AddClientOrder(order);
                 var clientOrderList = db.ClientOrderService.GetClientOrderList();
                 var clientOrders = new PagedData<ClientOrder>();
@@ -197,6 +198,18 @@ namespace GeneticSystem.Areas.Admin.Controllers
             }
             else
                 return null;
+        }
+
+        [HttpPost]
+        public IActionResult SearchOrder(Search model)
+        {
+            var searchList = db.ClientOrderService.SearchClientOrder(model).ToList(); 
+            var pagedClients = new PagedData<ClientOrder>();
+
+            pagedClients.Data = searchList.Take(PageSize);
+            pagedClients.NumberOfPages = Convert.ToInt32(Math.Ceiling((double)searchList.Count() / PageSize));
+
+            return PartialView("_Index", pagedClients);
         }
     }
 }

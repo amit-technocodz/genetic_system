@@ -132,7 +132,9 @@ namespace HISSystem.Areas.Admin.Controllers
                    //(model.ID == 0 || x.ID.ToString().Contains(model.ID.ToString(), StringComparison.OrdinalIgnoreCase)) &&
                    (String.IsNullOrEmpty(model.PatientName) || ((x.EnFirstName !=null) && (x.EnFirstName.Contains(model.PatientName)) 
                    || (x.ArFirstName !=null) && (x.ArFirstName.Contains(model.PatientName)))) &&
-                   (model.Status == 0 || x.StatusID.ToString().Contains(model.Status.ToString(), StringComparison.OrdinalIgnoreCase))
+                   (model.Status == 0 || x.StatusID.ToString().Contains(model.Status.ToString(), StringComparison.OrdinalIgnoreCase)) &&
+                   (model.PatientMobile == 0 || (x.Mobile != null && x.Mobile.ToString().Contains(model.PatientMobile.ToString(), StringComparison.OrdinalIgnoreCase))) &&
+                   (String.IsNullOrEmpty(model.PatientCity) || ((x.PatientPersonalInformation != null) && (x.PatientPersonalInformation.City != null) && (x.PatientPersonalInformation.City.Name != null) && (x.PatientPersonalInformation.City.Name.Contains(model.PatientCity.ToString(), StringComparison.OrdinalIgnoreCase))))
                     ).ToList();
             }
 

@@ -189,7 +189,7 @@
 
                                     <ul class="list-unstyled sub-menu collapse">
                                         <li class="has-children">
-                                            <a href="javascript:;"><i class="fa fa-users" aria-hidden="true"></i><span>Client</span></a>
+                                            <a href="/admin/patient/index"><i class="fa fa-users" aria-hidden="true"></i><span>Client</span></a>
                                             <ul class="list-unstyled sub-menu collapse">
                                                 @if (PermissionHelper.ViewPermission(Page.Patient, user))
                                                 {
@@ -197,19 +197,22 @@
                                                     <li><a href="/admin/patient/index"><span>Client List</span></a></li>
                                                 }
                                             </ul>
-                                            <a href="javascript:;"><i class="fa fa-hospital-o" aria-hidden="true"></i><span>Client Order</span></a>
-                                            <ul class="list-unstyled sub-menu collapse">
+                                            @*<a href="javascript:;"><i class="fa fa-hospital-o" aria-hidden="true"></i><span>Client Order</span></a>*@
+                                            @*<ul class="list-unstyled sub-menu collapse">
                                                 @if (PermissionHelper.ViewPermission(Page.Patient, user))
                                                 {
                                                     <li>
                                                         <a href="/admin/clientorder/addclientorder"><i class="fa fa-archive" aria-hidden="true"></i><span>Add Order</span></a>
-                                                </li>
+                                                    </li>
                                                     <li>
                                                         <a href="/admin/clientorder/"><i class="fa fa-list" aria-hidden="true"></i><span>Order List</span></a>
                                                     </li>
                                                 }
-                                            </ul>
-<li>
+                                            </ul>*@
+                                        <li>
+                                            <a href="/admin/clientorder/"><i class="fa fa-archive" aria-hidden="true"></i><span>Client Orders</span></a>
+                                        </li>
+                                        <li>
                                             <a href="#"><i class="fa fa-calendar" aria-hidden="true"></i><span>Calender</span></a>
                                         </li>
                                         <li>

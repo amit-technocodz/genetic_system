@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using X.PagedList;
+using System.Text;
 
-namespace HISSystem.Models
+namespace Data.Helpers
 {
-    public class SearchModel
+    public class Search
     {
-        public int InPatient { get; set; }
-        public int OutPatient { get; set; }
-        public int appointmentToday { get; set; }
         public string RegistrationNo { get; set; }
+        public int OrderNo { get; set; }
         public int ID { get; set; }
         public string PatientName { get; set; }
-        public int PatientMobile { get; set; }
+        public string PatientMobile { get; set; }
         public string PatientCity { get; set; }
         public string BirthDate { get; set; }
         public int Status { get; set; }

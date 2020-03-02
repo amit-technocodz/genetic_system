@@ -91,27 +91,29 @@ namespace HISSystem.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-           var loginid = Request.Cookies["Id"];
-            var res = db.UserService.GetUser(Convert.ToInt32(loginid));
-            var loginusername = res.EnFirstName + " " + res.EnSecondName + " " + res.EnThirdName + " " + res.EnFamilyName;
-            ViewBag.UserName = loginusername;
-            var username = HttpContext.Session.GetString("UserName");
-            var lookup = db.LookupService.GetLookups().ToList();
-            ViewBag.Position = lookup.Where(x => x.Type.Contains("Position")).ToList();
-            ViewBag.EmployeeType = lookup.Where(x => x.Type.Contains("EmployeeType")).ToList();
-            ViewBag.PlaceOfBirth = lookup.Where(x => x.Type.Contains("PlaceOfBirth")).ToList();
-            ViewBag.Department = lookup.Where(x => x.Type.Contains("Department")).ToList();
-            ViewBag.EmployeeClass = lookup.Where(x => x.Type.Contains("EmployeeClass")).ToList();
-            ViewBag.Status = lookup.Where(x => x.Type == "Status").ToList();
-            ViewBag.Religion = lookup.Where(x => x.Type == "Religion").ToList();
-            ViewBag.IdentificationType = lookup.Where(x => x.Type == "IdentificationType").ToList();
-            ViewBag.SocialStatus = lookup.Where(x => x.Type.Contains("SocialStatus")).ToList();
-            ViewBag.SubDepartment = lookup.Where(x => x.Type.Contains("SubDepartment")).ToList();
-            ViewBag.ResponsibleOfficer = lookup.Where(x => x.Type.Contains("ResponsibleOfficer")).ToList();
-            ViewBag.EducationLevel = db.EducationLevelService.GetAll().ToList();
+            var loginid = Request.Cookies["Id"];
+            if(loginid != null)
+            {
+                var res = db.UserService.GetUser(Convert.ToInt32(loginid));
+                var loginusername = res.EnFirstName + " " + res.EnSecondName + " " + res.EnThirdName + " " + res.EnFamilyName;
+                ViewBag.UserName = loginusername;
+            }
 
-            ViewBag.Speciality = lookup.Where(x => x.Type.Contains("Speciality")).ToList();
-            ViewBag.Gender = lookup.Where(x => x.Type.Contains("Gender")).ToList();
+            ViewBag.Gender = db.LookupService.GetLookUpByTypeName("Gender");
+            ViewBag.EmployeeType = db.LookupService.GetLookUpByTypeName("EmployeeType");
+            ViewBag.SocialStatus = db.LookupService.GetLookUpByTypeName("SocialStatus");
+            ViewBag.PlaceOfBirth = db.LookupService.GetLookUpByTypeName("PlaceOfBirth");
+            ViewBag.Status = db.LookupService.GetLookUpByTypeName("Status");
+            ViewBag.Religion = db.LookupService.GetLookUpByTypeName("Religion");
+            ViewBag.SubDepartment = db.LookupService.GetLookUpByTypeName("SubDepartment");
+            ViewBag.Department = db.LookupService.GetLookUpByTypeName("Department");
+            ViewBag.ResponsibleOfficer = db.LookupService.GetLookUpByTypeName("ResponsibleOfficer");
+            ViewBag.Speciality = db.LookupService.GetLookUpByTypeName("Speciality");
+            ViewBag.Position = db.LookupService.GetLookUpByTypeName("Position");
+            ViewBag.EmployeeClass = db.LookupService.GetLookUpByTypeName("EmployeeClass");
+            ViewBag.IdentificationType = db.LookupService.GetLookUpByTypeName("IdentificationType");
+
+            ViewBag.EducationLevel = db.EducationLevelService.GetAll().ToList();
             ViewBag.Country = db.CountryService.GetAll();
             ViewBag.City = db.CityService.GetAll();
             ViewBag.Role = db.RoleService.GetAll();
@@ -119,10 +121,9 @@ namespace HISSystem.Areas.Admin.Controllers
             ViewBag.Branch = db.BranchService.GetAll();
             var model = new User();
 
-            // model.IPAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString();
             model.AddedDate = DateTime.UtcNow;
-            // model.ComputerName = System.Environment.MachineName;
             model.PersonalInformation = new PersonalInformation();
+
             return View(model);
         }
 
@@ -176,29 +177,29 @@ namespace HISSystem.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Update(int id)
         {
-            var lookup = db.LookupService.GetLookups().ToList();
-            ViewBag.Position = lookup.Where(x => x.Type.Contains("Position")).ToList();
-            ViewBag.EmployeeType = lookup.Where(x => x.Type.Contains("EmployeeType")).ToList();
-            ViewBag.Department = lookup.Where(x => x.Type.Contains("Department")).ToList();
-            ViewBag.EmployeeClass = lookup.Where(x => x.Type.Contains("EmployeeClass")).ToList();
-            ViewBag.Religion = lookup.Where(x => x.Type == "Religion").ToList();
-            ViewBag.IdentificationType = lookup.Where(x => x.Type == "IdentificationType").ToList();
-            ViewBag.Status = lookup.Where(x => x.Type == "Status").ToList();
-            ViewBag.SocialStatus = lookup.Where(x => x.Type.Contains("SocialStatus")).ToList();
-            ViewBag.ResponsibleOfficer = lookup.Where(x => x.Type.Contains("ResponsibleOfficer")).ToList();
-            ViewBag.Speciality = lookup.Where(x => x.Type.Contains("Speciality")).ToList();
-            ViewBag.PlaceOfBirth = lookup.Where(x => x.Type.Contains("PlaceOfBirth")).ToList();
+            var model = db.UserService.GetUser(id);
+            var depid = model.PersonalInformation.DepartmentID;
+            ViewBag.Gender = db.LookupService.GetLookUpByTypeName("Gender");
+            ViewBag.EmployeeType = db.LookupService.GetLookUpByTypeName("EmployeeType");
+            ViewBag.SocialStatus = db.LookupService.GetLookUpByTypeName("SocialStatus");
+            ViewBag.PlaceOfBirth = db.LookupService.GetLookUpByTypeName("PlaceOfBirth");
+            ViewBag.Status = db.LookupService.GetLookUpByTypeName("Status");
+            ViewBag.Religion = db.LookupService.GetLookUpByTypeName("Religion");
+            ViewBag.ResponsibleOfficer = db.LookupService.GetLookUpByTypeName("ResponsibleOfficer");
+            ViewBag.Speciality = db.LookupService.GetLookUpByTypeName("Speciality");
+            ViewBag.Position = db.LookupService.GetLookUpByTypeName("Position");
+            ViewBag.EmployeeClass = db.LookupService.GetLookUpByTypeName("EmployeeClass");
+            ViewBag.IdentificationType = db.LookupService.GetLookUpByTypeName("IdentificationType");
+            ViewBag.SubDepartment = db.LookupService.GetLookUpByTypeName("SubDepartment").Where(x => x.ParentId == ((depid).ToString()));
+            ViewBag.Department = db.LookupService.GetLookUpByTypeName("Department");
+            
             ViewBag.EducationLevel = db.EducationLevelService.GetAll().ToList();
-            ViewBag.Gender = lookup.Where(x => x.Type.Contains("Gender")).ToList();
             ViewBag.Country = db.CountryService.GetAll();
             ViewBag.City = db.CityService.GetAll();
             ViewBag.Role = db.RoleService.GetAll();
             ViewBag.UserDepartment = db.UserService.UserByDepartment(true, 1);
             ViewBag.Branch = db.BranchService.GetAll();
-            //var model = new UserUpdateViewModel();
-            var model = db.UserService.GetUser(id);
-            var depid = model.PersonalInformation.DepartmentID;
-            ViewBag.SubDepartment = lookup.Where(x => x.Type.Contains("SubDepartment") && x.ParentId == (depid).ToString()).ToList();
+          
             var loginid = model.AddedBy;
             if (model.Password != null)
             {
@@ -214,8 +215,6 @@ namespace HISSystem.Areas.Admin.Controllers
                 ViewBag.AddedBy = loginusername;
             }
            
-
-
             model.PersonalInformation = db.PersonalInformationService.GeByUser(model.ID);
             return View(model);
         }

@@ -232,17 +232,6 @@ E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Repository\obj\Debug\netcore
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Repository\obj\Debug\netcoreapp2.2\Repository.csproj.CopyComplete
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Repository\obj\Debug\netcoreapp2.2\Repository.dll
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Repository\obj\Debug\netcoreapp2.2\Repository.pdb
-E:\Genetic\genetic_system\Repository\bin\Debug\netcoreapp2.2\Repository.deps.json
-E:\Genetic\genetic_system\Repository\bin\Debug\netcoreapp2.2\Repository.dll
-E:\Genetic\genetic_system\Repository\bin\Debug\netcoreapp2.2\Repository.pdb
-E:\Genetic\genetic_system\Repository\bin\Debug\netcoreapp2.2\Data.dll
-E:\Genetic\genetic_system\Repository\bin\Debug\netcoreapp2.2\Data.pdb
-E:\Genetic\genetic_system\Repository\obj\Debug\netcoreapp2.2\Repository.csprojAssemblyReference.cache
-E:\Genetic\genetic_system\Repository\obj\Debug\netcoreapp2.2\Repository.AssemblyInfoInputs.cache
-E:\Genetic\genetic_system\Repository\obj\Debug\netcoreapp2.2\Repository.AssemblyInfo.cs
-E:\Genetic\genetic_system\Repository\obj\Debug\netcoreapp2.2\Repository.csproj.CopyComplete
-E:\Genetic\genetic_system\Repository\obj\Debug\netcoreapp2.2\Repository.dll
-E:\Genetic\genetic_system\Repository\obj\Debug\netcoreapp2.2\Repository.pdb
 J:\GitHub\genetic_system\Repository\bin\Debug\netcoreapp2.2\Repository.deps.json
 J:\GitHub\genetic_system\Repository\bin\Debug\netcoreapp2.2\Repository.dll
 J:\GitHub\genetic_system\Repository\bin\Debug\netcoreapp2.2\Repository.pdb
@@ -254,3 +243,14 @@ J:\GitHub\genetic_system\Repository\obj\Debug\netcoreapp2.2\Repository.AssemblyI
 J:\GitHub\genetic_system\Repository\obj\Debug\netcoreapp2.2\Repository.csproj.CopyComplete
 J:\GitHub\genetic_system\Repository\obj\Debug\netcoreapp2.2\Repository.dll
 J:\GitHub\genetic_system\Repository\obj\Debug\netcoreapp2.2\Repository.pdb
+E:\Genetic\genetic_system\Repository\bin\Debug\netcoreapp2.2\Repository.deps.json
+E:\Genetic\genetic_system\Repository\bin\Debug\netcoreapp2.2\Repository.dll
+E:\Genetic\genetic_system\Repository\bin\Debug\netcoreapp2.2\Repository.pdb
+E:\Genetic\genetic_system\Repository\bin\Debug\netcoreapp2.2\Data.dll
+E:\Genetic\genetic_system\Repository\bin\Debug\netcoreapp2.2\Data.pdb
+E:\Genetic\genetic_system\Repository\obj\Debug\netcoreapp2.2\Repository.csprojAssemblyReference.cache
+E:\Genetic\genetic_system\Repository\obj\Debug\netcoreapp2.2\Repository.AssemblyInfoInputs.cache
+E:\Genetic\genetic_system\Repository\obj\Debug\netcoreapp2.2\Repository.AssemblyInfo.cs
+E:\Genetic\genetic_system\Repository\obj\Debug\netcoreapp2.2\Repository.csproj.CopyComplete
+E:\Genetic\genetic_system\Repository\obj\Debug\netcoreapp2.2\Repository.dll
+E:\Genetic\genetic_system\Repository\obj\Debug\netcoreapp2.2\Repository.pdb

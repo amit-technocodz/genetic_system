@@ -163,14 +163,6 @@ E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Debug\netcoreapp2.2
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Debug\netcoreapp2.2\Data.AssemblyInfo.cs
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Debug\netcoreapp2.2\Data.dll
 E:\GeneticSystem Unified\GC 21.2.20 J\GeneticSystem\Data\obj\Debug\netcoreapp2.2\Data.pdb
-E:\Genetic\genetic_system\Data\bin\Debug\netcoreapp2.2\Data.deps.json
-E:\Genetic\genetic_system\Data\bin\Debug\netcoreapp2.2\Data.dll
-E:\Genetic\genetic_system\Data\bin\Debug\netcoreapp2.2\Data.pdb
-E:\Genetic\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.csprojAssemblyReference.cache
-E:\Genetic\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.AssemblyInfoInputs.cache
-E:\Genetic\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.AssemblyInfo.cs
-E:\Genetic\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.dll
-E:\Genetic\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.pdb
 J:\GitHub\genetic_system\Data\bin\Debug\netcoreapp2.2\Data.deps.json
 J:\GitHub\genetic_system\Data\bin\Debug\netcoreapp2.2\Data.dll
 J:\GitHub\genetic_system\Data\bin\Debug\netcoreapp2.2\Data.pdb
@@ -179,3 +171,11 @@ J:\GitHub\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.AssemblyInfoInputs.ca
 J:\GitHub\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.AssemblyInfo.cs
 J:\GitHub\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.dll
 J:\GitHub\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.pdb
+E:\Genetic\genetic_system\Data\bin\Debug\netcoreapp2.2\Data.deps.json
+E:\Genetic\genetic_system\Data\bin\Debug\netcoreapp2.2\Data.dll
+E:\Genetic\genetic_system\Data\bin\Debug\netcoreapp2.2\Data.pdb
+E:\Genetic\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.csprojAssemblyReference.cache
+E:\Genetic\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.AssemblyInfoInputs.cache
+E:\Genetic\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.AssemblyInfo.cs
+E:\Genetic\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.dll
+E:\Genetic\genetic_system\Data\obj\Debug\netcoreapp2.2\Data.pdb

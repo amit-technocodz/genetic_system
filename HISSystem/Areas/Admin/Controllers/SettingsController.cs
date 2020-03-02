@@ -23,7 +23,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
         public IActionResult Index()
         {
             ImagesViewModel model = new ImagesViewModel();
-            ViewBag.ImagesForList = service.LookupService.GetByType("ImageType");
+            ViewBag.ImagesForList = service.LookupService.GetLookUpByTypeName("ImageType");
 
             return View();
         }
@@ -32,7 +32,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
         public IActionResult Add()
         {
             ImagesViewModel model = new ImagesViewModel();
-            ViewBag.ImagesForList = service.LookupService.GetByType("ImageType");
+            ViewBag.ImagesForList = service.LookupService.GetLookUpByTypeName("ImageType");
 
             return View(model);
         }
@@ -54,6 +54,19 @@ namespace GeneticSystem.Areas.Admin.Controllers
             HttpContext.Session.SetString("logo", something);
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public string GetImage(int typeId)
+        {
+            var Image = service.CompanyProfileService.GetImageByTypeId(typeId);
+            if (Image != null)
+            {
+                string baseImg = String.Format("data:image/gif;base64,{0}", Image);
+                return baseImg;
+            }
+            else
+                return null;
         }
     }
 }

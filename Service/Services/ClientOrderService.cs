@@ -7,6 +7,8 @@ using System.Text;
 using Service.IServices;
 using Microsoft.EntityFrameworkCore;
 using Repository;
+using Data.Helpers;
+using System.Threading.Tasks;
 
 namespace Service.Services
 {
@@ -28,7 +30,7 @@ namespace Service.Services
 
                 return clientOrder;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return null;
             }
@@ -41,12 +43,12 @@ namespace Service.Services
             {
                 var result = db.ClientOrder.Get().Where(x => x.ID == id).Include(x => x.ClientOrderData/*.Where(y => y.IsActive == true)*/).Include(x => x.Template).FirstOrDefault();
 
-                    if (result.FollowUp != null)
-                        result.FollowUpArray = result.FollowUp.Split(",");
-                    
-                if(result.TestType != null)
+                if (result.FollowUp != null)
+                    result.FollowUpArray = result.FollowUp.Split(",");
+
+                if (result.TestType != null)
                     result.TestTypeArray = result.TestType.Split(",");
-                
+
                 return result;
             }
             catch (Exception ex)
@@ -61,14 +63,26 @@ namespace Service.Services
             try
             {
                 ApplicationContext context = new ApplicationContext();
-                return context.ClientOrder.OrderByDescending(x => x.ID).Take(50).Include(x =>x.Doctor).Include(x => x.User).AsNoTracking();
+                return context.ClientOrder.OrderByDescending(x => x.ID).Take(50).Include(x => x.Doctor).Include(x => x.User).ThenInclude(x => x.PatientPersonalInformation).ThenInclude(x => x.City).AsNoTracking();
             }
             catch (Exception ex)
             {
                 return null;
             }
         }
-        public IQueryable<ClientOrderData> GetClientOrderDataByOrderID (int orderId)
+        public int GetMaxOrderNo()
+        {
+            try
+            {
+                ApplicationContext context = new ApplicationContext();
+                return context.ClientOrder.Max(x => x.OrderNo);
+            }
+            catch (Exception ex)
+            {
+                return 7000;
+            }
+        }
+        public IQueryable<ClientOrderData> GetClientOrderDataByOrderID(int orderId)
         {
             try
             {
@@ -77,6 +91,38 @@ namespace Service.Services
             }
             catch (Exception ex)
             {
+                return null;
+            }
+        }
+
+        public IQueryable<ClientOrder> SearchClientOrder(Search model)
+        {
+            try
+            {
+                ApplicationContext context = new ApplicationContext();
+
+                var result = context.ClientOrder.AsQueryable();
+
+                if (model.ID != 0)
+                    result = result.Where(x => x.ID == model.ID);
+                if (model.OrderNo != 0)
+                    result = result.Where(x => x.OrderNo.ToString().StartsWith(model.OrderNo.ToString(), StringComparison.OrdinalIgnoreCase));
+                if (!string.IsNullOrEmpty(model.PatientName))
+                    result = result.Where(x => (x.User != null) && ((x.User.EnFirstName != null) && x.User.EnFirstName.StartsWith(model.PatientName, StringComparison.OrdinalIgnoreCase) ||
+                    (x.User != null) && x.User.ArFirstName != null && x.User.ArFirstName.StartsWith(model.PatientName, StringComparison.OrdinalIgnoreCase)));
+                if (!string.IsNullOrEmpty(model.PatientCity))
+                    result = result.Where(x => (x.User != null) && (x.User.PatientPersonalInformation != null) && (x.User.PatientPersonalInformation.City != null) &&  
+                    x.User.PatientPersonalInformation.City.Name.StartsWith(model.PatientCity, StringComparison.OrdinalIgnoreCase));
+                if (!string.IsNullOrEmpty(model.RegistrationNo) && !(model.RegistrationNo == "0"))
+                    result = result.Where(x => (x.User != null) && x.User.RegisterationNo.StartsWith(model.RegistrationNo, StringComparison.OrdinalIgnoreCase));
+                if (!string.IsNullOrEmpty(model.PatientMobile))
+                    result = result.Where(x => x.User.RegisterationNo.StartsWith(model.PatientMobile));
+
+                return result.Include(x => x.User).ThenInclude(x => x.PersonalInformation).ThenInclude(x => x.City).Include(x => x.Doctor);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
                 return null;
             }
         }
@@ -103,7 +149,7 @@ namespace Service.Services
 
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }
@@ -111,7 +157,7 @@ namespace Service.Services
 
         public List<ClientOrderData> GetClientOrderDataByTempOrderID(int tempID, int orderID)
         {
-           var result =  db.ClientOrderData.Get().Where(x => x.TemplateID == tempID && x.ClientOrderID == orderID).ToList();
+            var result = db.ClientOrderData.Get().Where(x => x.TemplateID == tempID && x.ClientOrderID == orderID).ToList();
 
             for (int i = 0; i < result.Count(); i++)
             {

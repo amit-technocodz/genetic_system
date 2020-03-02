@@ -61,9 +61,16 @@ namespace Service.Services
 
         public string GetImageByTypeId(int type)
         {
+            try
+            {   
             var Image = db.CustImage.Get().Where(x => x.ImageType == type).FirstOrDefault();
             string base64Image = Convert.ToBase64String(Image.ImagePath);
             return base64Image;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
         }
 
     }

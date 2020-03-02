@@ -3,24 +3,36 @@
     ViewData["Title"] = "Login Background";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
+
 <style>
     .file-upload input[type='file'] {
         display: none;
     }
 
-    .rounded-lg {
-        border-radius: 1rem;
+    .item {
+        left: 0;
+        top: 0;
+        position: relative;
+        overflow: hidden;
+        margin-top: 20px;
     }
 
-    .custom-file-label.rounded-pill {
-        border-radius: 50rem;
-    }
-
-        .custom-file-label.rounded-pill::after {
-            border-radius: 0 50rem 50rem 0;
+        .item img {
+            -webkit-transition: 0.6s ease;
+            transition: 0.6s ease;
         }
+
+            .item img:hover {
+                -webkit-transform: scale(1.2);
+                transform: scale(1.2);
+            }
+
+    .img-thumbnail {
+        border: 0px;
+        border-radius: 0px;
+    }
 </style>
-@using (Html.BeginForm("Add", "Settings", FormMethod.Post, new { enctype="multipart/form-data"}))
+@using (Html.BeginForm("Add", "Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="prtm-content">
         <div class="prtm-page-bar">
@@ -57,28 +69,22 @@
                                         </div>
                                     </div>
                                     <button class="btn btn-xs btn-warning " type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Save </button>
-                                    @*<input type="submit" name="submit" value="Save" class="btn btn-xs btn-primary" />*@
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="prtm-block pos-relative">
-                <div class="prtm-block-content">
-                    <div class="table-responsive">
-                        <div id="imagepreview" class="unseen">
-                            <div class="row py-4">
-                                <div class="col-lg-6 mx-auto">
-                                    <p class="font-italic text-white text-center">The image uploaded will be rendered below.</p>
-                                    <div class="image-area mt-4"><img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-12 col-lg-4">
-                        </div>
-                    </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="item"><img style="width:366px; height:239px" id="previousImg" src="https://www.rabata.org/wp-content/uploads/2018/05/dummy.png" class="img-thumbnail"></div>
+                    <p>Current images goes here.</p>
+                </div>
+                <div class="col-sm-4">
+                    <div class="item"><img style="width:366px; height:239px" id="imageResult" src="https://www.rabata.org/wp-content/uploads/2018/05/dummy.png" class="img-thumbnail"></div>
+                    <p>Uploaded image goes here.</p>
                 </div>
             </div>
         </div>
@@ -87,41 +93,63 @@
 
 @section scripts{
     <script>
-            document.getElementById("fileUpload").addEventListener("change", function () {
-                readURL(fileUpload);
-            });
+        document.getElementById("fileUpload").addEventListener("change", function () {
+            readURL(fileUpload);
+        });
 
-            document.getElementById("ImgDiv").addEventListener("click", function () {
-                var ImageType = document.getElementById("ImageType");
-                var ImgId = ImageType.options[ImageType.selectedIndex].value;
-                if (ImgId == null || ImgId == 0) {
-                    alert('select image type first.')
-                    return false;
-                }
-            });
-
-            document.getElementById("ImageType").addEventListener("change", function () {
-                var Input = document.getElementById("fileUpload");
-                var ImgId = this.options[this.selectedIndex].value;
-                if (ImgId == null || ImgId == 0) {
-                    Input.disabled = true;
-                    return false;
-                } else {
-                    Input.disabled = false;
-                }
-            });
-
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        $('#imageResult')
-                            .attr('src', e.target.result);
-                    };
-                    reader.readAsDataURL(input.files[0]);
-                }
+        function getImage() {
+             var ImageType = document.getElementById("ImageType");
+            var ImgId = ImageType.options[ImageType.selectedIndex].value;
+            if (ImgId == null || ImgId == 0) {
+                toastr.error('Select an image first!');
+                return false;
             }
+               $.ajax({
+                   url: '/admin/settings/getimage',
+                   data: {'typeId': ImgId},
+                type: 'GET',
+                   success: function (result) {
+                    $('#previousImg')
+                        .attr('src', result);
+                },
+                error: function (xhr, status) {
+                    toastr.error('Something went wrong');
+                }
+            });
+        }
+
+        document.getElementById("ImgDiv").addEventListener("click", function () {
+            getImage();
+            var ImageType = document.getElementById("ImageType");
+            var ImgId = ImageType.options[ImageType.selectedIndex].value;
+            if (ImgId == null || ImgId == 0) {
+                return false;
+            }
+        });
+
+        document.getElementById("ImageType").addEventListener("change", function () {
+            var Input = document.getElementById("fileUpload");
+            var ImgId = this.options[this.selectedIndex].value;
+            getImage();
+            if (ImgId == null || ImgId == 0) {
+                Input.disabled = true;
+                return false;
+            } else {
+                Input.disabled = false;
+            }
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imageResult')
+                        .attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
     </script>
 }
 

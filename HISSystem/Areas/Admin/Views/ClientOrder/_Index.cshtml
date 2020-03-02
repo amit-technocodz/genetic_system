@@ -9,6 +9,7 @@
             <th>Order DueDate</th>
             <th>Doctor</th>
             <th>Patient</th>
+            <th>Patient City</th>
             <th>Test Type</th>
             <th>Status</th>
             <th colspan="2">Actions</th>
@@ -34,6 +35,9 @@
             </td>
             <td>
                 @order.User?.EnFirstName @order.User?.EnSecondName @order.User?.EnThirdName
+            </td>
+            <td>
+                @order.User?.PatientPersonalInformation?.City?.Name
             </td>
             <td>
                 @order.TemplateID
