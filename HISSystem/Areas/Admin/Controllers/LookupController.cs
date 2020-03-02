@@ -159,6 +159,8 @@ namespace HISSystem.Areas.Admin.Controllers
             lookup.AddedDate = DateTime.UtcNow;
             lookup.IsActive = true;
             var name = lookup.Name;
+            var type = lookup.Type;
+            lookup.Type = type.Trim();
             lookup.Name= name.Trim();
             db.LookupService.InsertUser(lookup);
             return Json(true);
