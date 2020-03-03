@@ -43,12 +43,6 @@
 #*.jpg   binary
 #*.png   binary
 #*.gif   binary
-#*.rb linguist-language=CSharp
-*.rb linguist-language=CSharp
-*.cs linguist-language=C#
-*.js linguist-detectable=false
-*.html linguist-detectable=false
-*.xml linguist-detectable=false
 ###############################################################################
 # diff behavior for common document formats
 # 
