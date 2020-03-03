@@ -186,6 +186,17 @@ namespace GeneticSystem.Areas.Admin.Controllers
             return PartialView("_AddTemplateData", dynamicTemplate);
         }
 
+        [HttpGet]
+        public bool TempValidation(int tempId, int subTempId)
+        {
+            Template template = db.DynamicTemplateService.GetTemplateByTempSubTempId(tempId, subTempId);
+
+            if (template != null)
+                return false;
+            else
+                return true;
+        }
+
         //[HttpPost]
         //public bool AddTemplateDetail(AddDynamicTemplate dynamicTemplate)
         //{

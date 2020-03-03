@@ -177,6 +177,12 @@
                     success: function (data) {
                         $("#DataLookup").empty();
                         $("#DataLookup").append(data);
+                        document.getElementById("Template_TemplateTypeID").addEventListener("change", function () {
+                        TempValidation();
+                    });
+                                       document.getElementById("Template_SubTemplateTypeID").addEventListener("change", function () {
+                        TempValidation();
+});
                     },
                     error: function () {
                         alert("Content load failed.");
@@ -345,11 +351,6 @@
                     url: '/admin/dynamictemplate/addtemplatedata',
                     data: { templateId: TemplateID },
                     success: function (data) {
-                        debugger
-                        //$('#addModalBody').html(data);
-                        //$('#addModal').modal(options);
-                        //$('#addModal').modal('show');
-                       // $("#DataLookup").empty();
                         $("#DataLookup").html(data);
                         $('.tryMultiselect').chosen();
                     },
@@ -362,14 +363,7 @@
 
 
         $(document).on("click", ".addTemplateDetail", function () {
-            //debugger
             var values = $(this).attr("data-catch")
-            //alert(values);
-            // var fields = values.split('>>');
-            //var temptype = fields[0];
-            //var subtemptype = fields[1];
-            //console.log(fields);
-            //return false;
               var formdata = new FormData($('#addTemplateDetailFrm').get("0"));
               $.ajax({
                 type: 'POST',
@@ -413,30 +407,30 @@
 	}
 
 
-        $(function () {
-            $("#addLookUp").on('submit', function (e) {
-                e.preventDefault()
-                var dataToPost = $(this).serialize()
-                $.post("/admin/lookup/add", dataToPost)
-                    .done(function (response, status, jqxhr) {
-                    })
-                    .fail(function (jqxhr, status, error) {
-                    })
-            })
-        })
+        //$(function () {
+        //    $("#addLookUp").on('submit', function (e) {
+        //        e.preventDefault()
+        //        var dataToPost = $(this).serialize()
+        //        $.post("/admin/lookup/add", dataToPost)
+        //            .done(function (response, status, jqxhr) {
+        //            })
+        //            .fail(function (jqxhr, status, error) {
+        //            })
+        //    })
+        //})
 
-        $(function () {
-            $("#editLookUp").on('submit', function (e) {
-                e.preventDefault()
-                var dataToPost = $(this).serialize()
-                console.log(dataToPost)
-                $.post("/admin/lookup/GetPatients", dataToPost)
-                    .done(function (response, status, jqxhr) {
-                    })
-                    .fail(function (jqxhr, status, error) {
-                    })
-            })
-        })
+        //$(function () {
+        //    $("#editLookUp").on('submit', function (e) {
+        //        e.preventDefault()
+        //        var dataToPost = $(this).serialize()
+        //        console.log(dataToPost)
+        //        $.post("/admin/lookup/GetPatients", dataToPost)
+        //            .done(function (response, status, jqxhr) {
+        //            })
+        //            .fail(function (jqxhr, status, error) {
+        //            })
+        //    })
+        //})
 
         $(document).ready(function () {
             $("body").on("click", '.page-number', function () {
@@ -536,6 +530,33 @@
             });
         });
 
+
+        function TempValidation() {
+            var tempId = $('#Template_TemplateTypeID').val();
+            var subtempId = $('#Template_SubTemplateTypeID').val();
+            if (tempId == null || subtempId == null || tempId == 0 || subtempId == 0)
+                return false;
+            $.ajax({
+                url: '/admin/dynamicTemplate/tempValidation',
+                type: 'GET',
+                data: {
+                    tempId: tempId, subtempId: subtempId
+                },
+                success: function (response) {
+                    if (response == true) {
+                        toastr.success('This template type is unique!');
+                        $('#addTemplateBtn').prop("disabled", false);
+                    } else {
+                        toastr.error('This template type already exists!');
+                        $('#addTemplateBtn').prop("disabled", true);
+                    }
+                },
+                error: function () {
+                    toastr.error('This template type already exists!');
+                    $('#addTemplateBtn').prop( "disabled", true );
+                }
+            });
+        }
 
         function getFloors() {
             debugger
@@ -656,17 +677,18 @@
                 type: "POST",
                 url: '/admin/dynamictemplate/UpdateTemplate',
                 data: formdata,
+                dataType: "text",
                 processData: false,
                 contentType: false,
                 success: function (data) {
                     console.log(data);
                     toastr.success('record updated')
-                    $("#DataLookup").empty();
-                    $("#DataLookup").append(data);
+                    $("#DataLookup").html(data);
+                    //$("#DataLookup").append(data);
                     //data == true ? alert("Success") : alert("Something went wrong!")
                     //data == true ? toastr.success('record updated') : toastr.error('Something went wrong');
                 },
-                error: function () {
+                error: function (xhr, status) {
                     alert("Content load failed.");
                 }
             });

@@ -1258,6 +1258,30 @@ namespace HISSystem.Areas.Admin.Controllers
 
         }
 
+        public IActionResult SearchForOrder(string Id)
+        {
+            var patients = new PagedData<User>();
+            var context = db.UserService.GetPatients();
+
+            if (!string.IsNullOrEmpty(Id))
+            {
+                var result = context.Where(x => x.ID.ToString().Contains(Id.ToString(), StringComparison.OrdinalIgnoreCase) ||
+                (x.EnFirstName != null && x.EnFirstName.Contains(Id, StringComparison.OrdinalIgnoreCase)) ||
+                (x.EnSecondName != null && x.EnSecondName.Contains(Id, StringComparison.OrdinalIgnoreCase)) ||
+                (x.RegisterationNo != null && x.RegisterationNo.Contains(Id, StringComparison.OrdinalIgnoreCase)) ||
+                (x.Mobile != null && x.Mobile.ToString().Contains(Id, StringComparison.OrdinalIgnoreCase)))
+                .OrderByDescending(x => x.AddedDate).Take(PageSize).ToList();
+                patients.Data = result;
+                patients.NumberOfPages = Convert.ToInt32(Math.Ceiling((double)result.Count() / PageSize));
+            }
+            else
+            {
+                patients.Data = null;
+            }
+            return PartialView("_SearchForOrder", patients);
+
+        }
+
 
         public class JsonEvent
         {
