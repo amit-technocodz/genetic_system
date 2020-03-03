@@ -89,7 +89,9 @@ namespace HISSystem.Areas.Admin.Controllers
             ViewBag.LookupName = lookupName;
 
             var xray = db.LookupService.GetLookups().Where(x => x.IsActive == true).ToList();
-            var result = xray.Where(x => x.Type.Contains(lookupName)).ToList();
+            var result = xray.Where(x => x.Type.Equals(lookupName)).ToList();
+
+            //var result = xray.Where(x => x.Type.Contains(lookupName)).ToList();
 
             lookupIndex.PagedLookups.Data = result.OrderBy(x => x.ID).Skip(PageSize * (page - 1)).Take(PageSize).ToList();
             lookupIndex.PagedLookups.NumberOfPages = Convert.ToInt32(Math.Ceiling((double)result.Count() / PageSize));
@@ -234,7 +236,7 @@ namespace HISSystem.Areas.Admin.Controllers
 
             if (searchQuery != null)
             {
-                var lookupList = db.LookupService.GetLookups().Where(x => x.Type.StartsWith(searchQuery, StringComparison.OrdinalIgnoreCase) && x.IsActive==true).Select(x => x.Type).Distinct().ToList();
+                var lookupList = db.LookupService.GetLookupList().Where(x => x.Type.StartsWith(searchQuery, StringComparison.OrdinalIgnoreCase) && x.IsActive==true).Select(x => x.Type).Distinct().ToList();
                 ViewBag.Lookups = lookupList;
             }
             else

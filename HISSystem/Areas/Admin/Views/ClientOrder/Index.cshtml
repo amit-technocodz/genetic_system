@@ -16,12 +16,15 @@
         bottom: 0;
         padding-left: 190px;
     }*/
+<<<<<<< HEAD
+=======
     .popup-result {
     position: absolute;
     width: 600px;
     z-index: 1000;
     top: 54px;
 }
+>>>>>>> 2d746095d630c5b113ac55a2e53c5a003c812e1c
 
 
     .quick-search-block {
@@ -119,6 +122,44 @@
 
 @section Scripts{
     <script>
+<<<<<<< HEAD
+        //$(document).ajaxStart(function () {
+        //    $('body').append('<div class="prtm-loader-wrap"><div class="showbox"><div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg></div></div></div>');
+        //});
+
+        //$(document).ajaxComplete(function () {
+        //    $('.prtm-loader-wrap').fadeOut();
+        //});
+        var ListHtml;
+
+        $(document).on("click", ".DltOrdrBtn", function () {
+            var orderId = $(this).val();
+            var target = event.target.parentElement.parentElement.style.display = 'none';
+            $.ajax({
+                url: '/admin/clientOrder/deleteOrder',
+                type: 'GET',
+                data: { orderId: orderId },
+                success: function (result) {
+                    toastr.success('Record deleted!');
+                    $('#orderArea').html(result);
+                }
+            });
+        });
+
+        $(document).on("click", ".AttchOrdrBtn", function () {
+            var userId = $(this).val();
+            debugger
+            $.ajax({
+                url: '/admin/clientOrder/Attachment',
+                type: 'GET',
+                data: { userID: userId },
+                success: function (response) {
+                    $(".modal-content").html(response);
+                    $("#exampleModalCenter").modal().toggle();
+                },
+                error: function () {
+                    toastr.error('Something went wrong');
+=======
         $(document).on("keyup", "#searchPatient", function () {
             //var user = $("#clientOrder_ClientOrder_UserID").val();
            var id = $(this).val();
@@ -159,10 +200,27 @@
                     $("#clientOrder_ClientOrder_User_Mobile").val(data.mobile);
                 },
                 error: function () {
+>>>>>>> 2d746095d630c5b113ac55a2e53c5a003c812e1c
                 }
             });
         });
 
+<<<<<<< HEAD
+        function GetAttachment(id) {
+            $.ajax({
+                url: '/admin/user/Attachment?id=' + id + '&tableName=user',
+                type: 'GET',
+                success: function (data) {
+                    $(".modal-content").html(data);
+                    $("#exampleModalCenter").modal().toggle();
+                },
+                error: function () {
+                    toastr.error('Something went wrong');
+                }
+            });
+        }
+
+=======
      //$("#searchPatient").on("keyup", function () {
      //           var id = $(this).val();
      //           alert(id);
@@ -193,6 +251,7 @@
         //    $('.prtm-loader-wrap').fadeOut();
         //});
         var ListHtml;
+>>>>>>> 2d746095d630c5b113ac55a2e53c5a003c812e1c
 
         $(document).on("click", ".DltOrdrBtn", function () {
             var orderId = $(this).val();
