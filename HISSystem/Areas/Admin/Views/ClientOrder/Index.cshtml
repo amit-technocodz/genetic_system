@@ -16,6 +16,12 @@
         bottom: 0;
         padding-left: 190px;
     }*/
+    .popup-result {
+    position: absolute;
+    width: 600px;
+    z-index: 1000;
+    top: 54px;
+}
 
 
     .quick-search-block {
@@ -113,6 +119,72 @@
 
 @section Scripts{
     <script>
+        $(document).on("keyup", "#searchPatient", function () {
+            //var user = $("#clientOrder_ClientOrder_UserID").val();
+           var id = $(this).val();
+            $.ajax({
+                url: '/admin/patient/SearchForOrder',
+                type: 'get',
+                data: {
+                    ID: id
+                },
+                success: function (result) {
+                    $("#searchwithid").show();
+                    $("#searchwithid").empty();
+                    $("#searchwithid").append(result);
+                    var rowCount = $('#myTable >tbody >tr').length;
+                    if (rowCount == 0) {
+                        $("#searchwithid").hide();
+                    }
+                    $('body').find('#ID').focus();
+                }
+            });
+            $('#ID').focus();
+        });
+
+        $(document).on('click', '.selectPtntOrder', function () {
+            var user = $(this).val();
+            $("#searchwithid").hide();
+            $.ajax({
+                url: "/admin/patientorder/getpatientDetails",
+                type: "get",
+                data: { 'Id': user },
+                success: function (data) {
+                    $("#clientOrder_ClientOrder_UserID").val(data.id);
+                    $("#clientOrder_ClientOrder_User_PatientPersonalInformation_DateOfBirth").val(data.patientPersonalInformation.dateOfBirth);
+                    $("#clientOrder_ClientOrder_User_ID").val(user);
+                    $("#clientOrder_ClientOrder_User_PatientPersonalInformation_BloodGroup_Name").val(data.patientPersonalInformation.bloodGroup.name);
+                    $("#clientOrder_ClientOrder_User_RegisterationNo").val(data.registerationNo);
+                    $("#clientOrder_ClientOrder_User_Address").val(data.address);
+                    $("#clientOrder_ClientOrder_User_Mobile").val(data.mobile);
+                },
+                error: function () {
+                }
+            });
+        });
+
+     //$("#searchPatient").on("keyup", function () {
+     //           var id = $(this).val();
+     //           alert(id);
+     //       $.ajax({
+     //           url: '/admin/patient/SearchById',
+     //           type: 'get',
+     //           data: {
+     //               ID: id
+     //           },
+     //           success: function (result) {
+     //               $("#searchwithid").show();
+     //               $("#searchwithid").empty();
+     //               $("#searchwithid").append(result);
+     //               var rowCount = $('#myTable >tbody >tr').length;
+     //               if (rowCount == 0) {
+     //                   $("#searchwithid").hide();
+     //               }
+     //               $('body').find('#ID').focus();
+     //           }
+     //       });
+     //       $('#ID').focus();
+     //   });
         //$(document).ajaxStart(function () {
         //    $('body').append('<div class="prtm-loader-wrap"><div class="showbox"><div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg></div></div></div>');
         //});
@@ -278,12 +350,10 @@
         function test() {
             var user = $("#clientOrder_ClientOrder_UserID").val();
             $.ajax({
-
                 url: "/admin/patientorder/getpatientDetails",
                 type: "get",
                 data: { 'Id': user },
                 success: function (data) {
-                    debugger
                     $("#clientOrder_ClientOrder_User_PatientPersonalInformation_DateOfBirth").val(data.patientPersonalInformation.dateOfBirth);
                     $("#clientOrder_ClientOrder_User_ID").val(user);
                     $("#clientOrder_ClientOrder_User_PatientPersonalInformation_BloodGroup_Name").val(data.patientPersonalInformation.bloodGroup.name);

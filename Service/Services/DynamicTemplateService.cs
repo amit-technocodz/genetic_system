@@ -125,6 +125,18 @@ namespace Service.Services
             }
         }
 
+        public Template GetTemplateByTempSubTempId(int tempId, int subTempId)
+        {
+            try
+            {
+                return db.Template.Get().Where(x => x.TemplateTypeID == tempId && x.SubTemplateTypeID == subTempId).FirstOrDefault();
+
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+                return null;
+            }
+        }
 
         public bool DeleteTemplateColumnsByID(double Id)
         {

@@ -71,6 +71,11 @@ namespace HISSystem.Controllers
                 }
                 else
                 {
+                    var image = db.CompanyProfileService.GetImageByTypeId(180);
+                    var logo = db.CompanyProfileService.GetImageByTypeId(181);
+                    ViewBag.img = String.Format("data:image/gif;base64,{0}", image);
+                    string something = String.Format("data:image/gif;base64,{0}", logo);
+                    HttpContext.Session.SetString("logo", something);
                     return View();
                 }
             }
