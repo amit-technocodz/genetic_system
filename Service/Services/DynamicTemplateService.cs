@@ -37,6 +37,15 @@ namespace Service.Services
             return db.Template.Get().Include(x => x.TemplateType).Include(x => x.SubTemplateType).Include(x => x.TemplateColumns).ThenInclude(x => x.TemplateField);
         }
 
+
+        //Legasov
+        public IEnumerable<Template> SearchTemplate(string getTemplate)
+        {
+            var result = db.Template.Get().AsQueryable();
+            return result.Where(x => x.TemplateType.Name.StartsWith(getTemplate, StringComparison.OrdinalIgnoreCase) || x.SubTemplateType.Name.StartsWith(getTemplate, StringComparison.OrdinalIgnoreCase)).Include(x => x.TemplateType).Include(x => x.SubTemplateType).AsNoTracking();
+        }
+
+
         public IQueryable<Template> GetAllTemplateByTempID(int tmpId)
         {
 

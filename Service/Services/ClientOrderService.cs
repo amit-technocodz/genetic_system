@@ -63,10 +63,11 @@ namespace Service.Services
             try
             {
                 ApplicationContext context = new ApplicationContext();
-                return context.ClientOrder.OrderByDescending(x => x.ID).Take(50).Include(x => x.Doctor).Include(x => x.User).ThenInclude(x => x.PatientPersonalInformation).ThenInclude(x => x.City).AsNoTracking();
+                return context.ClientOrder.Where(x => x.IsActive == true).OrderByDescending(x => x.ID).Take(50).Include(x => x.Doctor).Include(x => x.User).ThenInclude(x => x.PatientPersonalInformation).ThenInclude(x => x.City).AsNoTracking();
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return null;
             }
         }
@@ -106,7 +107,7 @@ namespace Service.Services
                 if (model.ID != 0)
                     result = result.Where(x => x.ID == model.ID);
                 if (model.OrderNo != 0)
-                    result = result.Where(x => x.OrderNo.ToString().StartsWith(model.OrderNo.ToString(), StringComparison.OrdinalIgnoreCase));
+                    result = result.Where(x => x.OrderNo.ToString().StartsWith(model.OrderNo.ToString(), StringComparison.OrdinalIgnoreCase)).Include(x => x.User);
                 if (!string.IsNullOrEmpty(model.PatientName))
                     result = result.Where(x => (x.User != null) && ((x.User.EnFirstName != null) && x.User.EnFirstName.StartsWith(model.PatientName, StringComparison.OrdinalIgnoreCase) ||
                     (x.User != null) && x.User.ArFirstName != null && x.User.ArFirstName.StartsWith(model.PatientName, StringComparison.OrdinalIgnoreCase)));
@@ -116,9 +117,13 @@ namespace Service.Services
                 if (!string.IsNullOrEmpty(model.RegistrationNo) && !(model.RegistrationNo == "0"))
                     result = result.Where(x => (x.User != null) && x.User.RegisterationNo.StartsWith(model.RegistrationNo, StringComparison.OrdinalIgnoreCase));
                 if (!string.IsNullOrEmpty(model.PatientMobile))
-                    result = result.Where(x => x.User.RegisterationNo.StartsWith(model.PatientMobile));
+                    result = result.Where(x => x.User.Mobile.StartsWith(model.PatientMobile));
+                if (model.BirthDate != null)
+                    result = result.Where(x => (x.User != null) && (x.User.PatientPersonalInformation != null) &&
+                    (x.User.PatientPersonalInformation.DateOfBirth != null) &&
+                    (x.User.PatientPersonalInformation.DateOfBirth.Value.Date) == model.BirthDate.Value.Date);
 
-                return result.Include(x => x.User).ThenInclude(x => x.PersonalInformation).ThenInclude(x => x.City).Include(x => x.Doctor);
+                return result.Include(x => x.User).ThenInclude(x => x.PatientPersonalInformation).ThenInclude(x => x.City).Include(x => x.Doctor).OrderByDescending(x => x.ID).Take(50);
             }
             catch (Exception ex)
             {
@@ -151,6 +156,23 @@ namespace Service.Services
             }
             catch (Exception ex)
             {
+                return false;
+            }
+        }
+
+        public bool DeleteClientOrder(int orderId)
+        {
+            try
+            {
+                ClientOrder clientOrder =  db.ClientOrder.Get().Where(x => x.ID == orderId).FirstOrDefault();
+                clientOrder.IsActive = false;
+                db.ClientOrder.Update(clientOrder);
+                db.ClientOrder.SaveChanges();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
                 return false;
             }
         }

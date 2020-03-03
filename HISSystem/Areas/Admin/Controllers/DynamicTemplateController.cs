@@ -25,10 +25,10 @@ namespace GeneticSystem.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            var templateList = db.DynamicTemplateService.GetAllTemplates().ToList();
-            ViewBag.Templates = templateList.Select(x => x.TemplateType?.Name + ">>" + x.SubTemplateType.Name?? ""); 
-            List<Template> templates = new List<Template>();
-            return View(templates);
+                var templateList = db.DynamicTemplateService.GetAllTemplates().ToList();
+                ViewBag.Templates = templateList.Select(x => x.TemplateType?.Name + ">>" + x.SubTemplateType.Name ?? "");
+                List<Template> templates = new List<Template>();
+                return View(templates);
         }
         [HttpGet]
         public IActionResult AddTemplate()
@@ -288,5 +288,23 @@ namespace GeneticSystem.Areas.Admin.Controllers
             return result;
         }
 
+        [HttpGet]
+        public IActionResult SearchTemplate(string searchQuery)
+        {
+            if (searchQuery != null)
+            {
+                var templateList = db.DynamicTemplateService.SearchTemplate(searchQuery).ToList();
+                ViewBag.Templates = templateList.Select(x => x.TemplateType?.Name + ">>" + x.SubTemplateType.Name ?? "");
+                List<Template> templates = new List<Template>();
+                return View("_SearchMasterTemplate", templates);
+            }
+            else
+            {
+                var templateList = db.DynamicTemplateService.GetAllTemplates().ToList();
+                ViewBag.Templates = templateList.Select(x => x.TemplateType?.Name + ">>" + x.SubTemplateType.Name ?? "");
+                List<Template> templates = new List<Template>();
+                return View(templates);
+            }
+        }
     }
 }

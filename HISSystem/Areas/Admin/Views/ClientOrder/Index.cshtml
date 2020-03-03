@@ -8,14 +8,14 @@
 
 <style>
 
-    .footer-wrapper {
+    /*.footer-wrapper {
         display: none;
         float: left;
         width: 100%;
         position: absolute;
         bottom: 0;
         padding-left: 190px;
-    }
+    }*/
 
 
     .quick-search-block {
@@ -38,9 +38,9 @@
         <div class="row mrgn-b-sm">
             <div class="col-md-4 col-lg-4">
                 <div class="btn-group" role="group">
-                    <button class="btn btn-primary btn-lg" id="addClientOrderBtn" type="button"> New Order </button>
-                    <button class="btn btn-warning btn-lg cancelEvent" id="cancelOrderBtn" type="button" style="display: none;"> Back </button>
-                    <button data-toggle="dropdown" class="btn btn-lg btn-info dropdown-toggle" type="button"><i class="fa fa-share-square-o" aria-hidden="true"></i> Export <i class="fa fa-sort-desc" aria-hidden="true"></i> </button>
+                    <button class="btn btn-warning btn-xs cancelEvent" id="cancelOrderBtn" type="button" style="display: none;"> Back </button>
+                    <button class="btn btn-primary btn-xs" id="addClientOrderBtn" type="button"> New Order </button>
+                    <button data-toggle="dropdown" class="btn btn-xs btn-info dropdown-toggle" type="button"><i class="fa fa-share-square-o" aria-hidden="true"></i> Export <i class="fa fa-sort-desc" aria-hidden="true"></i> </button>
                 </div>
             </div>
             <div class="col-md-3">
@@ -58,7 +58,7 @@
                                     <input type="text" id="orderNo" name="order-no" class="form-control" onkeyup="patientSearch()" />
                                 </div>
                                 <div class="col-md-2 col-lg-2">
-                                   Order ID No:
+                                    Order ID No:
                                     <input type="text" id="id-no" name="id-no" class="form-control" autocomplete="off" onkeyup="patientSearch()" />
                                 </div>
                                 <div class="col-md-2 col-lg-2">
@@ -98,7 +98,8 @@
         </div>
     </div>
 </div>
-<!-- Modal -->
+
+@*MODAL*@
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
 
@@ -107,28 +108,65 @@
         </div>
     </div>
 </div>
-<!---End Model--->
-<!--filter bed Modal -->
-<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content" id="allocate-bed-model">
-
-        </div>
-    </div>
-</div>
-<!---filter bed End Model--->
+@*MODAL END*@
 
 
 @section Scripts{
     <script>
-        $(document).ajaxStart(function () {
-            $('body').append('<div class="prtm-loader-wrap"><div class="showbox"><div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg></div></div></div>');
+        //$(document).ajaxStart(function () {
+        //    $('body').append('<div class="prtm-loader-wrap"><div class="showbox"><div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg></div></div></div>');
+        //});
+
+        //$(document).ajaxComplete(function () {
+        //    $('.prtm-loader-wrap').fadeOut();
+        //});
+        var ListHtml;
+
+        $(document).on("click", ".DltOrdrBtn", function () {
+            var orderId = $(this).val();
+            var target = event.target.parentElement.parentElement.style.display = 'none';
+            $.ajax({
+                url: '/admin/clientOrder/deleteOrder',
+                type: 'GET',
+                data: { orderId: orderId },
+                success: function (result) {
+                    toastr.success('Record deleted!');
+                    $('#orderArea').html(result);
+                }
+            });
         });
 
-        $(document).ajaxComplete(function () {
-            $('.prtm-loader-wrap').fadeOut();
+        $(document).on("click", ".AttchOrdrBtn", function () {
+            var userId = $(this).val();
+            debugger
+            $.ajax({
+                url: '/admin/clientOrder/Attachment',
+                type: 'GET',
+                data: { userID: userId },
+                success: function (response) {
+                    $(".modal-content").html(response);
+                    $("#exampleModalCenter").modal().toggle();
+                },
+                error: function () {
+                    toastr.error('Something went wrong');
+                }
+            });
         });
-        var ListHtml;
+
+        function GetAttachment(id) {
+            $.ajax({
+                url: '/admin/user/Attachment?id=' + id + '&tableName=user',
+                type: 'GET',
+                success: function (data) {
+                    $(".modal-content").html(data);
+                    $("#exampleModalCenter").modal().toggle();
+                },
+                error: function () {
+                    toastr.error('Something went wrong');
+                }
+            });
+        }
+
 
         $(document).on("click", ".UpdtOrdrBtn", function () {
             ListHtml = document.getElementById('orderArea').innerHTML;
@@ -281,7 +319,7 @@
 
 
         $('.datepicker').datepicker({
-            format: "dd-mm-yyyy",
+            format: "mm-dd-yyyy",
             autoclose: true,
         }).on('changeDate', function (ev) {
             $(this).datepicker('hide');
@@ -335,14 +373,14 @@
         }
 
         function patientSearch() {
-        //         public string RegistrationNo { get; set; }
-        //public int OrderNo { get; set; }
-        //public int ID { get; set; }
-        //public string PatientName { get; set; }
-        //public int PatientMobile { get; set; }
-        //public string PatientCity { get; set; }
-        //public string BirthDate { get; set; }
-        //public int Status { get; set; }
+            //         public string RegistrationNo { get; set; }
+            //public int OrderNo { get; set; }
+            //public int ID { get; set; }
+            //public string PatientName { get; set; }
+            //public int PatientMobile { get; set; }
+            //public string PatientCity { get; set; }
+            //public string BirthDate { get; set; }
+            //public int Status { get; set; }
 
             var model = {
                 RegistrationNo: 0,

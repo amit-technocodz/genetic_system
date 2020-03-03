@@ -524,10 +524,10 @@
             var search = $(this).val();
             $.ajax({
                 type: "GET",
-                url: '/admin/lookup/SearchMasterLookup',
+                url: '/admin/dynamictemplate/SearchTemplate?searchTemplate',
                 data: { searchQuery: search },
                 success: function (data) {
-                    $("#lookupList").empty();
+                          $("#lookupList").empty();
                     $("#lookupList").append(data);
                 },
                 error: function () {

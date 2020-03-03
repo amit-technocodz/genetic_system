@@ -12,7 +12,7 @@ namespace Data.Helpers
         public string PatientName { get; set; }
         public string PatientMobile { get; set; }
         public string PatientCity { get; set; }
-        public string BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
         public int Status { get; set; }
     }
 }

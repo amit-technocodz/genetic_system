@@ -14050,7 +14050,7 @@ textarea {
     float: left;
     width: 100%;
     padding-left: 190px;
-    display:none;
+   
 }
 
     .footer-wrapper .prtm-footer {
@@ -16136,7 +16136,7 @@ select {
     /*background-image: url("../../assets/img/login-banner.jpg");*/
     background-position: center center;
     background-size: cover;
-    padding: 100px 0;
+    padding: 70px 0;
 }
 
 .prtm-form-block {

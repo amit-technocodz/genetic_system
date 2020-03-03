@@ -21,7 +21,7 @@
     }
 </style>
 
-<form asp-action="Add" class="form-elments1" role="form" method="post" enctype="multipart/form-data">
+<form>
     <div class="prtm-content">
         <div class="prtm-page-bar">
             <ul class="breadcrumb">
@@ -33,7 +33,7 @@
         </div>
         <div class="row mrgn-b-sm">
             <div class="col-md-5 col-lg-5">
-                <input type="submit" name="submit" value="Save" class="btn btn-xs btn-primary" onclick="saveOrderFunction();" />
+                <input type="button" name="submit" value="Save" class="btn btn-xs btn-primary" onclick="saveOrderFunction();" />
                 <input type="button" name="Update" value="Update" class="btn btn-xs btn-warning" disabled />
                 <input type="button" name="History" value="History" class="btn btn-xs btn-info" />
             </div>
@@ -134,7 +134,7 @@
                                                                 <div class="form-group">
                                                                     <label for="Type">Specialty</label>
                                                                     <div>
-                                                                        @Html.DropDownList("something", new SelectList(ViewBag.Specialty, "ID", "Name"), htmlAttributes: new { @class = "selectpicker tryMultiselect", multiple = "multiple" })
+                                                                        @Html.DropDownList("Specialty", new MultiSelectList(ViewBag.Specialty, "ID", "Name"), htmlAttributes: new { @class = "selectpicker tryMultiselect", multiple = "multiple" })
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -267,24 +267,13 @@ AIzaSyDUakSTaXSqDmWWAhpmhqKFuKtYKkIcvWw
             formdata.append("GeneTemplateId", $("#TestType").val());
             formdata.append("Latitude", $("#mapLat").val());
             formdata.append("Longitude", $("#mapLng").val());
-
-            i = 0;
-            $(".tryMultiselect option:selected").each(function () {
-                debugger
-                var $this = $(this);
-
-                formdata.append("Specialty", $this.val());
-                i++;
-            });
-            for (var pair of formdata.entries()) {
-                console.log(pair[0] + ', ' + pair[1]);
-            }
+     
 
             $.ajax({
                 type: 'POST',
                 url: "/admin/medicaldictionary/AddMedicalDictionary",
                 data: formdata,
-                dataType: "json",
+                dataType: "text",
                 processData: false,
                 contentType: false,
                 success: function (response) {

@@ -41,13 +41,8 @@
                             <div class="row">
                                 <div class="col-md-2 col-lg-2">
                                     Type:
-                                    <select class="form-control" id="typeID" name="typeName">
-                                        <option value="">Select Type</option>
-                                        <option value="">Doctors</option>
-                                        <option value="">Hospitals</option>
-                                        <option value="">Insurance</option>
-                                        <option value="">Pharmacies</option>
-                                    </select>
+                                    @Html.DropDownList("TypeNames", new SelectList(ViewBag.Types, "ID", "Name"), "Select Type", new { @Class = "form-control dropdown", onchange = "getEnName(1)", @id = "typeID" })
+
                                 </div>
                                 <div class="col-md-2 col-lg-2">
                                     En Name:
@@ -59,7 +54,7 @@
                                 </div>
                                 <div class="col-md-2 col-lg-2">
                                     City:
-                                    @Html.DropDownList("CityNames", new SelectList(ViewBag.City, "ID", "Name"), "Select City", new { @Class = "form-control dropdown", onchange = "patientSearch()", @id = "CityNamesID" })
+                                    @Html.DropDownList("CityNames", new SelectList(ViewBag.City, "ID", "Name"), "Select City", new { @Class = "form-control dropdown", onchange = "getEnName(1)", @id = "cityID" })
                                 </div>
                             </div>
                         </div>
@@ -125,10 +120,12 @@
         var Page = i;
         var searchstringen = $("#search1").val();
         var searchstringar = $("#search2").val();
-        var searchstringcity = $("#CityNamesID option:selected").val();
+        var searchstringcity = $("#cityID").val();
+        var searchstringtype = $("#typeID").val();
+
 
         $.ajax({
-            url: '/admin/medicaldictionary/SearchEnName?page=' + Page + '&searchstringen=' + searchstringen + '&searchstringar=' + searchstringar,
+            url: '/admin/medicaldictionary/SearchEnName?page=' + Page + '&searchstringen=' + searchstringen + '&searchstringar=' + searchstringar + '&cityID=' + searchstringcity + '&typeID=' + searchstringtype,
             type: 'GET',
             success: function (result) {
                 debugger
