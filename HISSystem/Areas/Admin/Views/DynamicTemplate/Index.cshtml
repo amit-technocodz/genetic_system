@@ -155,9 +155,7 @@
 			contentType: 'application/json; charse=utf-8',
 			type: 'get',
 			success: function (result) {
-				debugger
-                $("#DataLookup").empty();
-                $("#DataLookup").append(result);
+                $("#DataLookup").html(result);
                 $('.tryMultiselect').chosen();
 			},
 			error: function (xhr, status) {
@@ -175,8 +173,7 @@
                     type: "GET",
                     url: '/admin/dynamictemplate/AddTemplate',
                     success: function (data) {
-                        $("#DataLookup").empty();
-                        $("#DataLookup").append(data);
+                        $("#DataLookup").html(data);
                         document.getElementById("Template_TemplateTypeID").addEventListener("change", function () {
                         TempValidation();
                     });
@@ -323,12 +320,14 @@
                 data: formdata,
                 processData: false,
                 contentType: false,
+                 dataType: "text",
                 success: function (data) {
                     toastr.success('record updated')
                     $("#DataLookup").empty();
                     $("#DataLookup").append(data);
+                    $('.tryMultiselect').chosen();
                 },
-                error: function () {
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("Content load failed.");
                 }
             });
@@ -395,9 +394,8 @@
 			contentType: 'application/json; charse=utf-8',
 			type: 'get',
 			success: function (result) {
-				debugger
-                $("#DataLookup").empty();
-                $("#DataLookup").append(result);
+                debugger
+                $("#DataLookup").html(result);
                 $('.tryMultiselect').chosen();
 			},
 			error: function (xhr, status) {
@@ -443,9 +441,7 @@
                     context: $(this),
                     data: { "lookupName": lookupName, "page": page },
                     success: function (data) {
-                        debugger
-                         $("#DataLookup").empty();
-                         $("#DataLookup").append(data);
+                        $("#DataLookup").html(data);
                     }
                 });
             });
@@ -646,9 +642,7 @@
 			contentType: 'application/json; charse=utf-8',
 			type: 'get',
 			success: function (result) {
-				debugger
-                $("#DataLookup").empty();
-                $("#DataLookup").append(result);
+                $("#DataLookup").html(result);
 			},
 			error: function (xhr, status) {
 				alert(status)

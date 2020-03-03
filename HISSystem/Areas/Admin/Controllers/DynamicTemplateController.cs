@@ -59,14 +59,17 @@ namespace GeneticSystem.Areas.Admin.Controllers
             var templateId = result.ID;
 
 
-            AddDynamicTemplate passDynamicTemplate = new AddDynamicTemplate();
-            passDynamicTemplate.Template = db.DynamicTemplateService.GetTemplateByID(templateId);
-            ViewBag.TemplateID = templateId;
+            AddDynamicTemplate newdynamicTemplate = new AddDynamicTemplate();
+            var LookupList = db.LookupService.GetLookups();
+            newdynamicTemplate.Template = db.DynamicTemplateService.GetTemplateByID(templateId);
+
+            ViewBag.TemplateID = newdynamicTemplate.Template.ID;
 
             ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
             ViewBag.Element = db.LookupService.GetLookUpByTypeName("Element");
             ViewBag.ConsumptionType = db.LookupService.GetLookUpByTypeName("ConsumptionType");
             ViewBag.FeederType = db.LookupService.GetLookUpByTypeName("FeederType");
+
             ViewBag.Result = new List<SelectListItem>
             {
               new SelectListItem{ Text="High", Value = "1" },
@@ -74,7 +77,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
               new SelectListItem{ Text="Low", Value = "3" }
             };
 
-            return PartialView("_AddTemplateData", passDynamicTemplate);
+            return PartialView("_AddTemplateData", newdynamicTemplate);
         }
 
         [HttpGet]
