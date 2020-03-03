@@ -43,7 +43,9 @@
 #*.jpg   binary
 #*.png   binary
 #*.gif   binary
-
+*.js linguist-detectable=false
+*.html linguist-detectable=false
+*.xml linguist-detectable=false
 ###############################################################################
 # diff behavior for common document formats
 # 
