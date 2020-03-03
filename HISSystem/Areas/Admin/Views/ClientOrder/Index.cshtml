@@ -452,12 +452,12 @@
                     type: 'POST',
                     url: "/admin/clientorder/UpdateOrder",
                     data: formdata,
-                    dataType: "json",
+                    dataType: "text",
                     processData: false,
                     contentType: false,
                     success: function (response) {
-                        console.log(response);
                         toastr.info('Record saved');
+                        document.getElementById('orderArea').innerHTML = response;
                     },
                     error: function (xhr, status) {
                         toastr.error('Something went wrong');
