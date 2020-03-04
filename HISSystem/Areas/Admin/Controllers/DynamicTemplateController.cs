@@ -25,10 +25,10 @@ namespace GeneticSystem.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-                var templateList = db.DynamicTemplateService.GetAllTemplates().ToList();
-                ViewBag.Templates = templateList.Select(x => x.TemplateType?.Name + ">>" + x.SubTemplateType.Name ?? "");
-                List<Template> templates = new List<Template>();
-                return View(templates);
+            var templateList = db.DynamicTemplateService.GetAllTemplates().ToList();
+            ViewBag.Templates = templateList.Select(x => x.TemplateType?.Name + ">>" + x.SubTemplateType.Name ?? "");
+            List<Template> templates = new List<Template>();
+            return View(templates);
         }
         [HttpGet]
         public IActionResult AddTemplate()
@@ -190,14 +190,34 @@ namespace GeneticSystem.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public bool TempValidation(int tempId, int subTempId)
+        public bool TempValidation(int? tempId, int? subTempId)
         {
-            Template template = db.DynamicTemplateService.GetTemplateByTempSubTempId(tempId, subTempId);
+            if (tempId != null)
+            {
+                if (subTempId != null)
+                {
+                    Template template = db.DynamicTemplateService.GetTemplateByTempSubTempId(Convert.ToInt32(tempId), Convert.ToInt32(subTempId));
 
-            if (template != null)
-                return false;
+                    if (template != null)
+                        return false;
+                    else
+                        return true;
+                }
+                else
+                {
+                    Template template = db.DynamicTemplateService.GetTemplateByTempId(Convert.ToInt32(tempId));
+
+                    if (template != null)
+                        return false;
+                    else
+                        return true;
+                }
+            }
             else
-                return true;
+            {
+                return false;
+            }
+
         }
 
         //[HttpPost]
@@ -221,16 +241,16 @@ namespace GeneticSystem.Areas.Admin.Controllers
             try
             {
 
-            
-            TemplateData templateData = dynamicTemplate.TemplateData;
 
-            if (templateData.Genes != null)
-            templateData.GeneID = string.Join(',', dynamicTemplate.TemplateData.Genes);
-            templateData.IsActive = true;
-            templateData.AddedBy = 1;
-            templateData.UpdatedBy = 1;
+                TemplateData templateData = dynamicTemplate.TemplateData;
 
-            var result = db.DynamicTemplateService.SaveTemplateData(templateData);
+                if (templateData.Genes != null)
+                    templateData.GeneID = string.Join(',', dynamicTemplate.TemplateData.Genes);
+                templateData.IsActive = true;
+                templateData.AddedBy = 1;
+                templateData.UpdatedBy = 1;
+
+                var result = db.DynamicTemplateService.SaveTemplateData(templateData);
 
                 //AddDynamicTemplate passDynamicTemplate = new AddDynamicTemplate();
                 //passDynamicTemplate.Template = db.DynamicTemplateService.GetTemplateByID(dynamicTemplate.TemplateData.TemplateID);
@@ -270,7 +290,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
                 //return PartialView("_GetTemplateDetail", dynamicTemplate);
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }

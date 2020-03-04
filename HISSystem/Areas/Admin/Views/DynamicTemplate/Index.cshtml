@@ -162,7 +162,26 @@
 				alert(status)
 			}
 		});
-	}
+        }
+
+        function enableSubTemp() {
+            if (document.getElementById("TemplateData.HaveSubTemplate").checked)
+                document.getElementById("subTempDiv").hidden = false;
+            else {
+                document.getElementById("subTempDiv").hidden = true;
+                $("#Template_SubTemplateTypeID").val('');
+                }
+            TempValidation();
+        }
+
+        //$(document).on("click", "#TemplateData.HaveSubTemplate", function () {
+        //    alert('clicked')
+        //    var checkBoxVal = $(this).val();
+        //    if (checkBoxVal == true)
+        //        $('#TemplateData.HaveSubTemplate').hidden = false;
+        //    else
+        //        $('#TemplateData.HaveSubTemplate').hidden = true;
+        //});
 
         $(document).on("click", ".addMasterLookup", function(){
                 var options = {
@@ -297,11 +316,6 @@
                 }
             });
         }
-
-
-
-
-
 
         function addTemplate() {
             var formdata = new FormData();
@@ -530,8 +544,9 @@
         function TempValidation() {
             var tempId = $('#Template_TemplateTypeID').val();
             var subtempId = $('#Template_SubTemplateTypeID').val();
-            if (tempId == null || subtempId == null || tempId == 0 || subtempId == 0)
+            if (tempId == null || (subtempId == null && !(document.getElementById("TemplateData.HaveSubTemplate").checked)))
                 return false;
+
             $.ajax({
                 url: '/admin/dynamicTemplate/tempValidation',
                 type: 'GET',
