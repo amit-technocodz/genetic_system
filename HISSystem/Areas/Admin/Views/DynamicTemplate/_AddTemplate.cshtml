@@ -4,7 +4,7 @@
     <div class="prtm-content">
         <div class="row mrgn-b-sm">
             <div class="col-md-4 col-lg-4">
-                <input type="button" name="submit" id="addTemplateBtn" onclick="addTemplate();" value="Save" class="btn btn-xs btn-primary" disabled/>
+                <input type="button" name="tmpltbtn" id="addTemplateBtn" onclick="addTemplate();" value="Save" class="btn btn-xs btn-primary" disabled/>
                 <input type="button" id="closeModal" name="submit" value="Back" class="btn btn-xs btn-warning" />
             </div>
             <div class="col-md-8 col-lg-8 text-right">
@@ -22,16 +22,22 @@
                         <div class="row">
                             <div class="col-md-12 col-lg-12 mrgn-b-sm">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <div class="form-group">
                                             <label for="Type">Template Type</label>
-                                            @Html.DropDownListFor(m => m.Template.TemplateTypeID, new SelectList(ViewBag.TemplateType, "ID", "Name"), new { @Class = "form-control dropdown" })
+                                            @Html.DropDownListFor(m => m.Template.TemplateTypeID, new SelectList(ViewBag.TemplateType, "ID", "Name"), "Select", new { @Class = "form-control dropdown" })
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-1">
+                                        <label for="Type">SubTemp?</label>
+                                        <div class="form-check">
+                                            <label><input type="checkbox" id="TemplateData.HaveSubTemplate" onchange="enableSubTemp();" name="TemplateData.HaveSubTemplate" value="true"><span class="label-text">@*Has SubTemp?*@</span></label>
+                                        </div>
+                                    </div>
+                                    <div id="subTempDiv" class="col-md-5" hidden>
                                         <div class="form-group">
                                             <label for="TypeID">SubTemplate Type</label>
-                                            @Html.DropDownListFor(m => m.Template.SubTemplateTypeID, new SelectList(ViewBag.SubTemplateType, "ID", "Name"), new { @Class = "form-control dropdown" })
+                                            @Html.DropDownListFor(m => m.Template.SubTemplateTypeID, new SelectList(ViewBag.SubTemplateType, "ID", "Name"), "Select", new { @Class = "form-control dropdown" })
                                         </div>
                                     </div>
                                 </div>

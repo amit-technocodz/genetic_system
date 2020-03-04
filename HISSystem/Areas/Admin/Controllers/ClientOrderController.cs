@@ -30,7 +30,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
             var clientOrderList = db.ClientOrderService.GetClientOrderList();
             var clientOrders = new PagedData<ClientOrder>();
             clientOrders.Data = (clientOrderList).Take(PageSize);
-            //clientOrders.Data = clientOrderList;
+    
             clientOrders.NumberOfPages = Convert.ToInt32(Math.Ceiling((double)clientOrderList.Count() / PageSize));
             return View(clientOrders);
         }

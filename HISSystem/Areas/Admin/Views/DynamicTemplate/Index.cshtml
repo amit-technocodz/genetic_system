@@ -155,16 +155,33 @@
 			contentType: 'application/json; charse=utf-8',
 			type: 'get',
 			success: function (result) {
-				debugger
-                $("#DataLookup").empty();
-                $("#DataLookup").append(result);
+                $("#DataLookup").html(result);
                 $('.tryMultiselect').chosen();
 			},
 			error: function (xhr, status) {
 				alert(status)
 			}
 		});
-	}
+        }
+
+        function enableSubTemp() {
+            if (document.getElementById("TemplateData.HaveSubTemplate").checked)
+                document.getElementById("subTempDiv").hidden = false;
+            else {
+                document.getElementById("subTempDiv").hidden = true;
+                $("#Template_SubTemplateTypeID").val('');
+                }
+            TempValidation();
+        }
+
+        //$(document).on("click", "#TemplateData.HaveSubTemplate", function () {
+        //    alert('clicked')
+        //    var checkBoxVal = $(this).val();
+        //    if (checkBoxVal == true)
+        //        $('#TemplateData.HaveSubTemplate').hidden = false;
+        //    else
+        //        $('#TemplateData.HaveSubTemplate').hidden = true;
+        //});
 
         $(document).on("click", ".addMasterLookup", function(){
                 var options = {
@@ -175,8 +192,7 @@
                     type: "GET",
                     url: '/admin/dynamictemplate/AddTemplate',
                     success: function (data) {
-                        $("#DataLookup").empty();
-                        $("#DataLookup").append(data);
+                        $("#DataLookup").html(data);
                         document.getElementById("Template_TemplateTypeID").addEventListener("change", function () {
                         TempValidation();
                     });
@@ -301,11 +317,6 @@
             });
         }
 
-
-
-
-
-
         function addTemplate() {
             var formdata = new FormData();
             formdata.append('Template.TemplateTypeID', $('#Template_TemplateTypeID').val());
@@ -323,12 +334,14 @@
                 data: formdata,
                 processData: false,
                 contentType: false,
+                 dataType: "text",
                 success: function (data) {
                     toastr.success('record updated')
                     $("#DataLookup").empty();
                     $("#DataLookup").append(data);
+                    $('.tryMultiselect').chosen();
                 },
-                error: function () {
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("Content load failed.");
                 }
             });
@@ -395,9 +408,8 @@
 			contentType: 'application/json; charse=utf-8',
 			type: 'get',
 			success: function (result) {
-				debugger
-                $("#DataLookup").empty();
-                $("#DataLookup").append(result);
+                debugger
+                $("#DataLookup").html(result);
                 $('.tryMultiselect').chosen();
 			},
 			error: function (xhr, status) {
@@ -443,9 +455,7 @@
                     context: $(this),
                     data: { "lookupName": lookupName, "page": page },
                     success: function (data) {
-                        debugger
-                         $("#DataLookup").empty();
-                         $("#DataLookup").append(data);
+                        $("#DataLookup").html(data);
                     }
                 });
             });
@@ -518,13 +528,14 @@
             var search = $(this).val();
             $.ajax({
                 type: "GET",
+                dataType: 'text',
                 url: '/admin/dynamictemplate/SearchTemplate?searchTemplate',
                 data: { searchQuery: search },
                 success: function (data) {
-                          $("#lookupList").empty();
-                    $("#lookupList").append(data);
+                    $("#lookupList").html(data);
                 },
-                error: function () {
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest, textStatus, errorThrown)
                     alert("Content load failed.");
                 }
             });
@@ -534,8 +545,9 @@
         function TempValidation() {
             var tempId = $('#Template_TemplateTypeID').val();
             var subtempId = $('#Template_SubTemplateTypeID').val();
-            if (tempId == null || subtempId == null || tempId == 0 || subtempId == 0)
+            if (tempId == null || (subtempId == null && !(document.getElementById("TemplateData.HaveSubTemplate").checked)))
                 return false;
+
             $.ajax({
                 url: '/admin/dynamicTemplate/tempValidation',
                 type: 'GET',
@@ -646,9 +658,7 @@
 			contentType: 'application/json; charse=utf-8',
 			type: 'get',
 			success: function (result) {
-				debugger
-                $("#DataLookup").empty();
-                $("#DataLookup").append(result);
+                $("#DataLookup").html(result);
 			},
 			error: function (xhr, status) {
 				alert(status)

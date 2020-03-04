@@ -59,12 +59,14 @@ namespace Service.Services
 
         }
 
-        public IQueryable<ClientOrder> GetClientOrderList()
+        public IEnumerable<ClientOrder> GetClientOrderList()
         {
             try
             {
                 ApplicationContext context = new ApplicationContext();
-                return context.ClientOrder.Where(x => x.IsActive == true).OrderByDescending(x => x.ID).Take(50).Include(x => x.Doctor).Include(x => x.User).ThenInclude(x => x.PatientPersonalInformation).ThenInclude(x => x.City).AsNoTracking();
+
+                var result = context.ClientOrder.AsQueryable();
+                return result.Include(x => x.User).ThenInclude(x => x.PatientPersonalInformation).ThenInclude(x => x.City).Include(x => x.Doctor).OrderByDescending(x => x.ID).Take(100);
             }
             catch (Exception ex)
             {
@@ -150,6 +152,8 @@ namespace Service.Services
         {
             try
             {
+                clientOrder.User = null;
+                clientOrder.Doctor = null;
                 db.ClientOrder.Update(clientOrder);
                 db.ClientOrder.SaveChanges();
 

@@ -20,8 +20,8 @@ namespace Data.Models
         public bool IsActive { get; set; }
         public int UserID { get; set; }
         public int OrderNo { get; set; }
-        public virtual User User { get; set; }
         public virtual User Doctor { get; set; }
+        public virtual User User { get; set; }
         public virtual Template Template { get; set; }
         public virtual List<ClientOrderData> ClientOrderData { get; set; }
         [NotMapped]
