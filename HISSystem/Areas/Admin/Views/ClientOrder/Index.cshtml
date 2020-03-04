@@ -512,8 +512,10 @@
                 $.ajax({
                     url: "/admin/patientorder/getpatientDetails",
                     type: "get",
+                    dataType: "json",
                     data: { 'Id': user },
                     success: function (data) {
+
                         $("#clientOrder_ClientOrder_User_PatientPersonalInformation_DateOfBirth").val(data.patientPersonalInformation.dateOfBirth);
                         $("#clientOrder_ClientOrder_User_ID").val(user);
                         $("#clientOrder_ClientOrder_User_PatientPersonalInformation_BloodGroup_Name").val(data.patientPersonalInformation.bloodGroup.name);
@@ -521,7 +523,9 @@
                         $("#clientOrder_ClientOrder_User_Address").val(data.address);
                         $("#clientOrder_ClientOrder_User_Mobile").val(data.patientPersonalInformation.City.Name);
                     },
-                    error: function () {
+                    error: function (jqxhr, status, error) {
+                        debugger
+                        alert()
                     }
                 });
             }

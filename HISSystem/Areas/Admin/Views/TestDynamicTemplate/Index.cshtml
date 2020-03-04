@@ -387,7 +387,7 @@
                       debugger
                       if (response == true) {
                           toastr.info('Record saved');
-                          GetTemplateDetail(values);
+                          GetTemplateDetailFix(values);
                       }
                 },
                   error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -670,9 +670,8 @@
 
 
         function updateTemplateCol() {
-            debugger
+            var values = $("#TestTemplate_TestTemplateType option:selected").text() + ">>" + $("#TestTemplate_SubTestTemplateTypeID option:selected").text();
             var formdata = new FormData();
-            debugger
             formdata.append('TestTemplate.ID', $('#Template_ID').val());
             formdata.append('TestTemplate.TestTemplateTypeID', $('#Template_TemplateTypeID').val());
             formdata.append('TestTemplate.SubTestTemplateTypeID', $('#Template_SubTemplateTypeID').val());
@@ -701,7 +700,7 @@
                     //data == true ? toastr.success('record updated') : toastr.error('Something went wrong');
                 },
                 error: function (xhr, status) {
-                    alert("Content load failed.");
+                    GetTemplateDetailFix(values);
                 }
             });
         }
