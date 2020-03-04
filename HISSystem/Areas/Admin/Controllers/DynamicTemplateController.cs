@@ -337,7 +337,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
                 var templateList = db.DynamicTemplateService.GetAllTemplates().ToList();
                 ViewBag.Templates = templateList.Select(x => x.TemplateType?.Name + ">>" + x.SubTemplateType.Name ?? "");
                 List<Template> templates = new List<Template>();
-                return View(templates);
+                return View("_SearchMasterTemplate", templates);
             }
         }
     }

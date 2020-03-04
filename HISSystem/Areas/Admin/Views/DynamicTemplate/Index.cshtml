@@ -528,13 +528,14 @@
             var search = $(this).val();
             $.ajax({
                 type: "GET",
+                dataType: 'text',
                 url: '/admin/dynamictemplate/SearchTemplate?searchTemplate',
                 data: { searchQuery: search },
                 success: function (data) {
-                          $("#lookupList").empty();
-                    $("#lookupList").append(data);
+                    $("#lookupList").html(data);
                 },
-                error: function () {
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest, textStatus, errorThrown)
                     alert("Content load failed.");
                 }
             });
