@@ -668,7 +668,10 @@
 
 
         function updateTemplateCol() {
-            var values = $("#TestTemplate_TestTemplateType option:selected").text() + ">>" + $("#TestTemplate_SubTestTemplateTypeID option:selected").text();
+            var tempValue = document.getElementById('Template_TemplateTypeID');
+            var subTempValue = document.getElementById('Template_SubTemplateTypeID');
+            debugger
+            var values = tempValue.options[tempValue.selectedIndex].text + ">>" + subTempValue.options[subTempValue.selectedIndex].text;
             var formdata = new FormData();
             debugger
             formdata.append('Template.ID', $('#Template_ID').val());

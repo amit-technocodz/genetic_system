@@ -40,6 +40,9 @@ namespace GeneticSystem.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Add(ImagesViewModel model, IFormFile file)
         {
+            if (file == null)
+                return null;
+
             CustImage saveModel = new CustImage
             {
                 ImageType = model.ImageType
