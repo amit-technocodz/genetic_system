@@ -85,11 +85,68 @@ namespace Repository.UnitOfWork
         Repository<MedicalDictionary> _MedicalDictionary;
         Repository<MedicalDictionarySpecialty> _MedicalDictionarySpecialty;
 
+        Repository<TestTemplate> _TestTemplate;
+        Repository<TestTemplateColumn> _TestTemplateColumn;
+        Repository<TestTemplateData> _TestTemplateData;
+
         public UnitOfWork()
         {
             this._context = new ApplicationContext();
         
         }
+
+
+        public IRepository<TestTemplateData> TestTemplateData
+        {
+            get
+            {
+                if (_TestTemplateData != null)
+                {
+                    return _TestTemplateData;
+                }
+                else
+                {
+                    _TestTemplateData = new Repository<TestTemplateData>(_context);
+                    return _TestTemplateData;
+                }
+
+            }
+        }
+        public IRepository<TestTemplateColumn> TestTemplateColumn
+        {
+            get
+            {
+                if (_TestTemplateColumn != null)
+                {
+                    return _TestTemplateColumn;
+                }
+                else
+                {
+                    _TestTemplateColumn = new Repository<TestTemplateColumn>(_context);
+                    return _TestTemplateColumn;
+                }
+
+            }
+        }
+        public IRepository<TestTemplate> TestTemplate
+        {
+            get
+            {
+                if (_TestTemplate != null)
+                {
+                    return _TestTemplate;
+                }
+                else
+                {
+                    _TestTemplate = new Repository<TestTemplate>(_context);
+                    return _TestTemplate;
+                }
+
+            }
+        }
+
+
+
         public IRepository<MedicalDictionarySpecialty> MedicalDictionarySpecialty
         {
             get

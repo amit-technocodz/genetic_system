@@ -106,5 +106,9 @@ namespace Repository
         public DbSet<MedicalDictionarySpecialty> MedicalDictionarySpecialty { get; set; }
 
 
+        public DbSet<TestTemplate> TestTemplate { get; set; }
+        public DbSet<TestTemplateColumn> TestTemplateColumn { get; set; }
+        public DbSet<TestTemplateData> TestTemplateData { get; set; }
+
     }
 }

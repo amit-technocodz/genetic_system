@@ -37,11 +37,29 @@ namespace Service.UnitOfServices
         private DynamicTemplateService _DynamicTemplateService;
         private ClientOrderService _ClientOrderService;
         private MedicalDictionaryService _MedicalDictionaryService;
+        private TestDynamicTemplateService _TestDynamicTemplateService;
 
         public UnitOfService()
         {
             this._rep = new UnitOfWork();
         }
+
+        public TestDynamicTemplateService TestDynamicTemplateService
+        {
+            get
+            {
+                if (_TestDynamicTemplateService != null)
+                {
+                    return _TestDynamicTemplateService;
+                }
+                else
+                {
+                    _TestDynamicTemplateService = new TestDynamicTemplateService(_rep);
+                    return _TestDynamicTemplateService;
+                }
+            }
+        }
+
         public MedicalDictionaryService MedicalDictionaryService
         {
             get

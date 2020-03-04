@@ -82,5 +82,9 @@ namespace Repository.UnitOfWork
         IRepository<ClientOrderData> ClientOrderData { get; }
         IRepository<MedicalDictionary> MedicalDictionary { get; }
         IRepository<MedicalDictionarySpecialty> MedicalDictionarySpecialty { get; }
+
+        IRepository<TestTemplate> TestTemplate { get; }
+        IRepository<TestTemplateColumn> TestTemplateColumn { get; }
+        IRepository<TestTemplateData> TestTemplateData { get; }
     }
 }
