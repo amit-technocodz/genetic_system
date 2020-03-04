@@ -668,7 +668,7 @@
 
 
         function updateTemplateCol() {
-            debugger
+            var values = $("#TestTemplate_TestTemplateType option:selected").text() + ">>" + $("#TestTemplate_SubTestTemplateTypeID option:selected").text();
             var formdata = new FormData();
             debugger
             formdata.append('Template.ID', $('#Template_ID').val());
@@ -694,12 +694,9 @@
                     console.log(data);
                     toastr.success('record updated')
                     $("#DataLookup").html(data);
-                    //$("#DataLookup").append(data);
-                    //data == true ? alert("Success") : alert("Something went wrong!")
-                    //data == true ? toastr.success('record updated') : toastr.error('Something went wrong');
                 },
                 error: function (xhr, status) {
-                    alert("Content load failed.");
+                    GetTemplateDetailFix(values);
                 }
             });
         }
