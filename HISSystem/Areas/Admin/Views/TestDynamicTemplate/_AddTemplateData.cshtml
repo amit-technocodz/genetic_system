@@ -9,9 +9,9 @@
                     &nbsp;Back @Model.TestTemplate?.TestTemplateType?.Name >> @Model.TestTemplate?.SubTestTemplateType?.Name List
                 </button>
                 &nbsp;
-                <button type="button" class="btn btn-xs btn-outline-warning add-btn addTemplateDetail" data-info="@ViewBag.TemplateID" data-catch="@Model.TestTemplate?.SubTestTemplateType?.Name>>@Model.TestTemplate?.SubTestTemplateType?.Name">
+                <button type="button" class="btn btn-xs btn-outline-warning addTemplateDetail" data-info="@ViewBag.TemplateID" data-catch="@Model.TestTemplate?.TestTemplateType?.Name>>@Model.TestTemplate?.SubTestTemplateType?.Name">
                     <i class="fa fa-plus" aria-hidden="true"></i>
-                    &nbsp;Save @Model.TestTemplate?.SubTestTemplateType?.Name >> @Model.TestTemplate?.SubTestTemplateType?.Name Data
+                    &nbsp;Save @Model.TestTemplate?.TestTemplateType?.Name >> @Model.TestTemplate?.SubTestTemplateType?.Name Data
                 </button>
 
                 <h3 id="lName"></h3>
@@ -31,7 +31,7 @@
                             @foreach (var item in Model.TestTemplate.TestTemplateColumns.Select((value, i) => new { i, value }))
                             {
                                 <td>
-                                    <input name="TemplateData.TemplateID" value="@Model.TestTemplate.ID" hidden>
+                                    <input name="TestTemplateData.TestTemplateID" value="@Model.TestTemplate.ID" hidden>
                                     @if (item.value.TestTemplateField.Name == "EffectedGene")
                                     {
                                         @Html.ListBox("TestTemplateData.Genes", new MultiSelectList(ViewBag.EffectedGene, "ID", "Name"), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })

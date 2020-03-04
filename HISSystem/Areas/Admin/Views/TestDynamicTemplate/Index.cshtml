@@ -155,9 +155,8 @@
 			contentType: 'application/json; charse=utf-8',
 			type: 'get',
 			success: function (result) {
-				debugger
-                $("#DataLookup").empty();
-                $("#DataLookup").append(result);
+                debugger
+                $("#DataLookup").html(result);
                 $('.tryMultiselect').chosen();
 			},
 			error: function (xhr, status) {
@@ -308,7 +307,8 @@
 
         function addTemplate() {
             var formdata = new FormData();
-            debugger
+            var values = $("#TestTemplate_TestTemplateType option:selected").text() + ">>" + $("#TestTemplate_SubTestTemplateTypeID option:selected").text();
+  
             formdata.append('TestTemplate.TestTemplateTypeID', $('#TestTemplate_TestTemplateType').val());
             formdata.append('TestTemplate.SubTestTemplateTypeID', $('#TestTemplate_SubTestTemplateTypeID').val());
 
@@ -320,18 +320,25 @@
               });
 
             $.ajax({
-                type: "POST",
+                      type: "POST",
                 url: '/admin/testdynamictemplate/AddTemplate',
                 data: formdata,
                 processData: false,
                 contentType: false,
+                 dataType: "text",
                 success: function (data) {
-                    debugger
-                    toastr.success('record updated')
-                    $("#DataLookup").empty();
-                    $("#DataLookup").append(data);
+                    console.log(data)
+                    if (data) {
+                        toastr.success('Template Created');
+                        GetTemplateDetailFix(values);
+                    }
+                    else {
+                        toastr.warning('Something went wrong');
+                        GetTemplateDetailFix(values);
+                    }
                 },
-                error: function () {
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest, textStatus, errorThrown);
                     alert("Content load failed.");
                 }
             });
@@ -366,6 +373,7 @@
 
 
         $(document).on("click", ".addTemplateDetail", function () {
+            debugger
             var values = $(this).attr("data-catch")
               var formdata = new FormData($('#addTemplateDetailFrm').get("0"));
               $.ajax({
@@ -376,17 +384,18 @@
                 processData: false,
                 contentType: false,
                   success: function (response) {
+                      debugger
                       if (response == true) {
                           toastr.info('Record saved');
                           GetTemplateDetail(values);
                       }
                 },
                   error: function (XMLHttpRequest, textStatus, errorThrown) {
-                     GetTemplateDetail(values);
+                   
                     toastr.error('Something went wrong');
                 }
               });
-            GetTemplateDetailFix(values);
+            //GetTemplateDetailFix(values);
         });
 
             function GetTemplateDetailFix(type) {
@@ -678,7 +687,7 @@
 
             $.ajax({
                 type: "POST",
-                url: '/admin/Testdynamictemplate/UpdateTemplate',
+                url: '/admin/testdynamictemplate/UpdateTemplate',
                 data: formdata,
                 dataType: "text",
                 processData: false,

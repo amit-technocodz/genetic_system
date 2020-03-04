@@ -30,6 +30,8 @@ namespace GeneticSystem.Areas.Admin.Controllers
             List<TestTemplate> templates = new List<TestTemplate>();
             return View(templates);
         }
+
+
         [HttpGet]
         public IActionResult AddTemplate()
         {
@@ -40,10 +42,11 @@ namespace GeneticSystem.Areas.Admin.Controllers
             ViewBag.TemplateField = LookupList.Where(x => x.Type == "TemplateField");
             return PartialView("_AddTemplate", dynamicTemplate);
         }
-
         [HttpPost]
-        public IActionResult AddTemplate(AddTestDynamicTemplate dynamicTemplate)
+        public bool AddTemplate(AddTestDynamicTemplate dynamicTemplate)
         {
+            try
+            {
             TestTemplate template = new TestTemplate
             {
                 CreatedOn = DateTime.UtcNow,
@@ -56,25 +59,14 @@ namespace GeneticSystem.Areas.Admin.Controllers
             };
 
             var result = db.TestDynamicTemplateService.AddTemplate(template);
-            var templateId = result.ID;
 
-
-            AddTestDynamicTemplate passDynamicTemplate = new AddTestDynamicTemplate();
-            passDynamicTemplate.TestTemplate = db.TestDynamicTemplateService.GetTemplateByID(templateId);
-            ViewBag.TemplateID = templateId;
-
-            ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
-            ViewBag.Element = db.LookupService.GetLookUpByTypeName("Element");
-            ViewBag.ConsumptionType = db.LookupService.GetLookUpByTypeName("ConsumptionType");
-            ViewBag.FeederType = db.LookupService.GetLookUpByTypeName("FeederType");
-            ViewBag.Result = new List<SelectListItem>
+            return true;
+            }
+            catch(Exception ex)
             {
-              new SelectListItem{ Text="High", Value = "1" },
-              new SelectListItem{ Text="Medium", Value = "2" },
-              new SelectListItem{ Text="Low", Value = "3" }
-            };
-
-            return PartialView("_AddTemplateData", passDynamicTemplate);
+                Console.WriteLine(ex);
+                return false;
+            }
         }
 
         [HttpGet]
@@ -99,9 +91,6 @@ namespace GeneticSystem.Areas.Admin.Controllers
 
             return PartialView("_UpdateTemplate", dynamicTemplate);
         }
-
-
-
         [HttpPost]
         public IActionResult UpdateTemplate(AddTestDynamicTemplate dynamicTemplate)
         {
@@ -161,6 +150,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
 
             return PartialView("_GetTemplateDetail", dynamicTemplate);
         }
+
 
         [HttpGet]
         public IActionResult AddTemplateData(int templateId)
@@ -273,8 +263,6 @@ namespace GeneticSystem.Areas.Admin.Controllers
             }
         }
 
-
-
         [HttpPost]
         public bool UpdateTemplateData(AddTestDynamicTemplate dynamicTemplate)
         {
@@ -314,7 +302,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
                 var templateList = db.TestDynamicTemplateService.GetAllTemplates().ToList();
                 ViewBag.Templates = templateList.Select(x => x.TestTemplateType?.Name + ">>" + x.SubTestTemplateType.Name ?? "");
                 List<TestTemplate> templates = new List<TestTemplate>();
-                return View(templates);
+                return View("_SearchMasterTemplate", templates);
             }
         }
     }
