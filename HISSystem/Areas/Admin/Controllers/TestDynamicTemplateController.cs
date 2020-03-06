@@ -129,7 +129,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
         {
             AddTestDynamicTemplate dynamicTemplate = new AddTestDynamicTemplate();
 
-            dynamicTemplate.TestTemplate = db.TestDynamicTemplateService.GetTemplateByName(temptype, subtemptype);
+            dynamicTemplate.TestTemplate = db.TestDynamicTemplateService.GetTemplateByName(temptype, subtemptype).Result;
             dynamicTemplate.TestTemplateDataList = db.TestDynamicTemplateService.GetTemplateDataID(dynamicTemplate.TestTemplate.ID);
 
             ViewBag.TemplateID = dynamicTemplate.TestTemplate.ID;

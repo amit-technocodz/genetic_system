@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Service.Services
 {
@@ -52,9 +53,11 @@ namespace Service.Services
             return db.TestTemplate.Get().Where(x => x.TestTemplateTypeID == tmpId).Include(x => x.TestTemplateType).Include(x => x.SubTestTemplateType).Include(x => x.TestTemplateColumns).ThenInclude(x => x.TestTemplateField);
         }
 
-        public TestTemplate GetTemplateByName(string temptype, string subtemptype)
+        public async Task<TestTemplate> GetTemplateByName(string temptype, string subtemptype)
         {
-            return db.TestTemplate.Get().Include(x => x.TestTemplateType).Include(x => x.SubTestTemplateType).Where(x => (String.IsNullOrEmpty(temptype) || x.TestTemplateType.Name == temptype) && x.SubTestTemplateType.Name == subtemptype).Include(x => x.TestTemplateColumns).FirstOrDefault();
+            var result = db.TestTemplate.Get().AsQueryable();
+
+            return await result.Include(x => x.TestTemplateType).Include(x => x.SubTestTemplateType).Where(x => (String.IsNullOrEmpty(temptype) || x.TestTemplateType.Name == temptype) && x.SubTestTemplateType.Name == subtemptype).Include(x => x.TestTemplateColumns).ThenInclude(y => y.TestTemplateField).FirstOrDefaultAsync();
         }
 
         public TestTemplate GetTemplateByID(int Id)
@@ -109,7 +112,7 @@ namespace Service.Services
 
         public List<TestTemplateColumn> GetTemplateColumnsByID(int Id)
         {
-            var result = db.TestTemplateColumn.Get().Where(x => x.TestTemplateID == Id).Include(x => x.TestTemplateField).Include(x => x.TestTemplate).ToList();
+            var result = db.TestTemplateColumn.Get().Where(x => x.TestTemplateID == Id).Include(x => x.TestTemplateField)./*Include(x => x.TestTemplate)*/ToList();
 
             if (result == null)
                 return new List<TestTemplateColumn>();

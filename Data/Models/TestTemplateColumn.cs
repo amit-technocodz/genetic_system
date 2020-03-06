@@ -11,7 +11,7 @@ namespace Data.Models
         public int TestTemplateFieldID { get; set; }
         public string DisplayName { get; set; }
         public bool IsActive { get; set; }
-        public virtual TestTemplate TestTemplate { get; set; }
+        //public virtual TestTemplate TestTemplate { get; set; }
         public virtual Lookup TestTemplateField { get; set; }
     }
 }
