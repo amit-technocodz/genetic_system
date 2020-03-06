@@ -340,6 +340,7 @@
                     $("#DataLookup").empty();
                     $("#DataLookup").append(data);
                     $('.tryMultiselect').chosen();
+                    $('#search').keyup();
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("Content load failed.");
@@ -706,9 +707,18 @@
 
 
         $(document).on("click", ".backToTemplate", function () {
-            debugger
-            document.getElementById("DataLookup").innerHTML = getGlobalHTML;
-            debugger
+            if (getGlobalHTML != undefined) {
+                debugger
+                document.getElementById("DataLookup").innerHTML = getGlobalHTML;
+                debugger
+            }
+            else {
+                var getTemplateID = $('.addTemplateDetail').attr("data-info");
+                Id = getTemplateID;
+                TempID(Id);
+
+            }
+            
             $("#DataLookup").find('.tryMultiselect').each(function (i, element) {
                 $(element).chosen('destroy');
                 $(element).chosen();
