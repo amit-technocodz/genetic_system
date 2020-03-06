@@ -26,7 +26,16 @@ namespace Service.Services
             {
                 clientOrder.User = null;
                 clientOrder.Doctor = null;
-                clientOrder.OrderNo = db.ClientOrder.Get().Max(x => x.OrderNo) + 1;
+                var tmpOrdr = 0;
+                try
+                {
+                    tmpOrdr = db.ClientOrder.Get().Max(x => x.OrderNo);
+                }catch(Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    clientOrder.OrderNo = 7000;
+                }
+
                 db.ClientOrder.Insert(clientOrder);
 
                 return clientOrder;
