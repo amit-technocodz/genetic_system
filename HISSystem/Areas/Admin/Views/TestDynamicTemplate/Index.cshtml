@@ -330,7 +330,10 @@
                     console.log(data)
                     if (data) {
                         toastr.success('Template Created');
+                        debugger
                         GetTemplateDetailFix(values);
+                        debugger
+                        $('#search').keyup();
                     }
                     else {
                         toastr.warning('Something went wrong');
