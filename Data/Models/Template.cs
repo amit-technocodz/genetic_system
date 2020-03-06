@@ -10,7 +10,7 @@ namespace Data.Models
     {
         public int ID { get; set; }
         public int TemplateTypeID { get; set; }
-        public int SubTemplateTypeID { get; set; }
+        public int? SubTemplateTypeID { get; set; }
         public bool IsActive { get; set; }
         public int AddedBy { get; set; }
         public int UpdatedBy { get; set; }
