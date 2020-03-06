@@ -76,11 +76,14 @@
 		debugger;
 		var ActionAccessData = {};
 		 var values = data.id.split('_');
-		    var viewControlID = values[3];
+        var viewControlID = values[3];
+        alert(viewControlID);
         var ActionPageID = values[1];
-       // alert(viewControlID);
-		var RoleID = SelectedRoleID;
+        alert(ActionPageID);
+        var RoleID = SelectedRoleID;
+        alert(RoleID);
 		var status = data.checked;
+        alert(status);
 
 		ActionAccessData.ActionID = ActionPageID;
 		ActionAccessData.ViewControlID = viewControlID;

@@ -47,6 +47,29 @@ namespace HISSystem.Controllers
             }
             else
             {
+                //var user = db.UserService.Login(model.UserName, /*CommonMethod.Encrypt(*/model.Password);
+                //if (user != null)
+                //{
+                //    var option = new CookieOptions();
+                //    option.Expires = DateTime.Now.AddHours(10);
+                //    Response.Cookies.Append("UserName", user.UserName, option);
+                //    Response.Cookies.Append("RoleID", Convert.ToString(user.RoleID), option);
+                //    Response.Cookies.Append("ID", Convert.ToString(user.ID), option);
+                //    HttpContext.Session.SetString("UserName", user.UserName);
+                //    HttpContext.Session.SetString("RoleID", Convert.ToString(user.RoleID));
+                //    HttpContext.Session.SetString("Image", user.ImagePath ?? "/uploaded/neon-after-effects-template-graphics-pack-13-1000x562.jpg");
+                //    var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                //    identity.AddClaim(new Claim(ClaimTypes.Name, user.Role.Name));
+                //    identity.AddClaim(new Claim("User", Convert.ToString(user.RoleID)));
+                //    identity.AddClaim(new Claim(ClaimTypes.GivenName, user.UserName));
+                //    identity.AddClaim(new Claim(ClaimTypes.Role, user.Role.Name));
+
+                //    var principal = new ClaimsPrincipal(identity);
+                //    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                //    return Redirect("/admin/dashboard/index");
+
+
                 var user = db.UserService.Login(model.UserName, CommonMethod.Encrypt(model.Password));
                 if (user != null)
                 {
@@ -69,7 +92,7 @@ namespace HISSystem.Controllers
 
                     return Redirect("/admin/dashboard/index");
                 }
-                else
+                    else
                 {
                     var image = db.CompanyProfileService.GetImageByTypeId(180);
                     var logo = db.CompanyProfileService.GetImageByTypeId(181);

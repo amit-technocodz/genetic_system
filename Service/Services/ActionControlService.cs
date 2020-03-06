@@ -36,7 +36,8 @@ namespace Service.Services
 
         public List<ActionControl> GetAll()
         {
-            var result = db.ActionControl.GetAll().ToList();
+            //var result = db.ActionControl.GetAll().ToList();
+            var result = db.ActionControl.GetAll().Where(x=>x.IsActive==true).ToList();
             return result;
         }
 
