@@ -85,7 +85,7 @@ namespace Service.Services
         {
             int role = db.Role.Get().Where(x => x.Name.Contains("Patient")).FirstOrDefault().ID;
             var result = db.User.Get().Where(x => x.IsActive == true && x.RoleID == role).Include(x => x.PatientPersonalInformation.BloodGroup)
-                .Include(x => x.PatientPersonalInformation.City).Include(x => x.PatientPersonalInformation.PatientType).Include(x => x.PatientPersonalInformation.EmployeeType).Include(x => x.Status);
+                .Include(x => x.PatientPersonalInformation.City).Include(x => x.PatientPersonalInformation.PatientType).Include(x => x.PatientPersonalInformation.EmployeeType).Include(x => x.Status).OrderByDescending(x => x.AddedDate);
             return result;
         }
         public IEnumerable<User> GetByRole(int roleID)
@@ -127,8 +127,10 @@ namespace Service.Services
         }
         public User GetPatient(int id)
         {
-            return db.User.Get().Where(x => x.ID == id).Include(x => x.PatientPersonalInformation.PatientType)/*.Include(x => x.PatientAdmission)*/
-                .Include(x => x.PatientPersonalInformation.BloodGroup).Include(x => x.PatientPersonalInformation.Gender).FirstOrDefault();
+            return db.User.Get().Where(x => x.ID == id).Include(x => x.PatientPersonalInformation.PatientType)
+                .Include(x => x.PatientPersonalInformation.BloodGroup).Include(x => x.PatientPersonalInformation.Gender)
+                 .Include(x => x.PatientPersonalInformation.City)
+                .FirstOrDefault();
         }
         public IEnumerable<User> GetAll()
         {

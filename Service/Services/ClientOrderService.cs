@@ -26,10 +26,12 @@ namespace Service.Services
             {
                 clientOrder.User = null;
                 clientOrder.Doctor = null;
-                var tmpOrdr = 0;
+                clientOrder.IsActive = true;
+                int tmpOrdr = 0;
                 try
                 {
-                    tmpOrdr = db.ClientOrder.Get().Max(x => x.OrderNo);
+                    tmpOrdr = db.ClientOrder.Get().Max(x => x.OrderNo) + 1;
+                    clientOrder.OrderNo = tmpOrdr;
                 }catch(Exception ex)
                 {
                     Console.WriteLine(ex);
@@ -75,7 +77,7 @@ namespace Service.Services
                 ApplicationContext context = new ApplicationContext();
 
                 var result = context.ClientOrder.AsQueryable();
-                return result.Include(x => x.User).ThenInclude(x => x.PatientPersonalInformation).ThenInclude(x => x.City).Include(x => x.Doctor).OrderByDescending(x => x.ID).Take(100);
+                return result.Where(x => x.IsActive == true).Include(x => x.User).ThenInclude(x => x.PatientPersonalInformation).ThenInclude(x => x.City).Include(x => x.Doctor).OrderByDescending(x => x.ID).Take(100);
             }
             catch (Exception ex)
             {
@@ -114,7 +116,7 @@ namespace Service.Services
             {
                 ApplicationContext context = new ApplicationContext();
 
-                var result = context.ClientOrder.AsQueryable();
+                var result = context.ClientOrder.Where(x => x.IsActive == true).AsQueryable();
 
                 if (model.ID != 0)
                     result = result.Where(x => x.ID == model.ID);

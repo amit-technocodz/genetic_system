@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Data.Helpers;
@@ -7,6 +8,7 @@ using Data.Models;
 using GeneticSystem.Areas.Admin.Models;
 using HISSystem.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MoreLinq.Extensions;
@@ -49,18 +51,19 @@ namespace GeneticSystem.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult AddOrder()
         {
-            ViewBag.Doctors = db.UserService.GetByRole(3);
-            ViewBag.Clients = db.UserService.GetPatients().OrderByDescending(x => x.AddedDate);
+            ViewBag.Doctors = db.UserService.GetByRole(3).Select(x => new { ID = x.ID, Name = x.EnFirstName + " " + x.EnThirdName });
+            ViewBag.Clients = db.UserService.GetPatients().Select(x => new { ID = x.ID, Name = x.EnFirstName + " " + x.EnThirdName });
             ViewBag.Templates = db.DynamicTemplateService.GetAllTemplates().Select(x => new { x.ID, x.TemplateType.Name }).DistinctBy(x => x.Name);
             ViewBag.TestTypes = db.LookupService.GetLookUpByTypeName("TemplateType");
             ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
+            ViewBag.FollowUp = db.LookupService.GetLookUpByTypeName("FollowUpType");
 
             return PartialView("AddClientOrder");
         }
 
 
         [HttpPost]
-        public IActionResult AddOrder(ClientOrderViewModel clientOrder)
+        public IActionResult AddOrder(ClientOrderViewModel clientOrder, IFormFile file)
         {
             try
             {
@@ -79,6 +82,13 @@ namespace GeneticSystem.Areas.Admin.Controllers
                 order.ClientOrderData = clientOrder.ClientOrderData;
                 order.OrderNo = db.ClientOrderService.GetMaxOrderNo();
                 db.ClientOrderService.AddClientOrder(order);
+                AttachmentModel attachmentModel = new AttachmentModel
+                {
+                    File = file,
+                    ID = order.UserID,
+                    TableName = "ClientOrder"
+                };
+                UploadAttachment(attachmentModel);
                 var clientOrderList = db.ClientOrderService.GetClientOrderList();
                 var clientOrders = new PagedData<ClientOrder>();
                 clientOrders.Data = (clientOrderList).Take(PageSize);
@@ -100,9 +110,10 @@ namespace GeneticSystem.Areas.Admin.Controllers
             
             ClientOrder clientOrder = db.ClientOrderService.GetClientOrderByID(orderId);
             viewModel.ClientOrder = clientOrder;
-
+            ViewBag.FollowUp = db.LookupService.GetLookUpByTypeName("FollowUpType");
             ViewBag.TestTypes = db.LookupService.GetLookUpByTypeName("TemplateType"); 
             ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
+            ViewBag.FollowUp = db.LookupService.GetLookUpByTypeName("FollowUpType");
             ViewBag.Element = db.LookupService.GetLookUpByTypeName("Element");
             ViewBag.ConsumptionType = db.LookupService.GetLookUpByTypeName("ConsumptionType");
             ViewBag.FeederType = db.LookupService.GetLookUpByTypeName("FeederType");
@@ -116,8 +127,8 @@ namespace GeneticSystem.Areas.Admin.Controllers
 
             viewModel.ClientOrderData = clientOrderDatas;
 
-            ViewBag.Doctors = db.UserService.GetByRole(3);
-            ViewBag.Clients = db.UserService.GetPatients().OrderByDescending(x => x.AddedDate);
+            ViewBag.Doctors = db.UserService.GetByRole(3).Select(x => new { ID = x.ID, Name = x.EnFirstName + " " + x.EnThirdName });
+            ViewBag.Clients = db.UserService.GetPatients().Select(x => new { ID = x.ID, Name = x.EnFirstName + " " + x.EnThirdName });
             ViewBag.Templates = db.DynamicTemplateService.GetAllTemplates().Select(x => new { x.ID, x.TemplateType.Name }).DistinctBy(x => x.Name);
 
 
@@ -171,11 +182,12 @@ namespace GeneticSystem.Areas.Admin.Controllers
                 ClientOrderViewModel viewModel = new ClientOrderViewModel();
                 var tmpID = db.DynamicTemplateService.GetAllTemplates().Where(x => x.ID == type).FirstOrDefault();
                 viewModel.TemplateList = db.DynamicTemplateService.GetAllTemplateByTempID(tmpID.TemplateTypeID).ToList() ;
-                ViewBag.Doctors = db.UserService.GetByRole(3);
-                ViewBag.Clients = db.UserService.GetPatients().OrderByDescending(x => x.AddedDate);
+                ViewBag.Doctors = db.UserService.GetByRole(3).Select(x => new { ID = x.ID, Name = x.EnFirstName + " " + x.EnThirdName });
+                ViewBag.Clients = db.UserService.GetPatients().Select(x => new { ID = x.ID, Name = x.EnFirstName + " " + x.EnThirdName });
                 ViewBag.Templates = db.DynamicTemplateService.GetAllTemplates().Select(x => new { x.ID, x.TemplateType.Name }).DistinctBy(x => x.Name);
                 ViewBag.TestTypes = db.LookupService.GetLookUpByTypeName("TemplateType");
                 ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
+                ViewBag.FollowUp = db.LookupService.GetLookUpByTypeName("FollowUpType");
                 ViewBag.Element = db.LookupService.GetLookUpByTypeName("Element");
                 ViewBag.ConsumptionType = db.LookupService.GetLookUpByTypeName("ConsumptionType");
                 ViewBag.FeederType = db.LookupService.GetLookUpByTypeName("FeederType");
@@ -235,6 +247,34 @@ namespace GeneticSystem.Areas.Admin.Controllers
             ViewBag.UserID = userID;
             ViewBag.TableName = "ClientOrder";
             return PartialView("_Attachment", result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadAttachment(AttachmentModel attachment)
+        {
+            var model = new Data.Models.Attachment();
+            if (attachment.File != null)
+            {
+                var path = Path.Combine(_appEnvironment.WebRootPath, "Uploaded", attachment.File.FileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                   await attachment.File.CopyToAsync(stream);
+                    model.AttachmentPath = "/uploaded/" + attachment.File.FileName;
+                    model.AttachmentName = attachment.File.FileName;
+                }
+            }
+            model.UserID = attachment.ID;
+            model.TableName = attachment.TableName;
+            db.AttachmentService.Add(model);
+            return Ok(true);
+        }
+
+        public class AttachmentModel
+        {
+            public IFormFile File { get; set; }
+            public int ID { get; set; }
+            public string TableName { get; set; }
         }
     }
 }

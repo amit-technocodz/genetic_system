@@ -37,7 +37,7 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>Client Name</label>
-                                                    @Html.DropDownList("clientOrder.ClientOrder.UserID", new SelectList(ViewBag.Clients, "ID", "ArFirstName", Model?.ClientOrder?.UserID), "Select", new { @Class = "form-control dropdown", @onchange = "test();" })
+                                                    @Html.DropDownList("clientOrder.ClientOrder.UserID", new SelectList(ViewBag.Clients, "ID", "Name", Model?.ClientOrder?.UserID), "Select", new { @Class = "form-control dropdown", @onchange = "test();" })
                                                 </div>
                                             </div>
                                         </div>
@@ -89,15 +89,21 @@
                                                 <input type="button" name="button" value="Save" onclick="saveOrderFunction();" class="btn btn-xs btn-primary" id="signupform" />
                                                 <input type="button" name="submit" id="postUpdatebtn" value="Update" class="btn btn-xs btn-warning" />
                                                 <input type="button" name="submit" value="History" class="btn btn-xs btn-info" disabled />
-                                                <input type="button" name="submit" value="Attachment" class="btn btn-xs btn-warning" disabled />
-                                                @*<input type="button" name="submit" value="Reminder" class="btn btn-xs btn-info" disabled />*@
+                                                @if (Model == null)
+                                                {
+                                                    <label for="fileUpload" class="file-upload btn btn-xs btn-warning">
+                                                        <i class="fa fa-upload mr-2"></i>Attachment
+                                                        <input id="fileUpload" name="file" type="file">
+                                                    </label>
+                                                }
+
                                             </div>
                                         </div>
                                         <br />
                                         <div class="col-md-12" id="setTemplate">
                                             @if (Model != null)
                                             {
-                                            <input value="@Model.ClientOrder.ID" name="clientOrder.ClientOrder.ID" hidden/>
+                                                <input value="@Model.ClientOrder.ID" name="clientOrder.ClientOrder.ID" hidden />
                                                 {
                                                     await Html.RenderPartialAsync("_GetClientOrder");
                                                 }
@@ -116,7 +122,7 @@
                                             <div class="col-md-8">
                                                 <div class="form-group">
                                                     <h4>Follow Up Needed</h4>
-                                                    @Html.ListBox("clientOrder.ClientOrder.FollowUpArray", new MultiSelectList(ViewBag.EffectedGene, "ID", "Name", Model?.ClientOrder?.FollowUpArray), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
+                                                    @Html.ListBox("clientOrder.ClientOrder.FollowUpArray", new MultiSelectList(ViewBag.FollowUp, "ID", "Name", Model?.ClientOrder?.FollowUpArray), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
                                                 </div>
                                             </div>
                                         </div>
@@ -132,7 +138,7 @@
                                             <div class="col-md-8">
                                                 <div class="form-group">
                                                     <h4>Assign Doctor</h4>
-                                                    @Html.DropDownList("clientOrder.ClientOrder.DoctorID", new SelectList(ViewBag.Doctors, "ID", "ArFirstName", Model?.ClientOrder?.DoctorID), "Select", new { @Class = "form-control dropdown", @onchange = "test();" })
+                                                    @Html.DropDownList("clientOrder.ClientOrder.DoctorID", new SelectList(ViewBag.Doctors, "ID", "Name", Model?.ClientOrder?.DoctorID), "Select", new { @Class = "form-control dropdown"})
                                                 </div>
                                             </div>
                                         </div>
@@ -158,12 +164,10 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label>ID No</label>
-                                                        @Html.TextBox("clientOrder.ClientOrder.User.ID", Model?.ClientOrder?.UserID, new { @class = "form-control", @readonly = "readonly" })
+                                                        <input name="clientOrder.ClientOrder.User.ID" value="@Model?.ClientOrder?.UserID"  hidden/>
+                                                        @Html.TextBox("clientOrder.ClientOrder.User.PatientPersonalInformation.IdentificationTypeID", Model?.ClientOrder?.User?.PatientPersonalInformation?.IdentificationTypeID, new { @class = "form-control", @readonly = "readonly" })
+
                                                     </div>
-                                                    @*<div class="form-group">
-                                                            <label>Age</label>
-                                                            <input class="form-control" id="" name="" type="text" value="">
-                                                        </div>*@
                                                     <div class="form-group">
                                                         <label>City</label>
                                                         @Html.TextBox("clientOrder.ClientOrder.User.PatientPersonalInformation.City.Name", Model?.ClientOrder?.User?.PersonalInformation?.City?.Name, new { @class = "form-control", @readonly = "readonly" })
@@ -180,14 +184,6 @@
                                                         <label>Blood GR</label>
                                                         @Html.TextBox("clientOrder.ClientOrder.User.PatientPersonalInformation.BloodGroup.Name", Model?.ClientOrder?.User?.PatientPersonalInformation?.BloodGroup?.Name, new { @class = "form-control", @readonly = "readonly" })
                                                     </div>
-                                                    @*<div class="form-group">
-                                                            <label>Hight</label>
-                                                            <input class="form-control" id="" name="" type="text" value="">
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label>Weight</label>
-                                                            <input class="form-control" id="" name="" type="text" value="">
-                                                        </div>*@
                                                 </div>
                                             </div>
                                         </div>
@@ -201,51 +197,6 @@
         </div>
     </fieldset>
 </form>
-<script>
-
-    var objfill;
-
-
-    //$('select').selectpicker();
-    function Uncheck(data) {
-        var test = $(data).attr("data-info");
-        if ($(data).prop("checked")) {
-            document.getElementById(test).removeAttribute('readonly');
-        }
-        else {
-            document.getElementById(test).setAttribute('readonly', true);
-        }
-    }
-    function enabletextbox(data) {
-        var test = $(data).attr("data-info");
-        var test1 = $(data).attr("datainfo1");
-        if ($(data).prop("checked")) {
-            document.getElementById(test).removeAttribute('readonly');
-            document.getElementById(test1).removeAttribute('readonly');
-        }
-        else {
-            document.getElementById(test).setAttribute('readonly', true);
-            document.getElementById(test1).setAttribute('readonly', true);
-        }
-
-    }
-    function showdetail() {
-        $("#detail-div").toggle();
-    }
-    function autocomplete(data) {
-        $('.autocomplete').autocomplete({
-            source: '/admin/patientOrder/AutoCompleteNameWithID',
-            minLength: 0,
-            select: function (event, ui) {
-                $("#hiddenUserID").val(ui.item.id);
-            },
-        }).focus(function () {
-            $('.autocomplete').autocomplete("search");
-        });
-    }
-    $('.autocomplete').autocomplete("option", "appendTo", ".eventInsForm");
-
-</script>
 
 
 
