@@ -128,7 +128,6 @@ namespace GeneticSystem.Areas.Admin.Controllers
         public IActionResult GetDynamicTemplate(string temptype, string subtemptype)
         {
             AddTestDynamicTemplate dynamicTemplate = new AddTestDynamicTemplate();
-            var LookupList = db.LookupService.GetLookups();
 
             dynamicTemplate.TestTemplate = db.TestDynamicTemplateService.GetTemplateByName(temptype, subtemptype);
             dynamicTemplate.TestTemplateDataList = db.TestDynamicTemplateService.GetTemplateDataID(dynamicTemplate.TestTemplate.ID);
