@@ -34,13 +34,16 @@ namespace Data.Helpers
 					mail.Subject = model.Subject;
 					mail.Body = model.Body;
 
-					//Current stream
-					mem.Seek(0, System.IO.SeekOrigin.Begin);
-					foreach (var item1 in model.File2)
+					if (model.File2!=null)
 					{
-						var att = new System.Net.Mail.Attachment(mem, item1.FileName, item1.ContentType);
-						mail.Attachments.Add(att);
+						//Current stream
+						mem.Seek(0, System.IO.SeekOrigin.Begin);
+						foreach (var item1 in model.File2)
+						{
+							var att = new System.Net.Mail.Attachment(mem, item1.FileName, item1.ContentType);
+							mail.Attachments.Add(att);
 
+						}
 					}
 					var smtp = new SmtpClient
 					{

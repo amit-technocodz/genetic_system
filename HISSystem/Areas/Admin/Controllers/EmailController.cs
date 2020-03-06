@@ -149,8 +149,11 @@ namespace GeneticSystem.Areas.Admin.Controllers
 
         public IActionResult Send(EmailSendModel emailViewmodel)
         {
-           // List<IFormFile> File = null;
-            emailViewmodel.File2= new List<IFormFile>(Request.Form.Files);
+            // List<IFormFile> File = null;
+            if (emailViewmodel.File2!=null)
+            {
+                emailViewmodel.File2 = new List<IFormFile>(Request.Form.Files);
+            }
             using (MemoryStream ms = new MemoryStream())
             {
                 SendEmails.SendInvoiceMail(emailViewmodel, ms, this.iConfiguration);
