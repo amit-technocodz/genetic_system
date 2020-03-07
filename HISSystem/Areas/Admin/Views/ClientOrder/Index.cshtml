@@ -117,8 +117,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chosen-js@1.8.7/chosen.jquery.js" integrity="sha256-TDtzz+WOGufaQuQzqpEnnxdJQW5xrU+pzjznwBtaWs4=" crossorigin="anonymous"></script>
 
     <script>
-
-
         $(document).on("keyup", "#searchPatient", function () {
             var id = $(this).val();
             $.ajax({
@@ -150,7 +148,7 @@
                 type: "get",
                 data: { 'Id': user },
                 success: function (data) {
-                             $("#clientOrder_ClientOrder_UserID").val(data.id);
+                    $("#clientOrder_ClientOrder_UserID").val(data.id);
                     if (data.registerationNo != null)
                         $("#clientOrder_ClientOrder_User_RegisterationNo").val(data.registerationNo);
                     else
@@ -342,7 +340,7 @@
                 dataType: "json",
                 data: { 'Id': user },
                 success: function (data) {
-                        $("#clientOrder_ClientOrder_UserID").val(data.id);
+                    $("#clientOrder_ClientOrder_UserID").val(data.id);
                     if (data.registerationNo != null)
                         $("#clientOrder_ClientOrder_User_RegisterationNo").val(data.registerationNo);
                     else
@@ -411,25 +409,6 @@
 
         });
 
-        $(document).ready(function () {
-            $('#registerNo').autocomplete({
-                source: '/admin/patient/autocompletereg'
-            });
-            debugger
-        });
-
-        $(document).ready(function () {
-            $('#patientName').autocomplete({
-                source: '/admin/patient/autocompletename'
-            });
-            debugger
-        });
-        $(document).ready(function () {
-            $('#id-no').autocomplete({
-                source: '/admin/patient/autocompleteid'
-            });
-            debugger
-        });
 
         $(document).ready(function () {
             $("body").on("click", '.page-number', function () {
@@ -448,10 +427,6 @@
             });
         });
 
-        function GetID(id) {
-            debugger
-            $("#update-patient").attr("href", "/admin/patientorder/updateorder/" + id);
-        }
 
         function patientSearch() {
 
@@ -479,210 +454,7 @@
 
         };
 
-        function dynamicAdmissionFields() {
-            var TypeID = $("#TypeID").val();
-            if (TypeID != null) {
-                if (TypeID == 66 || TypeID == 63) {
-                    $("#RefferedByDrop").show();
-                    $("#ReservedByBox").hide();
-                    $("#AppointmentBox").hide();
-                } else if (TypeID == 69) {
-                    $("#AppointmentBox").show();
-                    var AppointmentID = $("#AppointmentID").val();
-                    if (AppointmentID != 0 && AppointmentID != null) {
-                        $.ajax({
-                            url: '/admin/patient/GetAppointmentReservedBy',
-                            type: 'POST',
-                            data: { AppointmentID: AppointmentID },
-                            success: function (result) {
-                                debugger
-                                $("#ReservedBy").val(result);
-                            },
-                            error: function (xhr, status) {
-                                toastr.error('Something went wrong');
-                            }
-                        });
-                    } else {
-                        $("#ReservedBy").val("");
-                    }
-                    $("#ReservedByBox").show();
-                    $("#RefferedByDrop").hide();
-                } else {
-                    $("#ReservedByBox").hide();
-                    $("#RefferedByDrop").hide();
-                    $("#AppointmentBox").hide();
-                }
-            }
-        }
 
-
-        $('.action-button').click(function () {
-            debugger
-            var id = this.id;
-            var val = this.dataset.value;
-            debugger
-            if (val) {
-                url = '/admin/patient/' + id + "?id=" + val;
-            }
-            else {
-                url = '/admin/patient/' + id
-            }
-            $.ajax({
-                url: url,
-                type: 'GET',
-                success: function (result) {
-                    debugger
-                    $(".modal-content").html(result);
-                    if (id == "admission") {
-                        dynamicAdmissionFields();
-                    }
-                },
-                error: function (xhr, status) {
-                    debugger
-                    toastr.error('Something went wrong');
-                }
-            });
-        });
-
-
-
-
-
-        function GetType(event) {
-            var id = event.id;
-            url = '/admin/patient/'
-
-            if (id == 'AdmissionTypeID') {
-                url = url + 'FillTypeDropDown?id=' + event.value;
-            }
-            $.ajax({
-                url: url,
-                type: 'GET',
-                success: function (data) {
-                    if (data.length > 0) {
-                        if (data[0].typeID) {
-                            $("#TypeID").prop("disabled", false);
-                            var ddldist = $('#TypeID');
-                            var markup = "<option value='0'>Select " + data[0].type.toLowerCase() + " type</option>";
-                            $.each(data, function (val, text) {
-                                markup += "<option value=" + text.id + ">" + text.name + "</option>";
-                            });
-                            $("#TypeID").html(markup).show();
-                        }
-                    }
-                    $("#ReservedByBox").hide();
-                    $("#RefferedByDrop").hide();
-                    $("#AppointmentBox").hide();
-                },
-                error: function (xhr, status) {
-                    toastr.error('Something went wrong');
-                }
-            });
-        };
-
-        function GetBuilding(event) {
-            var id = event.id;
-            var selectRoom = "<option value='0'>Select Room</option>";
-            var selectBed = "<option value='0'>Select Bed</option>";
-            url = '/admin/patient/'
-
-            if (id == 'BuildingID') {
-                url = url + 'FillFloorDropDown?BuildingID=' + event.value;
-            }
-            if (id == 'FloorID') {
-                url = url + 'FillRoomDropDown?FloorID=' + event.value;
-            }
-            if (id == 'RoomID') {
-                url = url + 'FillBedDropDown?RoomID=' + event.value;
-            }
-            if (id == 'AdmissionTypeID') {
-                debugger
-                url = url + 'FillTypeDropDown?id=' + event.value;
-            }
-            $.ajax({
-                url: url,
-                type: 'GET',
-                success: function (data) {
-                    if (data.length > 0) {
-                        if (data[0].buildingID) {
-                            var markup = "<option value='0'>Select Floor</option>";
-                            var selectRoom = "<option value='0'>Select Room</option>";
-                            var selectBed = "<option value='0'>Select Bed</option>";
-                            if (data.length > 0) {
-                                $.each(data, function (val, text) {
-                                    markup += "<option value=" + text.id + ">" + text.name + "</option>";
-                                });
-                            }
-                            $("#FloorID").html(markup).show();
-                            $("#RoomID").html(selectRoom).show();
-                            $("#BedID").html(selectBed).show();
-                        }
-                        if (data[0].floorID) {
-                            var markup = "<option value='0'>Select Room</option>";
-                            $.each(data, function (val, text) {
-                                markup += "<option value=" + text.id + ">" + text.name + "</option>";
-                            });
-                            $("#RoomID").html(markup).show();
-                            $("#BedID").html(selectBed).show();
-                        }
-                        if (data[0].roomID) {
-                            var markup = "<option value='0'>Select Bed</option>";
-                            $.each(data, function (val, text) {
-                                markup += "<option value=" + text.id + ">" + text.name + "</option>";
-                            });
-                            $("#BedID").html(markup).show();
-                        }
-                    }
-                },
-                error: function (xhr, status) {
-                    toastr.error('Something went wrong');
-                }
-            });
-        };
-
-        $(document).on("change", "#PatientAdmission_OutPatientTypeID", function () {
-            var OutPatientType = $(this).val();
-            if (OutPatientType != 107) {
-                $('#appointReserveWrapper').show();
-            } else {
-                $('#appointReserveWrapper').hide();
-            }
-        });
-
-        $(document).on("change", "#TypeID", function () {
-            dynamicAdmissionFields();
-
-        });
-
-        $(document).on("change", "#AppointmentID", function () {
-            dynamicAdmissionFields();
-        });
-
-        $(document).on("change", "#PatientAdmission_AppointmentID", function () {
-            var AppointmentID = $(this).val();
-            if (AppointmentID != 0 || AppointmentID != null) {
-
-                $.ajax({
-                    type: "GET",
-                    url: '/admin/Patient/GetAppointmentID',
-                    data: { AppointmentID: AppointmentID },
-                    success: function (data) {
-                        console.log(data);
-                        debugger
-                        $("#PatientAdmission_DepartmentID").val(data.departmentID);
-                        $("#PatientAdmission_SpecialityID").val(data.specialityID);
-                        $("#PatientAdmission_PurposeID").val(data.purposeID);
-                        $("#Appointment_CreatedBy").val(data.createdBy);
-                        $("#PatientAdmission_DoctorID").val(data.doctor.id);
-                        $("#PatientAdmission_RoomID").val(data.roomID);
-                        $("#PatientAdmission_Note").val(data.note);
-                    },
-                    error: function () {
-                        alert("Not able to get appointment details!.");
-                    }
-                });
-            }
-        });
         $("body").on("click", "#pdfExport", function () {
             html2canvas($('#patientTbl')[0], {
                 onrendered: function (canvas) {
