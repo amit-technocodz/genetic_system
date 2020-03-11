@@ -89,12 +89,84 @@ namespace Repository.UnitOfWork
         Repository<TestTemplateColumn> _TestTemplateColumn;
         Repository<TestTemplateData> _TestTemplateData;
 
+        Repository<TestTemp> _TestTemp;
+        Repository<MasterTempCol> _MasterTempCol;
+        Repository<TestTempCol> _TestTempCol;
+        Repository<TestTempData> _TestTempData;
+
         public UnitOfWork()
         {
             this._context = new ApplicationContext();
         
         }
 
+        public IRepository<TestTempData> TestTempData
+        {
+            get
+            {
+                if (_TestTempData != null)
+                {
+                    return _TestTempData;
+                }
+                else
+                {
+                    _TestTempData = new Repository<TestTempData>(_context);
+                    return _TestTempData;
+                }
+
+            }
+        }
+
+
+        public IRepository<TestTempCol> TestTempCol
+        {
+            get
+            {
+                if (_TestTempCol != null)
+                {
+                    return _TestTempCol;
+                }
+                else
+                {
+                    _TestTempCol = new Repository<TestTempCol>(_context);
+                    return _TestTempCol;
+                }
+
+            }
+        }
+
+        public IRepository<TestTemp> TestTemp
+        {
+            get
+            {
+                if (_TestTemp != null)
+                {
+                    return _TestTemp;
+                }
+                else
+                {
+                    _TestTemp = new Repository<TestTemp>(_context);
+                    return _TestTemp;
+                }
+
+            }
+        }
+        public IRepository<MasterTempCol> MasterTempCol
+        {
+            get
+            {
+                if (_MasterTempCol != null)
+                {
+                    return _MasterTempCol;
+                }
+                else
+                {
+                    _MasterTempCol = new Repository<MasterTempCol>(_context);
+                    return _MasterTempCol;
+                }
+
+            }
+        }
 
         public IRepository<TestTemplateData> TestTemplateData
         {

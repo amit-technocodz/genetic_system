@@ -38,10 +38,25 @@ namespace Service.UnitOfServices
         private ClientOrderService _ClientOrderService;
         private MedicalDictionaryService _MedicalDictionaryService;
         private TestDynamicTemplateService _TestDynamicTemplateService;
+        private TestTempService _TestTempService;
 
         public UnitOfService()
         {
             this._rep = new UnitOfWork();
+        }
+
+        public TestTempService TestTempService
+        {
+            get
+            {
+                if (_TestTempService != null)
+                    return _TestTempService;
+                else
+                {
+                    _TestTempService = new TestTempService(_rep);
+                    return _TestTempService;
+                }
+            }
         }
 
         public TestDynamicTemplateService TestDynamicTemplateService

@@ -39,6 +39,7 @@ namespace Service.UnitOfServices
         ClientOrderService ClientOrderService { get; }
         MedicalDictionaryService MedicalDictionaryService { get; }
         TestDynamicTemplateService TestDynamicTemplateService { get; }
+        TestTempService TestTempService { get; }
     }
 }
 

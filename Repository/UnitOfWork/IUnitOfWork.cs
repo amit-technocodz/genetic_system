@@ -86,5 +86,10 @@ namespace Repository.UnitOfWork
         IRepository<TestTemplate> TestTemplate { get; }
         IRepository<TestTemplateColumn> TestTemplateColumn { get; }
         IRepository<TestTemplateData> TestTemplateData { get; }
+
+        IRepository<TestTemp> TestTemp { get; }
+        IRepository<MasterTempCol> MasterTempCol { get; }
+        IRepository<TestTempCol> TestTempCol { get; }
+        IRepository<TestTempData> TestTempData { get; }
     }
 }

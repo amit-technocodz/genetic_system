@@ -110,5 +110,10 @@ namespace Repository
         public DbSet<TestTemplateColumn> TestTemplateColumn { get; set; }
         public DbSet<TestTemplateData> TestTemplateData { get; set; }
 
+        public DbSet<TestTemp> TestTemp { get; set; }
+        public DbSet<TestTempCol> TestTempCol { get; set; }
+        public DbSet<MasterTempCol> MasterTempCol { get; set; }
+        public DbSet<TestTempData> TestTempData { get; set; }
+
     }
 }
