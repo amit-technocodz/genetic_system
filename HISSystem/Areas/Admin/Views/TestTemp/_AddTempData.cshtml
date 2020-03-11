@@ -1,0 +1,55 @@
+﻿@model GeneticSystem.Areas.Admin.Models.TestTempVM
+
+<form action="/admin/lookup/addmaster" method="post" id="addTemplateDetailFrm">
+    <div class="prtm-content">
+        <div class="row">
+            <div class="col-md-7 col-sm-7 col-xs-12">
+                <button type="button" class="btn btn-xs btn-outline-danger add-btn backToTemplate ">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    &nbsp;Back @Model.TestTemp?.TestTempType?.Name >> @Model.TestTemp?.SubTestTempType?.Name List
+                </button>
+                &nbsp;
+                <button type="button" class="btn btn-xs btn-outline-warning addTemplateDetail" data-info="" data-catch="@Model.TestTemp?.TestTempType?.Name>>@Model.TestTemp?.SubTestTempType?.Name">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    &nbsp;Save @Model.TestTemp?.TestTempType?.Name >> @Model.TestTemp?.SubTestTempType?.Name Data
+                </button>
+
+                <h3 id="lName"></h3>
+            </div>
+            <div class="col-md-12">
+                <table id="userTbl" class="table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr class="">
+                            @foreach (var item in Model.TestTemp.TestTempCols)
+                            {
+                                <th> @item.TestColName </th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @foreach (var item in Model.TestTemp.TestTempCols.Select((value, i) => new { i, value }))
+                            {
+                                <td>
+                                    <input name="TestTemplateData.TestTemplateID" value="@Model.TestTemp.ID" hidden>
+                                    @if (item.value.TempColType.ColName == "Checkbox")
+                                    {
+                                        @Html.ListBox("TestTemplateData.Genes", new MultiSelectList(ViewBag.EffectedGene, "ID", "Name"), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
+                                    }
+                                    else if (item.value.TempColType.ColName == "Textbox")
+                                    {
+                                        @Html.DropDownList("TestTemplateData.ConsumptionTypeID", new SelectList(ViewBag.ConsumptionType, "ID", "Name"), "Select Consumption Type", new { @class = "form-control dropdown" })
+                                    }
+                                    else if (item.value.TempColType.ColName == "DropDown")
+                                    {
+                                        @Html.DropDownList("TestTemplateData.ElementID", new SelectList(ViewBag.Element, "ID", "Name"), "Select Element Type", new { @class = "form-control dropdown" })
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>

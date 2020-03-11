@@ -10,5 +10,7 @@ namespace GeneticSystem.Areas.Admin.Models
     {
         public TestTemp TestTemp { get; set; }
         public List<TestTempCol> TestTempCol { get; set; }
+        public IEnumerable<DropDownVM> DropDown { get; set; }
+        public List<TestTempData> TestTempDataList { get; set; }
     }
 }

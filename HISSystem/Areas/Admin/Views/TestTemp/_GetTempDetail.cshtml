@@ -1,0 +1,68 @@
+﻿@model GeneticSystem.Areas.Admin.Models.TestTempVM
+
+<div class="prtm-content">
+    <div class="row">
+        <div class="col-md-10 col-sm-10 col-xs-24 mrgn-b-sm">
+            <button type="button" class="btn btn-xs btn-outline-warning add-btn addTemplateData" data-info="@Model.TestTemp.ID">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                &nbsp;Add Template Data
+            </button>
+            &nbsp;
+            @*<h3 id="lName"></h3>*@
+            <button type="button" class="btn btn-xs edit-post btn-outline-primary updateTemplate" onclick="TempID(@Model.TestTemp.ID)">
+                <i class="fa fa-edit" aria-hidden="true"></i>
+                &nbsp;Edit Template Columns
+            </button>
+        </div>
+        &nbsp;
+        <div class="col-md-12">
+            <table id="userTbl" class="table table-hover table-bordered table-striped">
+                <thead>
+                    <tr class="">
+                        @foreach (var item in Model.TestTemp.TestTempCols)
+                        {
+                            <th> @item.TestColName </th>
+                        }
+
+                        <th class="numeric">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var itemData in Model.TestTempDataList.Select((value, i) => new { i, value }))
+                    {
+                        <tr data-info="@Model.TestTemp.ID">
+
+                            @if (Model.TestTempDataList.Count() > 0)
+                            {
+                                @foreach (var item in Model.TestTemp.TestTempCols.Select((value, i) => new { i, value }))
+                                {
+                                    <td class="" data-info="@itemData.value.ID">
+
+                                        @if (itemData.value.TestTempColID == item.value.ID && item.value.TempColType.ColName == "Checkbox")
+                                        {
+                                            <input type="checkbox" name="TestTemplateData.HaveMutationEffected" class="itemDatadsbl" value="@Model.TestTempDataList[itemData.i].BoolValue" disabled><span class="label-text">Have Mutation Effected</span>
+                                        }
+                                        else if (itemData.value.TestTempColID == item.value.ID && item.value.TempColType.ColName == "Textbox")
+                                        {
+                                            <input name="TestTemplateData.PersonalRiskFactor" class="form-control itemDatadsbl" value="@Model.TestTempDataList[itemData.i].StringValue" disabled>
+                                        }
+                                        else if (itemData.value.TestTempColID == item.value.ID && item.value.TempColType.ColName == "Dropdown")
+                                        {
+                                            @Html.DropDownList("TestTemplateData.ElementID", new SelectList(ViewBag.Element, "ID", "Name", @Model.TestTempDataList[itemData.i].DropDownValueID), "Select Element Type", new { @class = "form-control dropdown itemDatadsbl", @disabled = true })
+                                        }
+                                    </td>
+                                }
+                            }
+                            <td>
+                                <a href="javascript:void(0);" class="fa fa fa-pencil mrgn-l-xs fa-1x" onclick="editTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Trach"></a>
+                                <a href="javascript:void(0);" class="fa fa-trash mrgn-l-xs fa-1x" onclick="deleteTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Trach"></a>
+                                <a href="javascript:void(0);" class="fa fa-floppy-o mrgn-l-xs fa-1x" onclick="updateTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Trach" hidden></a>
+                                <a href="javascript:void(0);" class="fa fa-times mrgn-l-xs fa-1x" onclick="cancelTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Trach" hidden></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

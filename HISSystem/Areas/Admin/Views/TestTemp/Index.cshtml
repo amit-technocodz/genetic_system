@@ -1,4 +1,4 @@
-﻿@model List<Data.Models.TestTemp>
+﻿@model GeneticSystem.Areas.Admin.Models.TestTempVM;
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Admin.cshtml";
@@ -72,6 +72,10 @@
             <div class="col-md-5">
                 <label for="search">&nbsp;</label> <br /><a href="#" data-info="addMasterTemp" class="btn btn-xs btn-warning addMasterTemp"><i class="fa fa-plus" aria-hidden="true"></i> Add Master Template</a>
             </div>
+            <button type="button" class="btn btn-xs btn-outline-warning add-btn addTemplateData" data-info="">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                &nbsp;Add Template Data
+            </button>
         </div>
     </div>
 
@@ -87,9 +91,9 @@
                                 </div>
                                 <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
                                     <div id="lookupList" class="scroll_text">
-                                        @foreach (var item in ViewBag.Templates)
+                                        @foreach (var item in Model.DropDown)
                                         {
-                                            <h4><a href="#" class="list-group-item " onclick="GetTemplateDetail(this,'@item')">@item.Name</a></h4>
+                                            <h4><a href="#" class="list-group-item " onclick="GetTemplateDetail(this,'@item.ID')">@item.Name</a></h4>
                                         }
                                     </div>
                                 </div>
@@ -144,7 +148,31 @@
     <script>
         var getGlobalHTML;
 
-        function GetTemplateDetail(current, type) {
+  //      function GetTemplateDetail(current, type) {
+  //          var fields = type.split('>>');
+  //          var temptype = fields[0];
+  //          var subtemptype = fields[1];
+		//$(".list-group-item").removeClass('active')
+		//$(current).addClass('active')
+		//$.ajax({
+		//	url: '/admin/testdynamictemplate/getdynamictemplate?temptype=' + temptype + "&subtemptype=" + subtemptype,
+		//	contentType: 'application/json; charse=utf-8',
+		//	type: 'get',
+		//	success: function (result) {
+  //              debugger
+  //              $("#DataLookup").html(result);
+  //              $('.tryMultiselect').chosen();
+		//	},
+		//	error: function (xhr, status) {
+		//		alert(status)
+		//	}
+		//});
+  //      }
+
+        function GetTemplateDetail(current, ID) {
+debugger
+            alert(ID);
+            false;
             var fields = type.split('>>');
             var temptype = fields[0];
             var subtemptype = fields[1];
@@ -165,6 +193,7 @@
 		});
 	}
 
+
         $(document).on("click", ".addMasterTemp", function(){
                 var options = {
                     "backdrop": "static",
@@ -181,7 +210,7 @@
                     });
                                        document.getElementById("TestTemplate_SubTestTemplateTypeID").addEventListener("change", function () {
                         TempValidation();
-});
+                    });
                     },
                     error: function () {
                         alert("Content load failed.");
@@ -189,9 +218,16 @@
                 });
         });
 
-
-
-
+        $(document).on("change", ".ColTypDrp", function (event) {
+            var drpdwntype = event.target.parentElement.parentElement.getElementsByClassName("drptype")[0];
+            if (event.target.value == 2) {
+                drpdwntype.style.display = "block";
+                }
+            else {
+                drpdwntype.value = '';
+                drpdwntype.style.display = "none";
+            }
+        });
 
         //GLOBAL VARIABLE TO STORE TEMPLATE ROW DATA
         var templateHtml = null;
@@ -302,26 +338,24 @@
 
 
 
-
-
-
-        function addTemplate() {
+            function addTemplate() {
             var formdata = new FormData();
-            var values = $("#TestTemplate_TestTemplateType option:selected").text() + ">>" + $("#TestTemplate_SubTestTemplateTypeID option:selected").text();
+            var values = $("#TestTemp_TestTempTypeID option:selected").text() + ">>" + $("#TestTemp_SubTestTempTypeID option:selected").text();
 
-            formdata.append('TestTemplate.TestTemplateTypeID', $('#TestTemplate_TestTemplateType').val());
-            formdata.append('TestTemplate.SubTestTemplateTypeID', $('#TestTemplate_SubTestTemplateTypeID').val());
+            formdata.append('TestTemp.TestTempTypeID', $('#TestTemp_TestTempTypeID').val());
+            formdata.append('TestTemp.SubTestTempTypeID', $('#TestTemp_SubTestTempTypeID').val());
+            formdata.append('TestTemp.IsActive', true);
 
               $('#relative-table tfoot tr').each(function (a, b) {
                   var fields = $(this).find(":input");
-                  debugger
-                formdata.append("TestTemplateColumns[" + a + "].TestTemplateFieldID", fields.eq(0).val());
-                formdata.append("TestTemplateColumns[" + a + "].DisplayName", fields.eq(1).val());
+                  formdata.append("TestTemp.TestTempCols[" + a + "].TempColTypeID", fields.eq(0).val());
+                  formdata.append("TestTemp.TestTempCols[" + a + "].TestColName", fields.eq(1).val());
+                  formdata.append("TestTemp.TestTempCols[" + a + "].DataSourceID", fields.eq(2).val());
               });
 
             $.ajax({
-                      type: "POST",
-                url: '/admin/testdynamictemplate/AddTemplate',
+                type: "POST",
+                url: '/admin/testtemp/AddTemplate',
                 data: formdata,
                 processData: false,
                 contentType: false,
@@ -331,13 +365,13 @@
                     if (data) {
                         toastr.success('Template Created');
                         debugger
-                        GetTemplateDetailFix(values);
+                        //GetTemplateDetailFix(values);
                         debugger
                         $('#search').keyup();
                     }
                     else {
                         toastr.warning('Something went wrong');
-                        GetTemplateDetailFix(values);
+                        //GetTemplateDetailFix(values);
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -351,17 +385,15 @@
             var getHTML = document.getElementById("DataLookup").innerHTML;
             debugger
             getGlobalHTML = getHTML;
-            var TemplateID = $(this).data('info');
-            debugger
-
-
+            //var TemplateID = $(this).data('info');
+            var TemplateID = 1;
                 var options = {
                     "backdrop": "static",
                     keyboard: true
                 };
                 $.ajax({
                     type: "GET",
-                    url: '/admin/testdynamictemplate/addtemplatedata',
+                    url: '/admin/testtemp/addtemplatedata',
                     data: { templateId: TemplateID },
                     success: function (data) {
                         $("#DataLookup").html(data);
@@ -398,7 +430,7 @@
                     toastr.error('Something went wrong');
                 }
               });
-            //GetTemplateDetailFix(values);
+
         });
 
             function GetTemplateDetailFix(type) {
@@ -421,31 +453,6 @@
 		});
 	}
 
-
-        //$(function () {
-        //    $("#addLookUp").on('submit', function (e) {
-        //        e.preventDefault()
-        //        var dataToPost = $(this).serialize()
-        //        $.post("/admin/lookup/add", dataToPost)
-        //            .done(function (response, status, jqxhr) {
-        //            })
-        //            .fail(function (jqxhr, status, error) {
-        //            })
-        //    })
-        //})
-
-        //$(function () {
-        //    $("#editLookUp").on('submit', function (e) {
-        //        e.preventDefault()
-        //        var dataToPost = $(this).serialize()
-        //        console.log(dataToPost)
-        //        $.post("/admin/lookup/GetPatients", dataToPost)
-        //            .done(function (response, status, jqxhr) {
-        //            })
-        //            .fail(function (jqxhr, status, error) {
-        //            })
-        //    })
-        //})
 
         $(document).ready(function () {
             $("body").on("click", '.page-number', function () {

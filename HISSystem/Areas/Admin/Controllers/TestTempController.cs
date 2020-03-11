@@ -24,11 +24,11 @@ namespace GeneticSystem.Areas.Admin.Controllers
             this._appEnvironment = _appEnvironment;
         }
 
-        public IActionResult Index()
+        public  IActionResult Index()
         {
-            ViewBag.Templates = db.LookupService.GetLookUpByTypeName("TestTempType");
-            List <TestTemp> testTemps = new List<TestTemp>();
-            return View(testTemps);
+            TestTempVM testTemp = new TestTempVM();
+            testTemp.DropDown = db.TestTempService.GetTestTemps().Select(x => new DropDownVM { ID = x.ID, Name = x.TestTempType.Name + ">>" + x.SubTestTempType.Name });
+            return View(testTemp);
         }
 
         [HttpGet]
@@ -38,7 +38,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
 
             ViewBag.TemplateType = db.LookupService.GetLookUpByTypeName("TestTempType");
             ViewBag.SubTemplateType = db.LookupService.GetLookUpByTypeName("SubTestTempType");
-            ViewBag.DropDownTypes = db.LookupService.GetLookUpByTypeName("DropDownType");
+            ViewBag.DropDownType = db.LookupService.GetLookUpByTypeName("DropDownType");
 
             ViewBag.TemplateField = new List<SelectListItem>
             {
@@ -48,6 +48,67 @@ namespace GeneticSystem.Areas.Admin.Controllers
             };
 
             return PartialView("_AddMasterTemp", testTempVM);
+        }
+        [HttpPost]
+        public bool AddTemplate(TestTempVM testTempVM)
+        {
+            try
+            {
+                TestTemp addtemp = testTempVM.TestTemp;
+                db.TestTempService.AddTestTemp(addtemp);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetDynamicTemplate(int tempID)
+        {
+            TestTempVM testTemp = new TestTempVM();
+
+            testTemp.TestTemp = db.TestTempService.GetTemplateById(tempID);
+            testTemp.TestTempDataList = db.TestTempService.GetTempDataByTempId(testTemp.TestTemp.ID).ToList();
+
+            //ViewBag.TestTypes = db.LookupService.GetLookUpByTypeName("TemplateType");
+            //ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
+            //ViewBag.Element = db.LookupService.GetLookUpByTypeName("Element");
+            //ViewBag.ConsumptionType = db.LookupService.GetLookUpByTypeName("ConsumptionType");
+            //ViewBag.FeederType = db.LookupService.GetLookUpByTypeName("FeederType");
+
+            ViewBag.Result = new List<SelectListItem>
+            {
+              new SelectListItem{ Text="High", Value = "1" },
+              new SelectListItem{ Text="Medium", Value = "2" },
+              new SelectListItem{ Text="Low", Value = "3" }
+            };
+
+            return PartialView("_GetTemplateDetail", testTemp);
+        }
+
+        [HttpGet]
+        public IActionResult AddTemplateData(int templateId)
+        {
+            TestTempVM testTemp = new TestTempVM();
+
+            testTemp.TestTemp = db.TestTempService.GetTemplateById(templateId);
+
+            ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
+            ViewBag.Element = db.LookupService.GetLookUpByTypeName("Element");
+            ViewBag.ConsumptionType = db.LookupService.GetLookUpByTypeName("ConsumptionType");
+            ViewBag.FeederType = db.LookupService.GetLookUpByTypeName("FeederType");
+
+            ViewBag.Result = new List<SelectListItem>
+            {
+              new SelectListItem{ Text="High", Value = "1" },
+              new SelectListItem{ Text="Medium", Value = "2" },
+              new SelectListItem{ Text="Low", Value = "3" }
+            };
+
+            return PartialView("_AddTempData", testTemp);
         }
     }
 }
