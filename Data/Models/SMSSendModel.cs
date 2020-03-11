@@ -9,6 +9,8 @@ namespace Data.Models
         public int ID { get; set; }
         public string Name { get; set; }
         public string Body { get; set; }
+        public string Body1 { get; set; }
+        public string Body2 { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> UpdatedOn { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }

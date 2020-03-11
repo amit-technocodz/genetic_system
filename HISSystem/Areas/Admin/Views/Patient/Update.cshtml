@@ -1292,7 +1292,11 @@ function showdetail() {
             debugger
             emailViewModel.Subject = 'Dear User Your Password From CAP';
             debugger
-            emailViewModel.Body = $("#Password").val();
+            emailViewModel.Body = $("#UserName").val();
+            debugger
+            emailViewModel.Body1 = $("#Password").val();
+            debugger
+            emailViewModel.Body2 = 'erpeasy1.org';
             debugger
             //emailViewModel.CreatedBy = $("#").val();
             emailViewModel.ToEmail = $("#Email").val();
@@ -1338,8 +1342,11 @@ function showdetail() {
             debugger
             smsViewmodel.Name = $("#EnFirstName").val();
             debugger
-            smsViewmodel.Body = $("#Password").val();
+            smsViewmodel.Body = $("#UserName").val();
             debugger
+            smsViewmodel.Body1 = $("#Password").val();
+            debugger
+            smsViewmodel.Body2 = 'erpeasy1.org';
             //emailViewModel.CreatedBy = $("#").val();
             if ($("#Mobile").val() != null || $("#Mobile").val() != undefined) {
                 smsViewmodel.ToMobile = $("#Mobile").val();

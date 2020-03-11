@@ -150,7 +150,16 @@ namespace GeneticSystem.Areas.Admin.Controllers
             var smsapi = smsconfig1.ApiKey;
             try
             {
-                string strUrl = "http://smsservice.hadara.ps:4545/SMS.ashx/bulkservice/sessionvalue/sendmessage/?apikey="+smsapi+"&to="+smsViewmodel.ToMobile+"&msg="+smsViewmodel.Body;
+                var bodyFormat = " Dear User your detail are username: {0}, Password: {1}, From: {2} ";
+
+                var body = smsViewmodel.Body;
+                var body1 = smsViewmodel.Body1;
+                var body2 = smsViewmodel.Body2;
+                var smsBody = string.Format(bodyFormat,smsViewmodel.Body, smsViewmodel.Body1, smsViewmodel.Body2);
+             
+                //string strUrl = "http://smsservice.hadara.ps:4545/SMS.ashx/bulkservice/sessionvalue/sendmessage/?apikey="+smsapi+"&to="+smsViewmodel.ToMobile+"&msg="+smsViewmodel.Body;
+                string strUrl = "http://smsservice.hadara.ps:4545/SMS.ashx/bulkservice/sessionvalue/sendmessage/?apikey="+smsapi+"&to="+smsViewmodel.ToMobile+"&msg="+ smsBody;
+
                 // Create a request object  
                 WebRequest request = HttpWebRequest.Create(strUrl);
                 // Get the response back  

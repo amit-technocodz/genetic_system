@@ -32,8 +32,11 @@ namespace Data.Helpers
 
 					MailMessage mail = new MailMessage(emailFrom, item);
 					mail.Subject = model.Subject;
-					mail.Body = model.Body;
-
+					//mail.Body = model.Body;
+					var body = "<p>Username: {0} </p><p>Password:{1}</p><p>{2}</p>";
+					var xray = string.Format(model.Body, model.Body1, model.Body2);
+					mail.Body = string.Format(body,model.Body, model.Body1, model.Body2);
+					mail.IsBodyHtml = true;
 					if (model.File2!=null)
 					{
 						//Current stream
