@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Data.Models
@@ -12,6 +13,9 @@ namespace Data.Models
         public string StringValue { get; set; }
         public bool BoolValue { get; set; }
         public int? DropDownValueID { get; set; }
+        public bool IsActive { get; set; }
+        [NotMapped]
+        public string[] multiSelect { get; set; }
         public virtual TestTemp TestTemp { get; set; }
         public virtual TestTempCol TestTempCol { get; set; }
         public virtual Lookup DropDownValue { get; set; }

@@ -52,6 +52,26 @@ namespace Repository.Classes
             context.SaveChanges();
         }
 
+        public void InsertList(List<T> entityList)
+        {
+            if (entityList == null)
+                throw new ArgumentNullException("entityList");
+            else
+            {
+                entities.AddRange(entityList);
+                context.SaveChanges();
+            }
+        }
+        public void UpdateList(List<T> entityList)
+        {
+            if (entityList == null)
+                throw new ArgumentNullException("entityList");
+            else
+            {
+                entities.UpdateRange(entityList);
+                context.SaveChanges();
+            }
+        }
         public void Delete(T entity)
         {
             if (entity == null)
@@ -144,5 +164,5 @@ namespace Repository.Classes
             context.Set<LogTable>().AddRange(logs);
             return context.SaveChanges();
         }
-        }
     }
+}

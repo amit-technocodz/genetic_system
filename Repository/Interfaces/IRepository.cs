@@ -13,7 +13,9 @@ namespace Repository.Interfaces
         void Delete(T entity);
         void Remove(T entity);
         void SaveChanges();
+        void UpdateList(List<T> entityList);
         IQueryable<T> Get();
+        void InsertList(List<T> entityList);
         int SaveChanges(int UserId, string IPaddress, int TargetID);
     }
 }

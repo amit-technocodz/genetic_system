@@ -28,27 +28,46 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var itemData in Model.TestTempDataList.Select((value, i) => new { i, value }))
+                    @for (int i = 0; i < Model.TestTempDataList.Count() / Model.TestTemp.TestTempCols.Count(); i++)
                     {
-                        <tr data-info="@Model.TestTemp.ID">
-
-                            @if (Model.TestTempDataList.Count() > 0)
+                        <tr>
+                            @foreach (var item in Model.TestTempDataList.Select((value, index) => new { index, value }))
                             {
-                                @foreach (var item in Model.TestTemp.TestTempCols.Select((value, i) => new { i, value }))
+                                @if ((item.index >= (i * Model.TestTemp.TestTempCols.Count())) && (item.index < ((i + 1) * Model.TestTemp.TestTempCols.Count())))
                                 {
-                                    <td class="" data-info="@itemData.value.ID">
+                                    <td>
+                                        @foreach (var col in Model.TestTemp.TestTempCols.Select((value, cindex) => new { cindex, value }))
+                                        {
 
-                                        @if (itemData.value.TestTempColID == item.value.ID && item.value.TempColType.ColName == "Checkbox")
-                                        {
-                                            <input type="checkbox" name="TestTemplateData.HaveMutationEffected" class="itemDatadsbl" value="@Model.TestTempDataList[itemData.i].BoolValue" disabled><span class="label-text">Have Mutation Effected</span>
-                                        }
-                                        else if (itemData.value.TestTempColID == item.value.ID && item.value.TempColType.ColName == "Textbox")
-                                        {
-                                            <input name="TestTemplateData.PersonalRiskFactor" class="form-control itemDatadsbl" value="@Model.TestTempDataList[itemData.i].StringValue" disabled>
-                                        }
-                                        else if (itemData.value.TestTempColID == item.value.ID && item.value.TempColType.ColName == "Dropdown")
-                                        {
-                                            @Html.DropDownList("TestTemplateData.ElementID", new SelectList(ViewBag.Element, "ID", "Name", @Model.TestTempDataList[itemData.i].DropDownValueID), "Select Element Type", new { @class = "form-control dropdown itemDatadsbl", @disabled = true })
+                                            @if (item.value.TestTempColID == col.value.ID && col.value.TempColType.ColName == "Checkbox")
+                                            {
+                                                <input name="TestTempDataList[@col.cindex].ID" value="@item.value.ID" hidden />
+                                                <input name="TestTempDataList[@col.cindex].TestTempID" value="@item.value.TestTempID" hidden />
+                                                <input name="TestTempDataList[@col.cindex].TestTempColID" value="@item.value.TestTempColID" hidden />
+                                                <input name="TestTempDataList[@col.cindex].IsActive" value="true" hidden />
+                                                <div class="form-check">
+                                                    <label>
+                                                        <input type="checkbox" name="TestTempDataList[@col.cindex].BoolValue" value="@Model.TestTempDataList[item.index].BoolValue" class="itemDatadsbl" disabled @(Model.TestTempDataList[item.index].BoolValue == true ? "checked" : "")><span class="label-text"></span>
+                                                    </label>
+                                                </div>
+
+                                            }
+                                            else if (item.value.TestTempColID == col.value.ID && col.value.TempColType.ColName == "Textbox")
+                                            {
+                                                <input name="TestTempDataList[@col.cindex].TestTempID" value="@item.value.TestTempID" hidden />
+                                                <input name="TestTempDataList[@col.cindex].TestTempColID" value="@item.value.TestTempColID" hidden />
+                                                <input name="TestTempDataList[@col.cindex].IsActive" value="true" hidden />
+                                                <input name="TestTempDataList[@col.cindex].ID" value="@item.value.ID" hidden />
+                                                <input type="text" name="TestTempDataList[@col.cindex].StringValue" class="form-control itemDatadsbl" value="@Model.TestTempDataList[item.index].StringValue" disabled>
+                                            }
+                                            else if (item.value.TestTempColID == col.value.ID && col.value.TempColType.ColName == "Dropdown")
+                                            {
+                                                <input name="TestTempDataList[@col.cindex].TestTempID" value="@item.value.TestTempID" hidden />
+                                                <input name="TestTempDataList[@col.cindex].ID" value="@item.value.ID" hidden />
+                                                <input name="TestTempDataList[@col.cindex].TestTempColID" value="@item.value.TestTempColID" hidden />
+                                                <input name="TestTempDataList[@col.cindex].IsActive" value="true" hidden />
+                                                @Html.DropDownList("TestTempDataList[" + @col.cindex + "].StringValue", new SelectList(ViewBag.Element, "ID", "Name", @Model.TestTempDataList[item.index].StringValue), "Select Element Type", new { @class = "form-control dropdown itemDatadsbl", @disabled = true })
+                                            }
                                         }
                                     </td>
                                 }

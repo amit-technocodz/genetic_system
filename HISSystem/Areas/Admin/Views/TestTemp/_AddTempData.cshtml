@@ -30,21 +30,36 @@
                         <tr>
                             @foreach (var item in Model.TestTemp.TestTempCols.Select((value, i) => new { i, value }))
                             {
-                                <td>
-                                    <input name="TestTemplateData.TestTemplateID" value="@Model.TestTemp.ID" hidden>
-                                    @if (item.value.TempColType.ColName == "Checkbox")
+                            <td>
+                                <input name="TestTempDataList[@item.i].TestTempID" value="@Model.TestTemp.ID" hidden>
+                                <input name="TestTempDataList[@item.i].TestTempColID" value="@item.value.ID" hidden>
+
+                                @if (item.value.TempColType.ColName == "Checkbox")
+                                {
+                                    <label class="form-check">
+                                        <input type="checkbox" name="TestTempDataList[@item.i].BoolValue" value="true"><span class="label-text"></span>
+                                    </label>
+                                }
+                                else if (item.value.TempColType.ColName == "Textbox")
+                                {
+                                    <input type="text" name="TestTempDataList[@item.i].StringValue" class="form-control" value="">
+                                }
+                                else if (item.value.TempColType.ColName == "Dropdown")
+                                {
+                                    if (item.value.DataSource.Name == "EffectedGene")
                                     {
-                                        @Html.ListBox("TestTemplateData.Genes", new MultiSelectList(ViewBag.EffectedGene, "ID", "Name"), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
+                                        @Html.ListBox("TestTempDataList[" + @item.i + "].multiSelect", new MultiSelectList(ViewBag.EffectedGene, "ID", "Name"), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
                                     }
-                                    else if (item.value.TempColType.ColName == "Textbox")
+                                    else if (item.value.DataSource.Name == "FeederType")
                                     {
-                                        @Html.DropDownList("TestTemplateData.ConsumptionTypeID", new SelectList(ViewBag.ConsumptionType, "ID", "Name"), "Select Consumption Type", new { @class = "form-control dropdown" })
+                                        @Html.ListBox("TestTempDataList[" + @item.i + "].multiSelect", new MultiSelectList(ViewBag.FeederType, "ID", "Name"), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
                                     }
-                                    else if (item.value.TempColType.ColName == "DropDown")
+                                    else if (item.value.DataSource.Name == "Element")
                                     {
-                                        @Html.DropDownList("TestTemplateData.ElementID", new SelectList(ViewBag.Element, "ID", "Name"), "Select Element Type", new { @class = "form-control dropdown" })
+                                        @Html.ListBox("TestTempDataList[" + @item.i + "].multiSelect", new MultiSelectList(ViewBag.Element, "ID", "Name"), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
                                     }
-                                </td>
+                                }
+                            </td>
                             }
                         </tr>
                     </tbody>

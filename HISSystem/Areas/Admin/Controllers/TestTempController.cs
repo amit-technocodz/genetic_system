@@ -68,16 +68,11 @@ namespace GeneticSystem.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetDynamicTemplate(int tempID)
         {
-            TestTempVM testTemp = new TestTempVM();
-
-            testTemp.TestTemp = db.TestTempService.GetTemplateById(tempID);
+            TestTempVM testTemp = new TestTempVM
+            {
+                TestTemp = db.TestTempService.GetTemplateById(tempID)
+            };
             testTemp.TestTempDataList = db.TestTempService.GetTempDataByTempId(testTemp.TestTemp.ID).ToList();
-
-            //ViewBag.TestTypes = db.LookupService.GetLookUpByTypeName("TemplateType");
-            //ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
-            //ViewBag.Element = db.LookupService.GetLookUpByTypeName("Element");
-            //ViewBag.ConsumptionType = db.LookupService.GetLookUpByTypeName("ConsumptionType");
-            //ViewBag.FeederType = db.LookupService.GetLookUpByTypeName("FeederType");
 
             ViewBag.Result = new List<SelectListItem>
             {
@@ -85,8 +80,12 @@ namespace GeneticSystem.Areas.Admin.Controllers
               new SelectListItem{ Text="Medium", Value = "2" },
               new SelectListItem{ Text="Low", Value = "3" }
             };
+            ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
+            ViewBag.Element = db.LookupService.GetLookUpByTypeName("Element");
+            ViewBag.ConsumptionType = db.LookupService.GetLookUpByTypeName("ConsumptionType");
+            ViewBag.FeederType = db.LookupService.GetLookUpByTypeName("FeederType");
 
-            return PartialView("_GetTemplateDetail", testTemp);
+            return PartialView("_GetTempDetail", testTemp);
         }
 
         [HttpGet]
@@ -109,6 +108,45 @@ namespace GeneticSystem.Areas.Admin.Controllers
             };
 
             return PartialView("_AddTempData", testTemp);
+        }
+
+        [HttpPost]
+        public bool AddTemplateDetail(TestTempVM testTempVM)
+        {
+            try
+            {
+                List<TestTempData> templateData = testTempVM.TestTempDataList;
+
+                foreach(var item in templateData)
+                {
+                    if(item.multiSelect != null)
+                        item.StringValue = string.Join(',', item.multiSelect);
+                }
+                bool result = db.TestTempService.SaveTemplDataList(templateData);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
+
+        [HttpPost]
+        public bool UpdateTemplateData(TestTempVM testTempVM)
+        {
+            List<TestTempData> testTempData = testTempVM.TestTempDataList;
+
+            db.TestTempService.UpdateTemplateDataList(testTempVM.TestTempDataList);
+
+            return true;
+        }
+
+        [HttpGet]
+        public bool DeleteTemplateData(int id)
+        {
+            bool result = db.TestDynamicTemplateService.RemoveTemplateDataByID(id);
+            return result;
         }
     }
 }

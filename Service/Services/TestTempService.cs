@@ -25,7 +25,7 @@ namespace Service.Services
                 db.TestTemp.Insert(testTemp);
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 return false;
@@ -44,12 +44,40 @@ namespace Service.Services
 
         public TestTemp GetTemplateById(int tempId)
         {
-            return db.TestTemp.Get().Where(x => x.ID == tempId).Include(x => x.TestTempType).Include(x => x.SubTestTempType).Include(x => x.TestTempCols).ThenInclude(t => t.TempColType).FirstOrDefault();
+            return db.TestTemp.Get().Where(x => x.ID == tempId).Include(x => x.TestTempType).Include(x => x.SubTestTempType).Include(x => x.TestTempCols).ThenInclude(t => t.DataSource).Include(x => x.TestTempCols).ThenInclude(t => t.TempColType).FirstOrDefault();
         }
 
         public IEnumerable<TestTempData> GetTempDataByTempId(int tempId)
         {
-            return db.TestTempData.Get().Where(x => x.TestTempID == tempId);
+            return db.TestTempData.Get().Where(x => x.TestTempID == tempId && x.IsActive == true);
+        }
+
+        public bool SaveTemplDataList(List<TestTempData> tempDatas)
+        {
+            try
+            {
+                db.TestTempData.InsertList(tempDatas);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
+        public bool UpdateTemplateDataList(List<TestTempData> templateData)
+        {
+            try
+            {
+                db.TestTempData.UpdateList(templateData);
+                db.TestTemplateData.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+                //return false;
+            }
         }
 
     }

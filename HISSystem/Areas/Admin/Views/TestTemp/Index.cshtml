@@ -35,24 +35,7 @@
         .closebtn:hover {
             color: black;
         }
-    /*.modal-dialog {
-        width: 520px;
-        margin: 30px auto;
-    }
 
-    .modal-body {
-        position: relative;
-        padding: 10px;
-        font-size: 14px;
-        max-height: 450px;
-        overflow: auto;
-        overflow-x: hidden;
-    }
-
-    .col-md-6 {
-        width: 50%;
-        padding-top: 10px;
-    }*/
 </style>
 <div class="prtm-content">
     <div class="prtm-page-bar">
@@ -72,10 +55,6 @@
             <div class="col-md-5">
                 <label for="search">&nbsp;</label> <br /><a href="#" data-info="addMasterTemp" class="btn btn-xs btn-warning addMasterTemp"><i class="fa fa-plus" aria-hidden="true"></i> Add Master Template</a>
             </div>
-            <button type="button" class="btn btn-xs btn-outline-warning add-btn addTemplateData" data-info="">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-                &nbsp;Add Template Data
-            </button>
         </div>
     </div>
 
@@ -171,15 +150,15 @@
 
         function GetTemplateDetail(current, ID) {
 debugger
-            alert(ID);
-            false;
-            var fields = type.split('>>');
-            var temptype = fields[0];
-            var subtemptype = fields[1];
+            //alert(ID);
+            //false;
+            //var fields = type.split('>>');
+            //var temptype = fields[0];
+            //var subtemptype = fields[1];
 		$(".list-group-item").removeClass('active')
 		$(current).addClass('active')
 		$.ajax({
-			url: '/admin/testdynamictemplate/getdynamictemplate?temptype=' + temptype + "&subtemptype=" + subtemptype,
+			url: '/admin/testtemp/getdynamictemplate?tempID=' + ID,
 			contentType: 'application/json; charse=utf-8',
 			type: 'get',
 			success: function (result) {
@@ -249,15 +228,6 @@ debugger
         function cancelTemplateData(event) {
             document.getElementById("DataLookup").innerHTML = getGlobalHTML;
             var row = event.target.parentElement.parentElement.getElementsByClassName('tryMultiselect');
-            debugger
-            //$(row).each(function (i, element) {
-            //    debugger
-            //    $(element).chosen('destroy');
-
-            //    var removeTemp = element.parentElement.getElementsByClassName('chosen-container');
-            //    removeTemp[0].remove();
-            //    $(element).chosen();
-            //});
             $("#DataLookup").find('.tryMultiselect').each(function (i, element) {
                 $(element).chosen('destroy');
                 $(element).chosen();
@@ -283,33 +253,36 @@ debugger
             templateHtml = targetElement.parentElement.innerHTML;
         }
 
-
+        //UPDATE TEMPLATE DATA
         function updateTemplateData(event) {
             var formdata = new FormData();
             var targetElement = event.target.parentElement;
             disableTemplateData(event);
             var formRow = targetElement.parentElement;
-            formdata.append("TestTemplateData.ID", targetElement.previousElementSibling.getAttribute("data-info"));
-            formdata.append("TestTemplateData.TestTemplateID", formRow.getAttribute("data-info"));
-              $(formRow).each(function (a, b) {
-                  var fields = $(this).find(":input");
-                  for (i = 0; i < fields.length; i++) {
-                      formdata.append(fields[i].name, fields[i].value);
-                  }
-              });
-                $.ajax({
+            formdata.append("TestTemp.ID", targetElement.previousElementSibling.getAttribute("data-info"));
+            //formdata.append("TestTemplateData.TestTemplateID", formRow.getAttribute("data-info"));
+            $(formRow).each(function (a, b) {
+                var fields = $(this).find(":input");
+                for (i = 0; i < fields.length; i++) {
+                    formdata.append(fields[i].name, fields[i].value);
+                }
+            });
+            for (var pair of formdata.entries()) {
+                console.log(pair[0] + ', ' + pair[1]);
+            }
+            $.ajax({
                 type: "POST",
-                url: '/admin/testdynamictemplate/updatetemplatedata',
+                url: '/admin/testtemp/updatetemplatedata',
                 data: formdata,
                 processData: false,
                 contentType: false,
-                    success: function (data) {
-                        if (data == true)
-                            alert("Success");
-                        else {
-                            alert("Something went wrong!");
-                            cancelTemplateData(event);
-                        }
+                success: function (data) {
+                    if (data == true)
+                        alert("Success");
+                    else {
+                        alert("Something went wrong!");
+                        cancelTemplateData(event);
+                    }
                 },
                 error: function () {
                     alert("Content load failed.");
@@ -385,8 +358,7 @@ debugger
             var getHTML = document.getElementById("DataLookup").innerHTML;
             debugger
             getGlobalHTML = getHTML;
-            //var TemplateID = $(this).data('info');
-            var TemplateID = 1;
+            var TemplateID = $(this).data('info');
                 var options = {
                     "backdrop": "static",
                     keyboard: true
@@ -413,7 +385,7 @@ debugger
               var formdata = new FormData($('#addTemplateDetailFrm').get("0"));
               $.ajax({
                 type: 'POST',
-                url: '/admin/testdynamictemplate/addtemplatedetail',
+                url: '/admin/testtemp/addtemplatedetail',
                 data: formdata,
                 dataType: "json",
                 processData: false,
