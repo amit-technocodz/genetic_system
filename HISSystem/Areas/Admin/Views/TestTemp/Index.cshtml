@@ -297,11 +297,34 @@ debugger
         function deleteTemplateData(event) {
             var id = event.target.parentElement.previousElementSibling.getAttribute("data-info");
             hideTemplateData(event);
+           var formdata = new FormData();
+            var targetElement = event.target.parentElement;
+            disableTemplateData(event);
+            var formRow = targetElement.parentElement;
+            formdata.append("TestTemp.ID", targetElement.previousElementSibling.getAttribute("data-info"));
+            //formdata.append("TestTemplateData.TestTemplateID", formRow.getAttribute("data-info"));
+            $(formRow).each(function (a, b) {
+                var fields = $(this).find(":input");
+                for (i = 0; i < fields.length; i++) {
+                    formdata.append(fields[i].name, fields[i].value);
+                }
+            });
+            for (var pair of formdata.entries()) {
+                console.log(pair[0] + ', ' + pair[1]);
+            }
             $.ajax({
-                type: 'GET',
-                url: '/admin/testdynamictemplate/deletetemplatedata?id=' + id,
+                type: "POST",
+                url: '/admin/testtemp/deletetemplatedata',
+                data: formdata,
+                processData: false,
+                contentType: false,
                 success: function (data) {
-                    data == true ? toastr.success('record deleted') : toastr.error('Something went wrong');
+                    if (data == true)
+                        alert("Success");
+                    else {
+                        alert("Something went wrong!");
+                        cancelTemplateData(event);
+                    }
                 },
                 error: function () {
                     alert("Content load failed.");
@@ -512,10 +535,10 @@ debugger
             var search = $(this).val();
             $.ajax({
                 type: "GET",
-                url: '/admin/testdynamictemplate/SearchTemplate?searchTemplate',
+                url: '/admin/testtemp/SearchTemplate?searchTemplate',
                 data: { searchQuery: search },
                 success: function (data) {
-                          $("#lookupList").empty();
+                    $("#lookupList").empty();
                     $("#lookupList").append(data);
                 },
                 error: function () {
@@ -636,7 +659,7 @@ debugger
             debugger
 
             $.ajax({
-			url: '/admin/testdynamictemplate/UpdateTemplate?ID='+ Id,
+			url: '/admin/testtemp/UpdateTemplate?ID='+ Id,
 			contentType: 'application/json; charse=utf-8',
 			type: 'get',
 			success: function (result) {

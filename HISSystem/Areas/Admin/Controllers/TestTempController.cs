@@ -142,11 +142,50 @@ namespace GeneticSystem.Areas.Admin.Controllers
             return true;
         }
 
-        [HttpGet]
-        public bool DeleteTemplateData(int id)
+        [HttpPost]
+        public bool DeleteTemplateData(TestTempVM testTempVM)
         {
-            bool result = db.TestDynamicTemplateService.RemoveTemplateDataByID(id);
-            return result;
+            List<TestTempData> testTempData = testTempVM.TestTempDataList;
+            db.TestTempService.DeleteTemplateDataList(testTempVM.TestTempDataList);
+            return true;
+        }
+
+        [HttpGet]
+        public IActionResult SearchTemplate(string searchQuery)
+        {
+            TestTempVM testTemp = new TestTempVM();
+
+            if (searchQuery != null)
+            {
+                testTemp.DropDown = db.TestTempService.SearchTemplate(searchQuery).Select(x => new DropDownVM { ID = x.ID, Name = x.TestTempType.Name + ">>" + x.SubTestTempType.Name });
+                return View("_SearchMasterTemp", testTemp);
+            }
+            else
+            {
+                testTemp.DropDown = db.TestTempService.GetTestTemps().Select(x => new DropDownVM { ID = x.ID, Name = x.TestTempType.Name + ">>" + x.SubTestTempType.Name });
+                return View("_SearchMasterTemp", testTemp);
+            }
+        }
+        [HttpGet]
+        public IActionResult UpdateTemplate(int ID)
+        {
+            TestTempVM testTempVM = new TestTempVM();
+
+            ViewBag.TemplateType = db.LookupService.GetLookUpByTypeName("TestTempType");
+            ViewBag.SubTemplateType = db.LookupService.GetLookUpByTypeName("SubTestTempType");
+            ViewBag.DropDownType = db.LookupService.GetLookUpByTypeName("DropDownType");
+
+            ViewBag.TemplateField = new List<SelectListItem>
+            {
+              new SelectListItem{ Text="Checkbox", Value = "1" },
+              new SelectListItem{ Text="Dropdown", Value = "2" },
+              new SelectListItem{ Text="Textbox", Value = "3" }
+            };
+            ViewBag.TemplateID = ID;
+
+            testTempVM.TestTemp = db.TestTempService.GetTemplateById(ID);
+
+            return PartialView("_UpdateTemp", testTempVM);
         }
     }
 }

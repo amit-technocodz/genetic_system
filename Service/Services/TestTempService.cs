@@ -80,5 +80,28 @@ namespace Service.Services
             }
         }
 
+        public bool DeleteTemplateDataList(List<TestTempData> templateData)
+        {
+            try
+            {
+                for (int i = 0; i < templateData.Count(); i++)
+                    templateData[i].IsActive = false;
+
+                db.TestTempData.UpdateList(templateData);
+                db.TestTemplateData.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+                //return false;
+            }
+        }
+
+        public IEnumerable<TestTemp> SearchTemplate(string getTemplate)
+        {
+            return db.TestTemp.Get().Where(x => x.TestTempType.Name.StartsWith(getTemplate, StringComparison.OrdinalIgnoreCase) || x.SubTestTempType.Name.StartsWith(getTemplate, StringComparison.OrdinalIgnoreCase)).Include(x => x.TestTempType).Include(x => x.SubTestTempType).AsNoTracking();
+        }
+
     }
 }
