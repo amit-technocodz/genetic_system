@@ -152,6 +152,7 @@ namespace Service.Services
             {
                 ApplicationContext context = new ApplicationContext();
                 context.ClientOrderData.RemoveRange(orderDataList);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -165,6 +166,8 @@ namespace Service.Services
             {
                 clientOrder.User = null;
                 clientOrder.Doctor = null;
+                clientOrder.TestType = null;
+                clientOrder.IsActive = true;
                 db.ClientOrder.Update(clientOrder);
                 db.ClientOrder.SaveChanges();
 
