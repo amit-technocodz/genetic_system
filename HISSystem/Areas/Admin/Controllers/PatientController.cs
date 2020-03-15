@@ -246,7 +246,7 @@ namespace HISSystem.Areas.Admin.Controllers
             }
         }
 
-        //AddPatient
+        //AddPatient=
         #region Add and Update delete
         public IActionResult Add()
         {

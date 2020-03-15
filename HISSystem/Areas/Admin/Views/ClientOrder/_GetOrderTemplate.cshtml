@@ -32,75 +32,91 @@
                                                     <tbody>
                                                         @foreach (var itemData in Model.TemplateDataList.Select((data, index) => new { index, data }))
                                                         {
-                                                        <tr data-info="somerandom">
-                                                            <td hidden>
-                                                                <input name="clientOrder.ClientOrderData[@itemData.index].TemplateID" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].TemplateID" hidden>
-                                                                <input name="clientOrder.ClientOrderData[@itemData.index].IsActive" class="form-control itemDatadsbl" value="true" hidden>
-                                                                <input name="clientOrder.ClientOrderData[@itemData.index].AddedBy" class="form-control itemDatadsbl" value="1" hidden>
-                                                                <input name="clientOrder.ClientOrderData[@itemData.index].UpdatedBy" class="form-control itemDatadsbl" value="1" hidden>
-                                                            </td>
+                                                            <tr data-info="somerandom">
+                                                                <td hidden>
+                                                                    @*<textarea name="clientOrder.ClientOrderData[@itemData.index].Recommendation" class="form-control itemDatadsbl" value="@Model.ClientOrderData[itemData.index].Recommendation" rows="4" cols="50"></textarea>*@
 
-                                                            @if (Model.TemplateDataList.Count > 0)
-                                                            {
-                                                                @foreach (var column in subTemplate.value.TemplateColumns.Select((column, p) => new { p, column }))
+
+                                                                    <input name="clientOrder.ClientOrderData[@itemData.index].TemplateID" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].TemplateID" hidden>
+                                                                        <input name="clientOrder.ClientOrderData[@itemData.index].IsActive" class="form-control itemDatadsbl" value="true" hidden>
+                                                                        <input name="clientOrder.ClientOrderData[@itemData.index].AddedBy" class="form-control itemDatadsbl" value="1" hidden>
+                                                                        <input name="clientOrder.ClientOrderData[@itemData.index].UpdatedBy" class="form-control itemDatadsbl" value="1" hidden>
+                                                                </td>
+
+                                                                @if (Model.TemplateDataList.Count > 0)
                                                                 {
-                                                                    @if (itemData.data.TemplateID == subTemplate.value.ID)
+                                                                    @foreach (var column in subTemplate.value.TemplateColumns.Select((column, p) => new { p, column }))
                                                                     {
-                                                                        <td class="" @*data-info="@itemData.value.ID"*@>
+                                                                        @if (itemData.data.TemplateID == subTemplate.value.ID)
+                                                                        {
+                                                            <td class="" @*data-info="@itemData.value.ID"*@>
 
-                                                                            @if (column.column.TemplateField.Name == "EffectedGene")
-                                                                            {
-                                                                                @Html.ListBox("clientOrder.ClientOrderData[" + itemData.index + "].Genes", new MultiSelectList(ViewBag.EffectedGene, "ID", "Name", Model.TemplateDataList[itemData.index].Genes), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
-                                                                            }
-                                                                            else if (column.column.TemplateField.Name == "ConsumptionType")
-                                                                            {
-                                                                                @Html.DropDownList("clientOrder.ClientOrderData[" + itemData.index + "].ConsumptionTypeID", new SelectList(ViewBag.ConsumptionType, "ID", "Name", @Model.TemplateDataList[itemData.index].ConsumptionTypeID), "Select Consumption Type", new { @class = "form-control dropdown itemDatadsbl" })
-                                                                            }
-                                                                            else if (column.column.TemplateField.Name == "Element")
-                                                                            {
-                                                                                @Html.DropDownList("clientOrder.ClientOrderData[" + itemData.index + "].ElementID", new SelectList(ViewBag.Element, "ID", "Name", @Model.TemplateDataList[itemData.index].ElementID), "Select Element Type", new { @class = "form-control dropdown itemDatadsbl" })
-                                                                            }
-                                                                            else if (column.column.TemplateField.Name == "Result")
-                                                                            {
-                                                                                @Html.DropDownList("clientOrder.ClientOrderData[" + itemData.index + "].Result", new SelectList(ViewBag.Result, "Value", "Text", @Model.TemplateDataList[itemData.index].Result), "Select Result Type", new { @class = "form-control dropdown itemDatadsbl" })
-                                                                            }
-                                                                            else if (column.column.TemplateField.Name == "HaveMutationEffected")
-                                                                            {
-                                                                                <div class="form-check"><label><input name="clientOrder.ClientOrderData[@itemData.index].HaveMutationEffected" type="checkbox" class="itemDatadsbl" value="@Model.TemplateDataList[itemData.index].HaveMutationEffected"><span class="label-text">Have Mutation Effected</span></label></div>
-                                                                            }
-                                                                            else if (column.column.TemplateField.Name == "EffectedGood")
-                                                                            {
-                                                                                <input name="clientOrder.ClientOrderData[@itemData.index].EffectedGood" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].EffectedGood">
-                                                                            }
-                                                                            else if (column.column.TemplateField.Name == "EffectedBad")
-                                                                            {
-                                                                                <input name="clientOrder.ClientOrderData[@itemData.index].EffectedBad" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].EffectedBad">
-                                                                            }
-                                                                            else if (column.column.TemplateField.Name == "GeneticMutation")
-                                                                            {
-                                                                                <input name="clientOrder.ClientOrderData[@itemData.index].GeneticMutation" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].GeneticMutation">
-                                                                            }
-                                                                            else if (column.column.TemplateField.Name == "PersonalRiskFactor")
-                                                                            {
-                                                                                <input name="clientOrder.ClientOrderData[@itemData.index].PersonalRiskFactor" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].PersonalRiskFactor">
-                                                                            }
-                                                                            else if (column.column.TemplateField.Name == "Hereditary")
-                                                                            {
-                                                                                <input name="clientOrder.ClientOrderData[@itemData.index].Hereditary" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].Hereditary">
-                                                                            }
-                                                                            else if (column.column.TemplateField.Name == "ResultSummary")
-                                                                            {
-                                                                                <input name="clientOrder.ClientOrderData[@itemData.index].ResultSummary" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].ResultSummary">
-                                                                            }
-                                                                            else if (column.column.TemplateField.Name == "Recommendations")
-                                                                            {
-                                                                                <input name="clientOrder.ClientOrderData[@itemData.index].Recommendation" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].Recommendation">
-                                                                            }
-                                                                        </td>
+                                                                @if (column.column.TemplateField.Name == "EffectedGene")
+                                                                {
+                                                                    @Html.ListBox("clientOrder.ClientOrderData[" + itemData.index + "].Genes", new MultiSelectList(ViewBag.EffectedGene, "ID", "Name", Model.TemplateDataList[itemData.index].Genes), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
+                                                                }
+                                                                else if (column.column.TemplateField.Name == "ConsumptionType")
+                                                                {
+                                                                    @Html.DropDownList("clientOrder.ClientOrderData[" + itemData.index + "].ConsumptionTypeID", new SelectList(ViewBag.ConsumptionType, "ID", "Name", @Model.TemplateDataList[itemData.index].ConsumptionTypeID), "Select Consumption Type", new { @class = "form-control dropdown itemDatadsbl" })
+                                                                }
+                                                                else if (column.column.TemplateField.Name == "Element")
+                                                                {
+                                                                    @Html.DropDownList("clientOrder.ClientOrderData[" + itemData.index + "].ElementID", new SelectList(ViewBag.Element, "ID", "Name", @Model.TemplateDataList[itemData.index].ElementID), "Select Element Type", new { @class = "form-control dropdown itemDatadsbl" })
+                                                                }
+                                                                else if (column.column.TemplateField.Name == "Result")
+                                                                {
+                                                                    @Html.DropDownList("clientOrder.ClientOrderData[" + itemData.index + "].Result", new SelectList(ViewBag.Result, "Value", "Text", @Model.TemplateDataList[itemData.index].Result), "Select Result Type", new { @class = "form-control dropdown itemDatadsbl" })
+                                                                }
+                                                                else if (column.column.TemplateField.Name == "HaveMutationEffected")
+                                                                {
+                                                                    <div class="form-check"><label><input name="clientOrder.ClientOrderData[@itemData.index].HaveMutationEffected" type="checkbox" class="itemDatadsbl" value="@Model.TemplateDataList[itemData.index].HaveMutationEffected"><span class="label-text">Have Mutation Effected</span></label></div>
+                                                                }
+                                                                else if (column.column.TemplateField.Name == "EffectedGood")
+                                                                {
+                                                                    @*<input name="clientOrder.ClientOrderData[@itemData.index].EffectedGood" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].EffectedGood">*@
+                                                                    <textarea name="clientOrder.ClientOrderData[@itemData.index].EffectedGood" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].EffectedGood" rows="2" cols="50"></textarea>
+                                                                }
+                                                                else if (column.column.TemplateField.Name == "EffectedBad")
+                                                                {
+                                                                    @*<input name="clientOrder.ClientOrderData[@itemData.index].EffectedBad" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].EffectedBad">*@
+
+                                                                    <textarea name="clientOrder.ClientOrderData[@itemData.index].EffectedBad" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].EffectedBad" rows="2" cols="50"></textarea>
+                                                                }
+                                                                else if (column.column.TemplateField.Name == "GeneticMutation")
+                                                                {
+                                                                    @*<input name="clientOrder.ClientOrderData[@itemData.index].GeneticMutation" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].GeneticMutation" >*@
+
+                                                                    <textarea name="clientOrder.ClientOrderData[@itemData.index].GeneticMutation" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].GeneticMutation" rows="2" cols="50"></textarea>
+                                                                }
+                                                                else if (column.column.TemplateField.Name == "PersonalRiskFactor")
+                                                                {
+                                                                    @*<input name="clientOrder.ClientOrderData[@itemData.index].PersonalRiskFactor" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].PersonalRiskFactor" >*@
+
+                                                                    <textarea name="clientOrder.ClientOrderData[@itemData.index].PersonalRiskFactor" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].PersonalRiskFactor" rows="2" cols="50"></textarea>
+                                                                }
+                                                                else if (column.column.TemplateField.Name == "Hereditary")
+                                                                {
+                                                                    @*<input name="clientOrder.ClientOrderData[@itemData.index].Hereditary" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].Hereditary">*@
+
+                                                                    <textarea name="clientOrder.ClientOrderData[@itemData.index].Hereditary" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].Hereditary" rows="2" cols="50"></textarea>
+                                                                }
+                                                                else if (column.column.TemplateField.Name == "ResultSummary")
+                                                                {
+                                                                    @*<input name="clientOrder.ClientOrderData[@itemData.index].ResultSummary" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].ResultSummary">*@
+
+                                                                    <textarea name="clientOrder.ClientOrderData[@itemData.index].ResultSummary" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].ResultSummary" rows="2" cols="50"></textarea>
+                                                                }
+                                                                else if (column.column.TemplateField.Name == "Recommendations")
+                                                                {
+                                                                    @*<input name="clientOrder.ClientOrderData[@itemData.index].Recommendation" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].Recommendation">*@
+
+                                                                    <textarea name="clientOrder.ClientOrderData[@itemData.index].Recommendation" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.index].Recommendation" rows="2" cols="50"></textarea>
+                                                                }
+                                                            </td>
+                                                                        }
                                                                     }
                                                                 }
-                                                            }
-                                                        </tr>
+                                                            </tr>
                                                         }
                                                     </tbody>
                                                 </table>
