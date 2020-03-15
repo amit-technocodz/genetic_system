@@ -74,6 +74,11 @@ namespace GeneticSystem.Areas.Admin.Controllers
             };
             testTemp.TestTempDataList = db.TestTempService.GetTempDataByTempId(testTemp.TestTemp.ID).ToList();
 
+            foreach(var item in testTemp.TestTemp.TestTempCols)
+            {
+
+            }
+
             ViewBag.Result = new List<SelectListItem>
             {
               new SelectListItem{ Text="High", Value = "1" },

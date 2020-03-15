@@ -14,7 +14,7 @@ namespace Data.Models
         public DateTime? OrderDate { get; set; }
         public DateTime? OrderDueDate { get; set; }
         public string OrderSummary { get; set; }
-        public int DoctorID { get; set; }
+        public int? DoctorID { get; set; }
         public int CreatedBy { get; set; }
         public DateTime? CreatedOn { get; set; }
         public bool IsActive { get; set; }

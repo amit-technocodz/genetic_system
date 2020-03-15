@@ -24,7 +24,7 @@
                             <th> @item.TestColName </th>
                         }
 
-                        <th class="numeric">Action</th>
+                        @*<th class="numeric">Action</th>*@
                     </tr>
                 </thead>
                 <tbody>
@@ -33,10 +33,10 @@
                         <tr>
                             @foreach (var item in Model.TestTempDataList.Select((value, index) => new { index, value }))
                             {
-                                @if ((item.index >= (i * Model.TestTemp.TestTempCols.Count())) && (item.index < ((i + 1) * Model.TestTemp.TestTempCols.Count())))
+                                @if ((item.index >= (i * Model.TestTempDataList.Select(x => x.TestTempCol).Distinct().Count())) && (item.index < ((i + 1) * Model.TestTempDataList.Select(x => x.TestTempCol).Distinct().Count())))
                                 {
                                     <td>
-                                        @foreach (var col in Model.TestTemp.TestTempCols.Select((value, cindex) => new { cindex, value }))
+                                        @foreach (var col in Model.TestTempDataList.Select(x => x.TestTempCol).Distinct().Select((value, cindex) => new { cindex, value}))
                                         {
 
                                             @if (item.value.TestTempColID == col.value.ID && col.value.TempColType.ColName == "Checkbox")
@@ -72,12 +72,12 @@
                                     </td>
                                 }
                             }
-                            <td>
+                            @*<td>
                                 <a href="javascript:void(0);" class="fa fa fa-pencil mrgn-l-xs fa-1x" onclick="editTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Trach"></a>
                                 <a href="javascript:void(0);" class="fa fa-trash mrgn-l-xs fa-1x" onclick="deleteTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Trach"></a>
                                 <a href="javascript:void(0);" class="fa fa-floppy-o mrgn-l-xs fa-1x" onclick="updateTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Trach" hidden></a>
                                 <a href="javascript:void(0);" class="fa fa-times mrgn-l-xs fa-1x" onclick="cancelTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Trach" hidden></a>
-                            </td>
+                            </td>*@
                         </tr>
                     }
                 </tbody>
