@@ -264,14 +264,15 @@
                                                             <h5>Login Info:</h5>
                                                             <div class="form-group">
                                                                 <label for="UserName">UserName</label>
-                                                                @Html.TextBoxFor(m => m.UserName, null, new { @Class = "form-control", onkeyup = "sync(this)", onchange = "CheckUnique('username');", autocomplete = "true" })
+                                                                @Html.TextBoxFor(m => m.UserName, null, new { @Class = "form-control", onkeyup = "sync(this)", onchange = "CheckUnique('username');", autocomplete = "off" })
                                                                 <span id="username" style="color:red;" hidden="hidden" data-info="success">This Username already exists!</span>
                                                             </div>
-                                                            @*<div class="form-group">
-                                                                <label for="Password">Password <span style="color:red;"> * </span></label>
-                                                                @Html.PasswordFor(m => m.Password, new { @Class = "form-control", autocomplete = "true" })
-                                                            </div>
                                                             <div class="form-group">
+                                                                <label for="Password">Password <span style="color:red;"> * </span></label>
+                                                                <input name="Password" id="Password" type="Password" autocomplete="off" Class = "form-control"/>
+                                                                @*@Html.PasswordFor(m => m.Password, new { @Class = "form-control", autocomplete = "true" })*@
+                                                            </div>
+                                                            @*<div class="form-group">
                                                                 <label for="ConfirmPassword">Confirm Password <span style="color:red;"> * </span></label>
                                                                 @Html.Password("ConfirmPassword", null, new { @Class = "form-control", autocomplete = "true" })
                                                             </div>*@

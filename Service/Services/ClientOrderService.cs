@@ -35,7 +35,7 @@ namespace Service.Services
                 }catch(Exception ex)
                 {
                     Console.WriteLine(ex);
-                    clientOrder.OrderNo = 7000;
+                    clientOrder.OrderNo = 0;
                 }
 
                 db.ClientOrder.Insert(clientOrder);
@@ -77,7 +77,7 @@ namespace Service.Services
                 ApplicationContext context = new ApplicationContext();
 
                 var result = context.ClientOrder.AsQueryable();
-                return result.Where(x => x.IsActive == true).Include(x => x.User).ThenInclude(x => x.PatientPersonalInformation).ThenInclude(x => x.City).Include(x => x.Doctor).OrderByDescending(x => x.ID).Take(100);
+                return result.Where(x => x.IsActive == true).Include(x => x.Status).Include(x => x.User).ThenInclude(x => x.PatientPersonalInformation).ThenInclude(x => x.City).Include(x => x.Doctor).OrderByDescending(x => x.ID).Take(100);
             }
             catch (Exception ex)
             {
@@ -94,7 +94,7 @@ namespace Service.Services
             }
             catch (Exception ex)
             {
-                return 7000;
+                return 0;
             }
         }
         public IQueryable<ClientOrderData> GetClientOrderDataByOrderID(int orderId)

@@ -20,6 +20,8 @@ namespace Data.Models
         public bool IsActive { get; set; }
         public int UserID { get; set; }
         public int OrderNo { get; set; }
+        public int StatusID { get; set; }
+        public virtual Lookup Status { get; set; }
         public virtual User Doctor { get; set; }
         public virtual User User { get; set; }
         public virtual Template Template { get; set; }

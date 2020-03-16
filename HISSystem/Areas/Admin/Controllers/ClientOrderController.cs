@@ -37,8 +37,28 @@ namespace GeneticSystem.Areas.Admin.Controllers
             return View(clientOrders);
         }
 
+        public IActionResult GetAllOrders()
+        {
+            var clientOrderList = db.ClientOrderService.GetClientOrderList();
+            var clientOrders = new PagedData<ClientOrder>();
+            clientOrders.Data = (clientOrderList).Take(PageSize);
 
-        public IActionResult getOrders(int page)
+            clientOrders.NumberOfPages = Convert.ToInt32(Math.Ceiling((double)clientOrderList.Count() / PageSize));
+            return View("_Index",clientOrders);
+        }
+
+        public IActionResult GetPendingOrders()
+        {
+            var clientOrderList = db.ClientOrderService.GetClientOrderList().Where(x => x.Status.Name == "Pending");
+            var clientOrders = new PagedData<ClientOrder>();
+            clientOrders.Data = (clientOrderList).Take(PageSize);
+
+            clientOrders.NumberOfPages = Convert.ToInt32(Math.Ceiling((double)clientOrderList.Count() / PageSize));
+            return View("_Index",clientOrders);
+
+        }
+
+        public IActionResult getOrders(int page, int orderType)
         {
             var clientOrderList = db.ClientOrderService.GetClientOrderList();
             var clientOrders = new PagedData<ClientOrder>();

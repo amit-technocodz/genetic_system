@@ -71,6 +71,7 @@ namespace HISSystem.Controllers
 
 
                 var user = db.UserService.Login(model.UserName, CommonMethod.Encrypt(model.Password));
+                var pass = CommonMethod.Encrypt(model.Password);
                 if (user != null)
                 {
                     var option = new CookieOptions();
@@ -80,7 +81,9 @@ namespace HISSystem.Controllers
                     Response.Cookies.Append("ID", Convert.ToString(user.ID), option);
                     HttpContext.Session.SetString("UserName", user.UserName);
                     HttpContext.Session.SetString("RoleID", Convert.ToString(user.RoleID));
+                    if(user.ImagePath != null)
                     HttpContext.Session.SetString("Image", user.ImagePath);
+
                     var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                     identity.AddClaim(new Claim(ClaimTypes.Name, user.Role.Name));
                     identity.AddClaim(new Claim("User", Convert.ToString(user.RoleID)));
