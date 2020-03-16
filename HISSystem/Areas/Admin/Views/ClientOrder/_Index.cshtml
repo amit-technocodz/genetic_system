@@ -43,7 +43,7 @@
                 @order.TemplateID
             </td>
             <td>
-                @if (order.Status.Name != null)
+                @if (order.Status != null)
                 {
                     <span class="label label-success btn-rounded">@order.Status.Name</span>
                 }

@@ -26,7 +26,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
         public IActionResult Index()
         {
             var templateList = db.DynamicTemplateService.GetAllTemplates().ToList();
-            ViewBag.Templates = templateList.Select(x => x.TemplateType?.Name + ">>" + x.SubTemplateType.Name ?? "");
+            ViewBag.Templates = templateList.Select(x => x.TemplateType?.Name + ">>" + x.SubTemplateType?.Name ?? "");
             List<Template> templates = new List<Template>();
             return View(templates);
         }

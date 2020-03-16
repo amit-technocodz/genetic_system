@@ -32,13 +32,18 @@ namespace Service.Services
                 {
                     tmpOrdr = db.ClientOrder.Get().Max(x => x.OrderNo) + 1;
                     clientOrder.OrderNo = tmpOrdr;
-                }catch(Exception ex)
+                    clientOrder.StatusID = 398;
+                    db.ClientOrder.Insert(clientOrder);
+                }
+                catch(Exception ex)
                 {
                     Console.WriteLine(ex);
+                    clientOrder.StatusID = 398;
                     clientOrder.OrderNo = 0;
+                    db.ClientOrder.Insert(clientOrder);
                 }
 
-                db.ClientOrder.Insert(clientOrder);
+                
 
                 return clientOrder;
             }

@@ -282,6 +282,7 @@
                     $('#orderArea').html(result);
                     loadMultiSelect();
                     $("#postUpdatebtn").show();
+                    $("#getPndOrdrBtn").hide();
                     $("#signupform").hide();
                     $("#addClientOrderBtn").hide();
                     $("#cancelOrderBtn").show();
@@ -301,6 +302,8 @@
             document.getElementById('orderArea').innerHTML = ListHtml;
             $("#cancelOrderBtn").hide();
             $("#addClientOrderBtn").show();
+            $("#postUpdatebtn").hide();
+            $("#signupform").hide();
             document.getElementById("quickSearchBlock").hidden = false;
             showHide();
         });
