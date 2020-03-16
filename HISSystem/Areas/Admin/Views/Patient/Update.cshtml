@@ -52,7 +52,7 @@ p.bed-title {
     @Html.HiddenFor(x => x.ID)
     @Html.HiddenFor(x => x.PatientPersonalInformation.ID)
     @Html.HiddenFor(m => m.PatientPersonalInformation.RegistrationNo)
-    @Html.HiddenFor(m => m.Password)
+
     <div class="prtm-content">
         <div class="prtm-page-bar">
             <ul class="breadcrumb">
@@ -351,7 +351,9 @@ p.bed-title {
                                                 </div>
                                                 <div class="form-group mrgn-b-sm">
                                                     <label>Password</label>
-                                                    @Html.PasswordFor(m => m.Password, new { @Class = "form-control", @readonly = true })
+                                                    <input type="password" id="Password" name="Password" class="form-control" value="@Model.Password" autocomplete="off" />
+                                                    @*@Html.PasswordFor(m => m.Password, null, new { @Class = "form-control" })*@
+                                                    @*@Html.PasswordFor(m => m.Password, new { @Class = "form-control" })*@
                                                 </div>
                                                 <div class="form-group mrgn-b-sm">
                                                     <div class="row">

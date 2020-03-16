@@ -21,7 +21,7 @@ namespace Service.Services
         public IEnumerable<User> GetUsers()
         {
             int role = db.Role.Get().Where(x => x.Name.Contains("Employee")).FirstOrDefault().ID;
-            var result = db.User.Get().Where(x => x.IsActive == true && x.RoleID == role).Include(x => x.Role).Include(x => x.PersonalInformation.Country).Include(x => x.PersonalInformation.City)
+            var result = db.User.Get().Where(x => x.IsActive == true && (x.RoleID == 1 || x.RoleID == 3 || x.RoleID == 4)).Include(x => x.Role).Include(x => x.PersonalInformation.Country).Include(x => x.PersonalInformation.City)
                 .Include(x => x.PersonalInformation.Department).Include(x => x.PersonalInformation.Branch).Include(x => x.PatientRelative).OrderByDescending(x => x.AddedDate).ToList();
             return result;
         }
@@ -116,7 +116,7 @@ namespace Service.Services
         }
         public User Login(string UserName, string Password)
         {
-            var result = db.User.Get().Where(x => x.UserName == UserName && x.Password == Password).Include(x => x.Role).Include(x => x.PersonalInformation).FirstOrDefault();
+            var result = db.User.Get().Where(x => (x.UserName == UserName) && x.Password == Password).Include(x => x.Role).Include(x => x.PersonalInformation).FirstOrDefault();
             return result;
         }
         public void UpdatePatientRelative(List<PatientRelative> model)

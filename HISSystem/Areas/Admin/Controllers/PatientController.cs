@@ -316,7 +316,7 @@ namespace HISSystem.Areas.Admin.Controllers
                 usermodel.RoleID = db.RoleService.GetByName("Patient");
                 usermodel.IsActive = true;
                 usermodel.PatientPersonalInformation.RegistrationNo = db.PatientPersonalInformationService.GetRegistrationNo();
-                usermodel.Password = CommonMethod.Encrypt("12345").Substring(0, 6);
+                usermodel.Password = CommonMethod.Encrypt("12345");/*.Substring(0, 6);*/
                 result = db.UserService.Add(usermodel);
                 result.RegisterationNo = usermodel.RegisterationNo;
                 result.UserName = usermodel.UserName;
@@ -417,6 +417,7 @@ namespace HISSystem.Areas.Admin.Controllers
             usermodel.ModifiedDate = DateTime.UtcNow;
             //usermodel.IsActive = true;
             usermodel.RoleID = db.RoleService.GetByName("Patient");
+            usermodel.Password = CommonMethod.Encrypt(model.User.Password);
             db.UserService.UpdateUser(usermodel);
             foreach (var item in model.PatientRelative)
             {

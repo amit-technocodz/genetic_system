@@ -43,7 +43,11 @@
                 @order.TemplateID
             </td>
             <td>
-                Status
+                @if (order.Status.Name != null)
+                {
+                    <span class="label label-success btn-rounded">@order.Status.Name</span>
+                }
+                
             </td>
             <td colspan="2">
                 <button type="button" class="btn btn-xs btn-warning UpdtOrdrBtn" value="@order.ID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update</button>
