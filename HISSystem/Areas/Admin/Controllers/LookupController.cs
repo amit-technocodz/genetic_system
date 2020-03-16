@@ -16,7 +16,7 @@ namespace HISSystem.Areas.Admin.Controllers
     [Area("Admin")]
     public class LookupController : Controller
     {
-        public const int PageSize = 3;
+        public const int PageSize = 15;
         private readonly IUnitOfService db;
         public LookupController(IUnitOfService db)
         {
@@ -26,8 +26,8 @@ namespace HISSystem.Areas.Admin.Controllers
         {
             List<Lookup> lookupTry = new List<Lookup>();
  
-            var lookupList = db.LookupService.GetLookups().Where(x => x.IsActive == true).Select(x => x.Type).Distinct().ToList();
-
+            var lookupList = db.LookupService.GetLookups().Where(x => x.IsActive == true).OrderByDescending(x => x.AddedDate).Select(x => x.Type).Distinct().ToList();
+           
             ViewBag.Lookups = lookupList;
 
             foreach (var item in lookupList)
@@ -198,7 +198,44 @@ namespace HISSystem.Areas.Admin.Controllers
             lookup.ModifiedDate = System.DateTime.Now;
             db.LookupService.InsertUser(lookup);
 
-            return RedirectToAction("Index");
+            return Json(true);
+
+            //var lookupName = name;
+            //LookupIndexModel lookupIndex = new LookupIndexModel();
+            //lookupIndex.PagedLookups = new PagedData<Lookup>();
+            //lookupIndex.Lookup = new Lookup();
+            //ViewBag.LookupName = lookupName;
+
+            //var xray = db.LookupService.GetLookups().Where(x => x.IsActive == true).ToList();
+
+            //var result = xray.Where(x => x.Type.Equals(lookupName)).ToList();
+
+            //lookupIndex.PagedLookups.Data = result.OrderBy(x => x.ID).Take(PageSize).ToList();
+            //lookupIndex.PagedLookups.NumberOfPages = Convert.ToInt32(Math.Ceiling((double)result.Count() / PageSize));
+
+            //if (lookupName == "Floor")
+            //{
+            //    foreach (var item in lookupIndex.PagedLookups.Data)
+            //    {
+            //        item.Type = xray.Where(x => x.ID == Convert.ToInt32(item.ParentId)).FirstOrDefault().Name.ToString();
+            //    }
+            //}
+            //else if (lookupName == "Room")
+            //{
+            //    foreach (var item in lookupIndex.PagedLookups.Data)
+            //    {
+            //        Lookup lookups = new Lookup();
+
+            //        lookups = xray.Where(x => x.ID == Convert.ToInt32(item.ParentId)).FirstOrDefault();
+
+            //        string grandParent = xray.Where(x => x.ID == Convert.ToInt32(lookups.ParentId)).FirstOrDefault().Name.ToString();
+
+            //        item.Type = grandParent + "/" + lookups.Name;
+            //    }
+            //}
+
+            //return PartialView("_Index", lookupIndex);
+
         }
 
         public IActionResult Delete(int lookupID)
@@ -224,9 +261,10 @@ namespace HISSystem.Areas.Admin.Controllers
         public IActionResult GetLookup(Lookup lookup)
         {
             lookup.ModifiedDate = System.DateTime.Now;
+            lookup.IsActive = true;
             db.LookupService.UpdateUser(lookup);
 
-            return RedirectToAction("Index");
+            return Json(true);
         }
 
         [HttpGet]

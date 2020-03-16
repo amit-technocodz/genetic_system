@@ -167,10 +167,21 @@
 @section scripts{
     <script>
 
+        var globalGetType;
+        var globalCurrentType;
+
+
+
         function GetLookupForm(current, type) {
+            debugger
 		$(".list-group-item").removeClass('active')
 		$(current).addClass('active')
-		$("#LKPType").val(type);
+            $("#LKPType").val(type);
+            globalGetType = undefined;
+            globalCurrentType = undefined;
+            debugger
+            globalGetType = type;
+            globalCurrentType = current;
 		$.ajax({
 			url: '/admin/lookup/GetLookupIndex?lookupName=' + type,
 			contentType: 'application/json; charse=utf-8',
@@ -186,7 +197,8 @@
 		});
 	}
 
-        $(document).on("click", ".addMasterLookup", function(){
+        $(document).on("click", ".addMasterLookup", function () {
+            debugger
                 var options = {
                     "backdrop": "static",
                     keyboard: true
@@ -206,20 +218,49 @@
         });
 
 
+        function getListAfterAdd(type) {
+            debugger
+		//$(".list-group-item").removeClass('active')
+		//$(current).addClass('active')
+            $("#LKPType").val(type);
+            debugger
+            //globalGetType = type;
+            //globalCurrentType = current;
+		$.ajax({
+			url: '/admin/lookup/GetLookupIndex?lookupName=' + type,
+			contentType: 'application/json; charse=utf-8',
+			type: 'get',
+			success: function (result) {
+				debugger
+                $("#DataLookup").empty();
+                $("#DataLookup").append(result);
+			},
+			error: function (xhr, status) {
+				alert(status)
+			}
+		});
+	}
+
+
+        //$(function () {
+        //    debugger
+        //    $("#addLookUp").on('submit', function (e) {
+        //        debugger
+        //        e.preventDefault()
+        //        var dataToPost = $(this).serialize()
+        //        $.post("/admin/lookup/add", dataToPost)
+        //            .done(function (response, status, jqxhr) {
+        //                debugger
+        //                getListAfterAdd(globalGetType);
+        //                debugger
+        //            })
+        //            .fail(function (jqxhr, status, error) {
+        //            })
+        //    })
+        //})
 
         $(function () {
-            $("#addLookUp").on('submit', function (e) {
-                e.preventDefault()
-                var dataToPost = $(this).serialize()
-                $.post("/admin/lookup/add", dataToPost)
-                    .done(function (response, status, jqxhr) {
-                    })
-                    .fail(function (jqxhr, status, error) {
-                    })
-            })
-        })
-
-        $(function () {
+            debugger
             $("#editLookUp").on('submit', function (e) {
                 e.preventDefault()
                 var dataToPost = $(this).serialize()
@@ -233,8 +274,9 @@
         })
 
         $(document).ready(function () {
+            debugger
             $("body").on("click", '.page-number', function () {
-             
+
                 var page = parseInt($(this).html());
                   //alert(page);
                 var lookupName = $(this).closest('td').attr('id');
@@ -269,7 +311,8 @@
         });
 
 
-        $(document).on("click", ".addLookup", function(){
+        $(document).on("click", ".addLookup", function () {
+            debugger
                 var $buttonClicked = $(this);
                 var lookupName = $(this).data('info');
                 var options = {
@@ -292,6 +335,7 @@
         });
 
         function SaveMasterLookup() {
+            debugger
             var type = $("#Type").val();
             var typeid = $("#TypeID").val();
             var name = $("#Name").val();
@@ -311,8 +355,87 @@
                 }
 
             });
-}
+        }
+
+
+
+
+
+        function AddNewLookUp() {
+            debugger
+            var type = $("#Type").val();
+            var typeid = $("#TypeID").val();
+            var name = $("#Name").val();
+            var Lookup = {};
+            Lookup.Type = type;
+            Lookup.TypeID = typeid;
+            Lookup.Name = name;
+            $.ajax({
+                type: "POST",
+                url: '/admin/lookup/Add',
+                data: { lookup: Lookup },
+                success: function (data) {
+				debugger
+
+                    if (data == true) {
+                        closeModalAfterSave();
+                        debugger
+                        GetLookupForm(globalCurrentType, globalGetType);
+                    }
+			},
+			error: function (xhr, status) {
+				alert(status)
+			}
+
+            });
+
+        }
+
+
+
+        function EditLookUp() {
+            debugger
+            var ID = $("#ID").val();
+            var type = $("#Type").val();
+            var typeid = $("#TypeID").val();
+            var name = $("#Name").val();
+            var Lookup = {};
+            Lookup.ID = ID;
+            Lookup.Type = type;
+            Lookup.TypeID = typeid;
+            Lookup.Name = name;
+            $.ajax({
+                type: "POST",
+                url: '/admin/lookup/GetLookup',
+                data: { lookup: Lookup },
+                success: function (data) {
+				debugger
+
+                    if (data == true) {
+                        closeModalAfterSave();
+                        debugger
+                        GetLookupForm(globalCurrentType, globalGetType);
+                    }
+			},
+			error: function (xhr, status) {
+				alert(status)
+			}
+
+            });
+
+        }
+
+
+       function closeModalAfterSave() {
+            debugger
+             $('#addMasterModal').modal('hide');
+             $('#addModal').modal('hide');
+        };
+
+
+
         $(document).ready(function () {
+            debugger
             $('body').on('click', '.editLookup', function () {
                 var $buttonClicked = $(this);
                 var lookupID = $(this).attr('id');
@@ -336,6 +459,7 @@
             });
         });
         $("#search").on("keyup", function () {
+            debugger
             var search = $(this).val();
             $.ajax({
                 type: "GET",
