@@ -49,7 +49,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
 
         public IActionResult GetPendingOrders()
         {
-            var clientOrderList = db.ClientOrderService.GetClientOrderList().Where(x => x.Status.Name == "Pending");
+            var clientOrderList = db.ClientOrderService.GetClientOrderList().Where(x => x.Status?.Name == "Pending");
             var clientOrders = new PagedData<ClientOrder>();
             clientOrders.Data = (clientOrderList).Take(PageSize);
 
@@ -171,18 +171,29 @@ namespace GeneticSystem.Areas.Admin.Controllers
             if (clientOrder.ClientOrder.TestTypeArray != null)
                 clientOrder.ClientOrder.TestType = string.Join(',', clientOrder.ClientOrder.TestTypeArray);
 
-            for (int i = 0; i < clientOrder.ClientOrderData.Count(); i++)
-            {
-                if (clientOrder.ClientOrderData[i].Genes != null)
-                    clientOrder.ClientOrderData[i].GeneID = string.Join(',', clientOrder.ClientOrderData[i].Genes);
-            }
             ClientOrder order = clientOrder.ClientOrder;
-            order.ClientOrderData = clientOrder.ClientOrderData;
 
-            List<ClientOrderData> previousData = db.ClientOrderService.GetClientOrderDataByOrderID(order.ID).ToList();
-            db.ClientOrderService.RemoveClientOrderDataList(previousData);
+            if (clientOrder.ClientOrderData != null)
+            {
+                for (int i = 0; i < clientOrder.ClientOrderData.Count(); i++)
+                {
+                    if (clientOrder.ClientOrderData[i].Genes != null)
+                        clientOrder.ClientOrderData[i].GeneID = string.Join(',', clientOrder.ClientOrderData[i].Genes);
+                }
 
-            bool result = db.ClientOrderService.UpdateClientOrder(order);
+                order.ClientOrderData = clientOrder.ClientOrderData;
+            }
+
+            var previousData = db.ClientOrderService.GetClientOrderDataByOrderID(order.ID);
+
+            if(previousData != null)
+            {
+                db.ClientOrderService.RemoveClientOrderDataList(previousData.ToList());
+            }
+            
+
+            db.ClientOrderService.UpdateClientOrder(order);
+
             var clientOrderList = db.ClientOrderService.GetClientOrderList();
 
             PagedData<ClientOrder> clientOrders = new PagedData<ClientOrder>

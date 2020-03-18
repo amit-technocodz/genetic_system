@@ -415,7 +415,6 @@ namespace HISSystem.Areas.Admin.Controllers
                 }
             }
             usermodel.ModifiedDate = DateTime.UtcNow;
-            //usermodel.IsActive = true;
             usermodel.RoleID = db.RoleService.GetByName("Patient");
             usermodel.Password = CommonMethod.Encrypt(model.User.Password);
             db.UserService.UpdateUser(usermodel);

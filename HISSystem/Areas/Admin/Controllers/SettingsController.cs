@@ -50,7 +50,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
 
             ImageToByte fConvert = new ImageToByte();
             saveModel.ImagePath = fConvert.GetFileBits(file);
-            saveModel.CompanyId = service.CompanyProfileService.GetAll().FirstOrDefault().ID;
+            //saveModel.CompanyId = service.CompanyProfileService.GetAll().FirstOrDefault().ID;
             service.CompanyProfileService.AddImage(saveModel);
             var logo = service.CompanyProfileService.GetImageByTypeId(181);
             string something = String.Format("data:image/gif;base64,{0}", logo);

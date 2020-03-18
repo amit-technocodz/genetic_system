@@ -7,6 +7,7 @@ using Service.IServices;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Query;
+using System;
 
 namespace Service.Services
 {
@@ -20,7 +21,7 @@ namespace Service.Services
         }
         public IEnumerable<Lookup> GetLookups()
         {
-            return db.Lookup.Get().Include(x => x.ParentFK).ToList();
+            return db.Lookup.Get().Where(x => x.IsActive == true).Include(x => x.ParentFK).OrderByDescending(x => x.AddedDate);
         }
         public IQueryable<Lookup>GetLookupList()
         {
@@ -38,7 +39,14 @@ namespace Service.Services
         }
         public void InsertUser(Lookup lookup)
         {
-            db.Lookup.Insert(lookup);
+            try
+            {
+                db.Lookup.Insert(lookup);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public void UpdateUser(Lookup lookup)
         {

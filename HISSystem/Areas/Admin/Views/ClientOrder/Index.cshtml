@@ -39,16 +39,16 @@
         <div class="row mrgn-b-sm">
             <div class="col-md-8 col-lg-8">
                 <button class="btn btn-danger btn-xs cancelEvent" id="cancelOrderBtn" type="button"><i class="fa fa-times" aria-hidden="true"></i> Back </button>
-                <button class="btn btn-warning btn-xs" id="addClientOrderBtn" type="button"><i class="fa fa-plus" aria-hidden="true"></i> New Order </button>
+                <button class="btn btn-warning btn-xs sbmtBtn" id="addClientOrderBtn" type="button"><i class="fa fa-plus" aria-hidden="true"></i> New Order </button>
                 <button class="btn btn-success btn-xs" id="getPndOrdrBtn" type="button"><i class="fa fa-list" aria-hidden="true"></i> Pending Orders </button>
                 <button class="btn btn-success btn-xs" id="getAllOrdrBtn" type="button"> All Orders </button>
-                <button data-toggle="dropdown" class="btn btn-xs btn-info dropdown-toggle" type="button"><i class="fa fa-share-square-o" aria-hidden="true"></i> Export <i class="fa fa-sort-desc" aria-hidden="true"></i> </button>
+                @*<button data-toggle="dropdown" class="btn btn-xs btn-info dropdown-toggle" type="button"><i class="fa fa-share-square-o" aria-hidden="true"></i> Export <i class="fa fa-sort-desc" aria-hidden="true"></i> </button>*@
 
 
-                <button name="button" value="Save" onclick="saveOrderFunction();" class="btn btn-xs btn-primary" id="signupform"><i class="fa fa-check" aria-hidden="true"></i> Save </button>
-                <button name="submit" id="postUpdatebtn" value="Update" class="btn btn-xs btn-warning"><i class="fa fa-check" aria-hidden="true"></i> Update </button>
+                <button name="button" value="Save" onclick="saveOrderFunction();" class="btn btn-xs btn-primary sbmtBtn" id="signupform"><i class="fa fa-check" aria-hidden="true"></i> Save </button>
+                <button name="submit" id="postUpdatebtn" value="Update" class="btn btn-xs btn-warning sbmtBtn"><i class="fa fa-check" aria-hidden="true"></i> Update </button>
                 <button name="submit" value="History" class="btn btn-xs btn-info" disabled id="postHistorybtn"><i class="fa fa-check" aria-hidden="true"></i> Update </button>
-                <label for="fileUpload" class="file-upload btn btn-xs btn-success" id="fileUpldlbl">
+                <label for="fileUpload" class="file-upload btn btn-xs btn-success sbmtBtn" id="fileUpldlbl">
                     <i class="fa fa-upload mr-1"></i>Attachment
                     <input id="fileUpload" name="file" type="file">
                 </label>
@@ -123,6 +123,15 @@
     <script src="https://cdn.jsdelivr.net/npm/chosen-js@1.8.7/chosen.jquery.js" integrity="sha256-TDtzz+WOGufaQuQzqpEnnxdJQW5xrU+pzjznwBtaWs4=" crossorigin="anonymous"></script>
 
     <script>
+          $(document).ajaxStart(function () {
+            $(".sbmtBtn").attr("disabled", true);
+          });
+
+        $(document).ajaxComplete(function () {
+            $(".sbmtBtn").attr("disabled", false);
+        });
+
+
         $(document).on("keyup", "#searchPatient", function () {
             var id = $(this).val();
             $.ajax({
@@ -304,6 +313,8 @@
             $("#addClientOrderBtn").show();
             $("#postUpdatebtn").hide();
             $("#signupform").hide();
+            $("#getPndOrdrBtn").show();
+            $("#fileUpldlbl").hide();
             document.getElementById("quickSearchBlock").hidden = false;
             showHide();
         });
@@ -328,6 +339,7 @@
                 success: function (response) {
                     toastr.info('Record saved');
                     document.getElementById('orderArea').innerHTML = response;
+                    $("#postUpdatebtn").hide();
                 },
                 error: function (xhr, status) {
                     toastr.error('Something went wrong');
@@ -427,6 +439,7 @@
         function saveOrderFunction() {
             var formdata = new FormData($('form').get(0));
             formdata.append("GeneTemplateId", $("#TestType").val());
+            $("#signupform").prop("disabled", true);
             $.ajax({
                 type: 'POST',
                 url: "/admin/clientorder/AddOrder",
@@ -439,9 +452,12 @@
                     $("#orderArea").html(response);
                     document.getElementById("quickSearchBlock").hidden = false;
                     $("#addClientOrderBtn").show();
-                    $("#cancelOrderBtn").hide();  
+                    $("#cancelOrderBtn").hide();
+                    $("#signupform").hide();
+                    $("#signupform").prop("disabled", false);
                 },
                 error: function (xhr, status) {
+                    $("#signupform").prop("disabled", false);
                     toastr.error('Something went wrong');
                 }
             });

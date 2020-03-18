@@ -25,19 +25,9 @@ namespace HISSystem.Areas.Admin.Controllers
         public IActionResult Index()
         {
             List<Lookup> lookupTry = new List<Lookup>();
- 
-            var lookupList = db.LookupService.GetLookups().Where(x => x.IsActive == true).OrderByDescending(x => x.AddedDate).Select(x => x.Type).Distinct().ToList();
-           
+
+            var lookupList = db.LookupService.GetLookups().Select(x => x.Type).Distinct();
             ViewBag.Lookups = lookupList;
-
-            foreach (var item in lookupList)
-            {
-                Lookup lookup = new Lookup();
-                lookup.Type = item;
-                lookup.Name = item.ToLower() + "List";
-                lookupTry.Add(lookup);
-            }
-
             
             return View(lookupTry);
         }
@@ -158,6 +148,7 @@ namespace HISSystem.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult AddNewMaster(Lookup lookup)
         {
+            try { 
             lookup.AddedDate = DateTime.UtcNow;
             lookup.IsActive = true;
             var name = lookup.Name;
@@ -166,6 +157,12 @@ namespace HISSystem.Areas.Admin.Controllers
             lookup.Name= name.Trim();
             db.LookupService.InsertUser(lookup);
             return Json(true);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+           
         }
 
         [Area("Admin")]

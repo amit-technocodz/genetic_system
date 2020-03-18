@@ -27,7 +27,7 @@ namespace HISSystem.Helper
         public static bool ViewPermission(Page page, int roleID)
         {
             GetPermission();
-            var result = _viewAccess.Any(x => x.ViewControl.Name == Convert.ToString(page) && x.RoleID == roleID && x.IsEnabled == true);
+            var result = _viewAccess.Any(x => x.ViewControl.Name.ToLower() == Convert.ToString(page).ToLower() && x.RoleID == roleID && x.IsEnabled == true);
             return result;
         }
 

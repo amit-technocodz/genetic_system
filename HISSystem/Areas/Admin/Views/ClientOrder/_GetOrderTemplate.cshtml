@@ -10,7 +10,9 @@
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <a data-toggle="collapse" data-info="Department" href="#one-@subTemplate.i">
-                                    @subTemplate.value.SubTemplateType.Name
+                                    @if(subTemplate != null && subTemplate.value.SubTemplateType != null){
+                                    @subTemplate?.value?.SubTemplateType?.Name
+                                    }
                                 </a>
                             </h4>
                         </div>

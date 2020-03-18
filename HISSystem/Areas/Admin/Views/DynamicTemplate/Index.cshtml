@@ -70,7 +70,7 @@
                 </div>
             </div>
             <div class="col-md-5">
-                <label for="search">&nbsp;</label> <br /><a href="#" data-info="addMasterLookup" class="btn btn-xs btn-warning addMasterLookup"><i class="fa fa-plus" aria-hidden="true"></i> Add Master Template</a>
+                <label for="search">&nbsp;</label> <br /><a href="#" data-info="addMasterLookup" class="btn btn-xs btn-warning addMasterLookup sbmtBtn"><i class="fa fa-plus" aria-hidden="true"></i> Add Master Template</a>
             </div>
         </div>
     </div>
@@ -141,6 +141,14 @@
 @section scripts{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.js" integrity="sha256-TDtzz+WOGufaQuQzqpEnnxdJQW5xrU+pzjznwBtaWs4=" crossorigin="anonymous"></script>
     <script>
+        $(document).ajaxStart(function () {
+            $(".sbmtBtn").attr("disabled", true);
+        });
+
+        $(document).ajaxComplete(function () {
+            $(".sbmtBtn").attr("disabled", false);
+        });
+
         var getGlobalHTML;
 
         function GetTemplateDetail(current, type) {
@@ -438,9 +446,14 @@
 
 
         function TempValidation() {
+
             var tempId = $('#Template_TemplateTypeID').val();
             var subtempId = $('#Template_SubTemplateTypeID').val();
+
             if (tempId == null || (subtempId == null && !(document.getElementById("TemplateData.HaveSubTemplate").checked)))
+                return false;
+
+            if (tempId == "" && subtempId == "")
                 return false;
 
             $.ajax({
@@ -477,7 +490,6 @@
         var maxFields = 5; //Maximum number of formRows allowed (global variable)
 
         function AddField() {
-            debugger
             var $tableBody = $('#relative-table').find("tfoot");
             $trLast = $tableBody.find("tr:last");
             $trNew = $trLast.clone();
@@ -491,10 +503,7 @@
 
         function TempID(Id) {
             getGlobalHTML = document.getElementById("DataLookup").innerHTML;
-            debugger
             var Id;
-            debugger
-
             $.ajax({
                 url: '/admin/dynamictemplate/UpdateTemplate?ID=' + Id,
                 contentType: 'application/json; charse=utf-8',
@@ -512,17 +521,14 @@
         function updateTemplateCol() {
             var tempValue = document.getElementById('Template_TemplateTypeID');
             var subTempValue = document.getElementById('Template_SubTemplateTypeID');
-            debugger
             var values = tempValue.options[tempValue.selectedIndex].text + ">>" + subTempValue.options[subTempValue.selectedIndex].text;
             var formdata = new FormData();
-            debugger
             formdata.append('Template.ID', $('#Template_ID').val());
             formdata.append('Template.TemplateTypeID', $('#Template_TemplateTypeID').val());
             formdata.append('Template.SubTemplateTypeID', $('#Template_SubTemplateTypeID').val());
 
             $('#relative-table tfoot tr').each(function (a, b) {
                 var fields = $(this).find(":input");
-                debugger
                 formdata.append("TemplateColumns[" + a + "].TemplateFieldID", fields.eq(0).val());
                 formdata.append("TemplateColumns[" + a + "].DisplayName", fields.eq(1).val());
                 formdata.append("TemplateColumns[" + a + "].TemplateID", $('#UpdtTemplateID').val());
@@ -539,6 +545,7 @@
                     console.log(data);
                     toastr.success('record updated')
                     $("#DataLookup").html(data);
+                    $('.tryMultiselect').chosen();
                 },
                 error: function (xhr, status) {
                     GetTemplateDetailFix(values);
@@ -549,9 +556,7 @@
 
         $(document).on("click", ".backToTemplate", function () {
             if (getGlobalHTML != undefined) {
-                debugger
                 document.getElementById("DataLookup").innerHTML = getGlobalHTML;
-                debugger
             }
             else {
                 var getTemplateID = $('.addTemplateDetail').attr("data-info");

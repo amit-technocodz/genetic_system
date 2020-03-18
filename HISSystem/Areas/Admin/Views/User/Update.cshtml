@@ -29,7 +29,7 @@
         </div>
         <div class="row mrgn-b-sm">
             <div class="col-md-5 col-lg-5">
-                <input type="submit" name="Update" value="Update" class="btn btn-xs btn-warning" />
+                <input type="submit" name="Update" value="Update" class="btn btn-xs btn-warning sbmtBtn" />
                 <input type="button" name="History" value="History" class="btn btn-xs btn-info" />
             </div>
             <div class="col-md-7 text-right search-block">
@@ -395,6 +395,13 @@
 
 @section Scripts{
     <script>
+        $(document).ajaxStart(function () {
+            $(".sbmtBtn").attr("disabled", true);
+        });
+
+        $(document).ajaxComplete(function () {
+            $(".sbmtBtn").attr("disabled", false);
+        });
 
         function GetDepartment1(event) {
              var id1 = event.id;

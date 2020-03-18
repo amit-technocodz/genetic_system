@@ -28,8 +28,8 @@
         </div>
         <div class="row mrgn-b-sm">
             <div class="col-md-5 col-lg-5">
-                <input type="submit" name="submit" value="Save" class="btn btn-xs btn-primary" />
-                <input type="button" name="Update" value="Update" class="btn btn-xs btn-warning" disabled />
+                <input type="submit" name="submit" value="Save" class="btn btn-xs btn-primary sbmtBtn" />
+                <input type="button" name="Update" value="Update" class="btn btn-xs btn-warning sbmtBtn" disabled />
                 <input type="button" name="History" value="History" class="btn btn-xs btn-info" />
             </div>
             <div class="col-md-7 text-right search-block">
@@ -41,7 +41,6 @@
             <div class="row mrgn-b-sm">
                 <div class="col-md-3">
                     @Html.TextBoxFor(m => m.RegisterationNo, new { @Class = "form-control", @Name = "Registeration", @readonly = "readonly", autocomplete = "true", onkeyup = "sync(this)", onchange = "CheckUnique('regn');" })
-                 
                     <span id="regn" style="color:red;" hidden="hidden" data-info="success">This registeration no. already exists!</span>
 
                 </div>
@@ -269,16 +268,16 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="Password">Password <span style="color:red;"> * </span></label>
-                                                                <input name="Password" id="Password" type="Password" autocomplete="off" Class = "form-control"/>
+                                                                <input name="Password" id="Password" type="Password" autocomplete="off" Class="form-control" />
                                                                 @*@Html.PasswordFor(m => m.Password, new { @Class = "form-control", autocomplete = "true" })*@
                                                             </div>
                                                             @*<div class="form-group">
-                                                                <label for="ConfirmPassword">Confirm Password <span style="color:red;"> * </span></label>
-                                                                @Html.Password("ConfirmPassword", null, new { @Class = "form-control", autocomplete = "true" })
-                                                            </div>*@
+            <label for="ConfirmPassword">Confirm Password <span style="color:red;"> * </span></label>
+            @Html.Password("ConfirmPassword", null, new { @Class = "form-control", autocomplete = "true" })
+        </div>*@
                                                             <div class="form-group">
                                                                 <label for="ExpiryDate">Expiry Date </label>
-                                                                @Html.TextBoxFor(m => m.ExpiryDate, "{0:yyyy-MM-dd}", new { @Class = "form-control datepickerexpiry" })
+                                                                @Html.TextBoxFor(m => m.ExpiryDate, "{0:yyyy-MM-dd}", new { @Class = "form-control datepickerexpiry", autocomplete = "off" })
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="msg">Role-Security group </label>
@@ -351,8 +350,14 @@
 </form>
 @section Scripts{
     <script>
+        $(document).ajaxStart(function () {
+            $(".sbmtBtn").attr("disabled", true);
+        });
 
-        
+        $(document).ajaxComplete(function () {
+            $(".sbmtBtn").attr("disabled", false);
+        });
+
 
         function GetDepartment1(event) {
              var id1 = event.id;
@@ -755,8 +760,8 @@
         var plp = $("#PersonalInformation_ProbationPeriodEndDate").val();
         $("#dateRangePicker").val(pdp + " " + plp);
         document.getElementById('RegisterationNo').readOnly = !this.checked;
-        function CheckUnique(spantype)
-        {
+
+        function CheckUnique(spantype) {
             var User = {};
             if (spantype == "regn") {
                 var searchstring = $("#RegisterationNo").val();
@@ -765,37 +770,29 @@
                 var searchstring = $("#PersonalInformation_IdentificationTypeID").val();
             }
             else {
-
-                var searchstring=$("#UserName").val();
-
+                var searchstring = $("#UserName").val();
             }
-
             User.ID = 0;
-
             $.ajax({
                 url: '/admin/user/CustRemoteValidation',
                 type: "get",
                 data: {
                     ID: 0,
-                    SearchString:searchstring,
-                    Type:spantype
+                    SearchString: searchstring,
+                    Type: spantype
                 },
                 success: function (result) {
                     if (result == false) {
-                         $("#" + spantype + "").attr('data-info','error');
+                        $("#" + spantype + "").attr('data-info', 'error');
                         $("#" + spantype + "").show();
                     }
                     else {
-                        $("#" + spantype + "").data('Info', 'success');
+                        $("#" + spantype + "").attr("data-info","success");
                         $("#" + spantype + "").hide();
                     }
-                    
-
-
                 }
             });
-
-
         }
+
     </script>
 }

@@ -54,12 +54,12 @@ namespace Service.Services
 
         public Template GetTemplateByName(string temptype, string subtemptype)
         {
-            return db.Template.Get().Include(x => x.TemplateType).Include(x => x.SubTemplateType).Where(x => (String.IsNullOrEmpty(temptype) || x.TemplateType.Name == temptype) && x.SubTemplateType.Name == subtemptype).Include(x => x.TemplateColumns).FirstOrDefault();
+            return db.Template.Get().Include(x => x.TemplateType).Include(x => x.SubTemplateType).Where(x => (String.IsNullOrEmpty(temptype) || x.TemplateType.Name == temptype) && x.SubTemplateType.Name == subtemptype).Include(x => x.TemplateColumns).ThenInclude(c => c.TemplateField).FirstOrDefault();
         }
 
         public Template GetTemplateByID(int Id)
         {
-            return db.Template.Get().Where(x => x.ID == Id).Include(x => x.TemplateType).Include(x => x.SubTemplateType).Include(x => x.TemplateColumns).FirstOrDefault();
+            return db.Template.Get().Where(x => x.ID == Id).Include(x => x.TemplateType).Include(x => x.SubTemplateType).Include(x => x.TemplateColumns).ThenInclude(c => c.TemplateField).FirstOrDefault();
         }
 
         public TemplateData SaveTemplateData(TemplateData templateData)

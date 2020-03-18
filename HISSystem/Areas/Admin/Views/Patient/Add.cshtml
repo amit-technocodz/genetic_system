@@ -64,8 +64,8 @@
         </div>
         <div class="row mrgn-b-sm">
             <div class="col-md-12 col-lg-12">
-                <input type="button" name="submit" value="Save" class="btn btn-xs btn-primary" id="signupform" />
-                <input type="button" name="submit" value="Update" class="btn btn-xs btn-warning" disabled />
+                <input type="button" name="submit" value="Save" class="btn btn-xs btn-primary sbmtBtn" id="signupform" />
+                <input type="button" name="submit" value="Update" class="btn btn-xs btn-warning sbmtBtn" disabled />
                 <input type="button" name="submit" value="History" class="btn btn-xs btn-info" disabled />
                 @*<input type="button" name="submit" value="Direct Scan" class="btn btn-xs btn-primary" disabled />
 
@@ -83,7 +83,7 @@
                     <div class="form-group pos-relative">
                         <label>Search</label>
                         <input type="text" class="form-control" name="searchPatient" id="searchPatient" />
-                        <div class="popup-result" id="searchwithid" style="display:none;"></div>
+                        <div class="popup-result" id="searchwithid" style="display:none;width:600px;"></div>
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -628,6 +628,13 @@
 
 @section Scripts{
     <script>
+        $(document).ajaxStart(function () {
+            $(".sbmtBtn").attr("disabled", true);
+        });
+
+        $(document).ajaxComplete(function () {
+            $(".sbmtBtn").attr("disabled", false);
+        });
 
         function SendEmail() {
             var Id = $('#sendEmailBtn').attr('data-value');

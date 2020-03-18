@@ -82,7 +82,7 @@ namespace Service.Services
                 ApplicationContext context = new ApplicationContext();
 
                 var result = context.ClientOrder.AsQueryable();
-                return result.Where(x => x.IsActive == true).Include(x => x.Status).Include(x => x.User).ThenInclude(x => x.PatientPersonalInformation).ThenInclude(x => x.City).Include(x => x.Doctor).OrderByDescending(x => x.ID).Take(100);
+                return result.Where(x => x.IsActive == true).Include(x => x.Status).Include(x => x.User).ThenInclude(x => x.PatientPersonalInformation).ThenInclude(x => x.City).Include(x => x.Doctor).Include(x => x.Template).ThenInclude(c => c.TemplateType).OrderByDescending(x => x.ID).Take(100);
             }
             catch (Exception ex)
             {
@@ -121,10 +121,10 @@ namespace Service.Services
             {
                 ApplicationContext context = new ApplicationContext();
 
-                var result = context.ClientOrder.Where(x => x.IsActive == true).AsQueryable();
+                var result = context.ClientOrder.Where(x => x.IsActive == true);
 
                 if (model.ID != 0)
-                    result = result.Where(x => x.ID == model.ID);
+                    result = result.Where(x => x.ID.ToString().StartsWith(model.ID.ToString(), StringComparison.OrdinalIgnoreCase));
                 if (model.OrderNo != 0)
                     result = result.Where(x => x.OrderNo.ToString().StartsWith(model.OrderNo.ToString(), StringComparison.OrdinalIgnoreCase)).Include(x => x.User);
                 if (!string.IsNullOrEmpty(model.PatientName))
@@ -142,7 +142,7 @@ namespace Service.Services
                     (x.User.PatientPersonalInformation.DateOfBirth != null) &&
                     (x.User.PatientPersonalInformation.DateOfBirth.Value.Date) == model.BirthDate.Value.Date);
 
-                return result.Include(x => x.User).ThenInclude(x => x.PatientPersonalInformation).ThenInclude(x => x.City).Include(x => x.Doctor).OrderByDescending(x => x.ID).Take(50);
+                return result.Include(x => x.User).ThenInclude(x => x.PatientPersonalInformation).ThenInclude(x => x.City).Include(x => x.Doctor).Include(x => x.Status).Include(x => x.Template).ThenInclude(c => c.TemplateType).OrderByDescending(x => x.ID).Take(50);
             }
             catch (Exception ex)
             {
@@ -171,7 +171,6 @@ namespace Service.Services
             {
                 clientOrder.User = null;
                 clientOrder.Doctor = null;
-                clientOrder.TestType = null;
                 clientOrder.IsActive = true;
                 db.ClientOrder.Update(clientOrder);
                 db.ClientOrder.SaveChanges();

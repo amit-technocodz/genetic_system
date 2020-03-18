@@ -69,7 +69,7 @@
                                             &nbsp;
                                         </label>
                                         <div id="ImgDiv" class="btn-group btn-group-justified mrgn-b-xs">
-                                            <label for="fileUpload" class="file-upload btn btn-primary btn-block btn-xs rounded-pill shadow">
+                                            <label for="fileUpload" class="file-upload btn btn-primary btn-block btn-xs rounded-pill shadow sbmtBtn">
                                                 <i class="fa fa-upload mr-2"></i> Click to browse...
                                                 <input id="fileUpload" name="file" type="file" disabled required>
                                             </label>
@@ -80,7 +80,7 @@
                                         <label class="d-block">
                                             &nbsp;
                                         </label>
-                                        <button class="btn btn-xs btn-warning " id="postImage" type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Save </button>
+                                        <button class="btn btn-xs btn-warning sbmtBtn " id="postImage" type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Save </button>
                                     </div>
                                 </div>
                             </div>
@@ -106,6 +106,14 @@
 
 @section scripts{
     <script>
+        $(document).ajaxStart(function () {
+            $(".sbmtBtn").attr("disabled", true);
+        });
+
+        $(document).ajaxComplete(function () {
+            $(".sbmtBtn").attr("disabled", false);
+        });
+
         function validateImage() {
             var imageval = $('#fileUpload').val();
             if ($('#fileUpload').val() == null || $('#fileUpload').val() == undefined || $('#fileUpload').val() == "") {

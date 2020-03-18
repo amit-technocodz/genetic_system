@@ -38,34 +38,9 @@
                     <input type="text" name="search" id="search" class="form-control" placeholder="Search Master Lookup..." />
                 </div>
             </div>
-            <div class="col-md-5"> <label for="search">&nbsp;</label> <br /><a href="#" data-info="addMasterLookup" class="btn btn-xs btn-warning addMasterLookup"><i class="fa fa-plus" aria-hidden="true"></i> Add Master Lookup</a></div>
+            <div class="col-md-5"> <label for="search">&nbsp;</label> <br /><a href="#" data-info="addMasterLookup" class="btn btn-xs btn-warning addMasterLookup sbmtBtn"><i class="fa fa-plus" aria-hidden="true"></i> Add Master Lookup</a></div>
         </div>
     </div>
-    @*<div class="panel-group wrap" id="bs-collapse">
-            @foreach (var item in Model.Select((value, i) => new { i, value }))
-            {<div class="panel">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-info="@item.value.Type" data-parent="#bs-collapse" href="#one_@item.i">
-                                @item.value.Type
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="one_@item.i" class="panel-collapse collapse">
-                        <div class="row pad-all-sm">
-                            <div class="col-md-5"> <a href="#" data-info="@item.value.Type" class="btn btn-xs btn-primary addLookup"><i class="fa fa-plus" aria-hidden="true"></i>Add</a></div>
-                            <div class="col-md-7 text-right search-block">
-                                <div class="input-group pull-right" id="adv-search">
-                                    <input type="text" data-info="@item.value.Type" name="detailSearch" id="detailsearch" class="form-control detailsearch" placeholder="Search..." />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-body-list" id="@item.value.Name">
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>*@
 
     <div class="">
         <div class="row">
@@ -91,48 +66,15 @@
                             <div class="row">
                                 <input type="hidden" id="LKPType" name="Type" />
                                 <div id="DataLookup">
-                                    @*<div class="prtm-content">
-                                        <div class="row mrgn-b-xs">
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <button type="button" class="btn btn-xs btn-outline-warning add-btn" onclick="addType1()">
-                                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                                    &nbsp;Add LookupType
-                                                </button>
-                                                <h3 id="lName"></h3>
-                                            </div>
-                                            <div class="prtm-block mrgn-b-md">
-                                                <div class="row">
-                                                    <div class="col-md-12 col-lg-12 col-xs-12">
-                                                        <div class="prtm-full-block">
-                                                            <div class="table-responsive">
-                                                                <table id="replaceTbl" class="table table-striped table-hover table-bordered">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th style="min-width:136px;">Name</th>
-                                                                            <th style="min-width:130px;">Action</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody></tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                </div>
-                                            </div>*@
                                 </div>
-
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 
 
 
@@ -170,7 +112,13 @@
         var globalGetType;
         var globalCurrentType;
 
+        $(document).ajaxStart(function () {
+            $(".sbmtBtn").attr("disabled", true);
+        });
 
+        $(document).ajaxComplete(function () {
+            $(".sbmtBtn").attr("disabled", false);
+        });
 
         function GetLookupForm(current, type) {
             debugger
@@ -348,12 +296,24 @@
                 url: '/admin/lookup/AddNewMaster',
                 data: { lookup: Lookup },
                 success: function (data) {
-                    location.reload();
+                    $('#addMasterModal').modal('hide');
                 },
                 error: function () {
                     alert("Content load failed.");
                 }
 
+            });
+            $.ajax({
+                type: "GET",
+                url: '/admin/lookup/SearchMasterLookup',
+                data: { searchQuery: null },
+                success: function (data) {
+                    $("#lookupList").empty();
+                    $("#lookupList").append(data);
+                },
+                error: function () {
+                    alert("Content load failed.");
+                }
             });
         }
 
