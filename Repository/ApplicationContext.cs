@@ -109,11 +109,11 @@ namespace Repository
         public DbSet<TestTemplate> TestTemplate { get; set; }
         public DbSet<TestTemplateColumn> TestTemplateColumn { get; set; }
         public DbSet<TestTemplateData> TestTemplateData { get; set; }
-
         public DbSet<TestTemp> TestTemp { get; set; }
         public DbSet<TestTempCol> TestTempCol { get; set; }
         public DbSet<MasterTempCol> MasterTempCol { get; set; }
         public DbSet<TestTempData> TestTempData { get; set; }
+        public DbSet<Reminder> Reminder { get; set; }
 
     }
 }

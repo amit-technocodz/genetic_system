@@ -40,6 +40,7 @@ namespace Service.UnitOfServices
         MedicalDictionaryService MedicalDictionaryService { get; }
         TestDynamicTemplateService TestDynamicTemplateService { get; }
         TestTempService TestTempService { get; }
+        ReminderService ReminderService { get; }
     }
 }
 

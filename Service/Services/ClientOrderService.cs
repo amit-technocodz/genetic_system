@@ -35,7 +35,7 @@ namespace Service.Services
                     clientOrder.StatusID = 398;
                     db.ClientOrder.Insert(clientOrder);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex);
                     clientOrder.StatusID = 398;
@@ -43,7 +43,7 @@ namespace Service.Services
                     db.ClientOrder.Insert(clientOrder);
                 }
 
-                
+
 
                 return clientOrder;
             }
@@ -54,6 +54,25 @@ namespace Service.Services
 
         }
 
+        public List<ClientOrder> GetPendingOrderForDashboard()
+        {
+            return db.ClientOrder.Get().Where(x => x.StatusID == 398).OrderByDescending(x => x.OrderDate).Take(5)
+                .Include(x => x.User).ThenInclude(p => p.PatientPersonalInformation).ThenInclude(c => c.City)
+                .Include(x => x.Template).ThenInclude(t => t.TemplateType).Include(x => x.Status).ToList();
+        }
+
+        public List<ClientOrder> GetAllOrderForDashboard()
+        {
+            return db.ClientOrder.Get().OrderByDescending(x => x.OrderDate).Take(5)
+                .Include(x => x.User).ThenInclude(p => p.PatientPersonalInformation).ThenInclude(c => c.City)
+                .Include(x => x.Template).ThenInclude(t => t.TemplateType).Include(x => x.Status).ToList();
+        }
+        public List<ClientOrder> GetTestOrderForDashboard()
+        {
+            return db.ClientOrder.Get().Where(x => x.TestType != null).OrderByDescending(x => x.OrderDate).Take(5)
+                .Include(x => x.User).ThenInclude(p => p.PatientPersonalInformation).ThenInclude(c => c.City)
+                .Include(x => x.Template).ThenInclude(t => t.TemplateType).Include(x => x.Status).ToList();
+        }
         public ClientOrder GetClientOrderByID(int id)
         {
             try
@@ -73,6 +92,77 @@ namespace Service.Services
                 return null;
             }
 
+        }
+
+        public IEnumerable<ClientOrder> SearchClientOrderByType(int orderType, string searchKey)
+        {
+            if(searchKey != null) { 
+            if (orderType == 398)
+            {
+                return db.ClientOrder.Get().Where(x => x.StatusID == orderType && x.OrderNo.ToString().StartsWith(searchKey, StringComparison.OrdinalIgnoreCase)
+            || (x.User.EnFirstName.StartsWith(searchKey, StringComparison.OrdinalIgnoreCase))
+            || x.User.ArFirstName.StartsWith(searchKey, StringComparison.OrdinalIgnoreCase)
+            || x.Doctor.EnFirstName.StartsWith(searchKey, StringComparison.OrdinalIgnoreCase)
+            || x.Doctor.ArFirstName.StartsWith(searchKey, StringComparison.OrdinalIgnoreCase)
+            || x.User.Mobile.StartsWith(searchKey, StringComparison.OrdinalIgnoreCase)
+            || x.User.PatientPersonalInformation.City.Name.StartsWith(searchKey, StringComparison.OrdinalIgnoreCase)
+            || x.Template.TemplateType.Name.StartsWith(searchKey, StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(x => x.OrderDate).Take(5)
+                   .Include(x => x.User).ThenInclude(p => p.PatientPersonalInformation).ThenInclude(c => c.City)
+                   .Include(x => x.Template).ThenInclude(t => t.TemplateType).Include(x => x.Status);
+            }
+            else
+            {
+                return db.ClientOrder.Get().Where(x => x.OrderNo.ToString().StartsWith(searchKey, StringComparison.OrdinalIgnoreCase)
+            || (x.User.EnFirstName.StartsWith(searchKey, StringComparison.OrdinalIgnoreCase))
+            || x.User.ArFirstName.StartsWith(searchKey, StringComparison.OrdinalIgnoreCase)
+            || x.Doctor.EnFirstName.StartsWith(searchKey, StringComparison.OrdinalIgnoreCase)
+            || x.Doctor.ArFirstName.StartsWith(searchKey, StringComparison.OrdinalIgnoreCase)
+            || x.User.Mobile.StartsWith(searchKey, StringComparison.OrdinalIgnoreCase)
+            || x.User.PatientPersonalInformation.City.Name.StartsWith(searchKey, StringComparison.OrdinalIgnoreCase)
+            || x.Template.TemplateType.Name.StartsWith(searchKey, StringComparison.OrdinalIgnoreCase))
+              .OrderByDescending(x => x.OrderDate).Take(5)
+                 .Include(x => x.User).ThenInclude(p => p.PatientPersonalInformation).ThenInclude(c => c.City)
+                 .Include(x => x.Template).ThenInclude(t => t.TemplateType).Include(x => x.Status);
+
+            }
+            }
+            else
+            {
+                if (orderType == 398)
+                {
+                    return db.ClientOrder.Get().Where(x => x.StatusID == 398).OrderByDescending(x => x.OrderDate).Take(5)
+                .Include(x => x.User).ThenInclude(p => p.PatientPersonalInformation).ThenInclude(c => c.City)
+                .Include(x => x.Template).ThenInclude(t => t.TemplateType).Include(x => x.Status).ToList();
+                }
+                else
+                {
+                    return db.ClientOrder.Get().OrderByDescending(x => x.OrderDate).Take(5)
+                .Include(x => x.User).ThenInclude(p => p.PatientPersonalInformation).ThenInclude(c => c.City)
+                .Include(x => x.Template).ThenInclude(t => t.TemplateType).Include(x => x.Status).ToList();
+
+                }
+            }
+        }
+
+        public IEnumerable<ClientOrder> SearchClientOrderTestType(string searchkey)
+        {
+            if(searchkey != null) { 
+            return db.ClientOrder.Get().Where(x => x.TestType != null && x.OrderNo.ToString().StartsWith(searchkey, StringComparison.OrdinalIgnoreCase)
+            || x.User.EnFirstName.StartsWith(searchkey, StringComparison.OrdinalIgnoreCase) || x.User.ArFirstName.StartsWith(searchkey, StringComparison.OrdinalIgnoreCase)
+            || x.Doctor.EnFirstName.StartsWith(searchkey, StringComparison.OrdinalIgnoreCase) || x.Doctor.ArFirstName.StartsWith(searchkey, StringComparison.OrdinalIgnoreCase)
+            || x.User.Mobile.StartsWith(searchkey, StringComparison.OrdinalIgnoreCase) || x.User.PatientPersonalInformation.City.Name.StartsWith(searchkey, StringComparison.OrdinalIgnoreCase)
+            || x.Template.TemplateType.Name.StartsWith(searchkey, StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(x => x.OrderDate).Take(5)
+                   .Include(x => x.User).ThenInclude(p => p.PatientPersonalInformation).ThenInclude(c => c.City)
+                   .Include(x => x.Template).ThenInclude(t => t.TemplateType).Include(x => x.Status);
+            }
+            else
+            {
+                return db.ClientOrder.Get().Where(x => x.TestType != null).OrderByDescending(x => x.OrderDate).Take(5)
+             .Include(x => x.User).ThenInclude(p => p.PatientPersonalInformation).ThenInclude(c => c.City)
+             .Include(x => x.Template).ThenInclude(t => t.TemplateType).Include(x => x.Status).ToList();
+            }
         }
 
         public IEnumerable<ClientOrder> GetClientOrderList()
@@ -131,7 +221,7 @@ namespace Service.Services
                     result = result.Where(x => (x.User != null) && ((x.User.EnFirstName != null) && x.User.EnFirstName.StartsWith(model.PatientName, StringComparison.OrdinalIgnoreCase) ||
                     (x.User != null) && x.User.ArFirstName != null && x.User.ArFirstName.StartsWith(model.PatientName, StringComparison.OrdinalIgnoreCase)));
                 if (!string.IsNullOrEmpty(model.PatientCity))
-                    result = result.Where(x => (x.User != null) && (x.User.PatientPersonalInformation != null) && (x.User.PatientPersonalInformation.City != null) &&  
+                    result = result.Where(x => (x.User != null) && (x.User.PatientPersonalInformation != null) && (x.User.PatientPersonalInformation.City != null) &&
                     x.User.PatientPersonalInformation.City.Name.StartsWith(model.PatientCity, StringComparison.OrdinalIgnoreCase));
                 if (!string.IsNullOrEmpty(model.RegistrationNo) && !(model.RegistrationNo == "0"))
                     result = result.Where(x => (x.User != null) && x.User.RegisterationNo.StartsWith(model.RegistrationNo, StringComparison.OrdinalIgnoreCase));
@@ -187,13 +277,13 @@ namespace Service.Services
         {
             try
             {
-                ClientOrder clientOrder =  db.ClientOrder.Get().Where(x => x.ID == orderId).FirstOrDefault();
+                ClientOrder clientOrder = db.ClientOrder.Get().Where(x => x.ID == orderId).FirstOrDefault();
                 clientOrder.IsActive = false;
                 db.ClientOrder.Update(clientOrder);
                 db.ClientOrder.SaveChanges();
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 return false;

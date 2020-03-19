@@ -91,5 +91,6 @@ namespace Repository.UnitOfWork
         IRepository<MasterTempCol> MasterTempCol { get; }
         IRepository<TestTempCol> TestTempCol { get; }
         IRepository<TestTempData> TestTempData { get; }
+        IRepository<Reminder> Reminder { get; }
     }
 }

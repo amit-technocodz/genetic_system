@@ -1,886 +1,561 @@
-﻿
+﻿@model GeneticSystem.Areas.Admin.Models.DashboardVM
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
+<style>
+    .frow {
+        display: flex;
+    }
 
-@*<div class="prtm-content">
-    <div class="row prtm-card-wrapper">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 half-col-lg-md">
-            <div class="prtm-card prtm-card-box graph bg-primary pad-all-md mrgn-b-lg">
-                <div class="prtm-card-info">
-                    <div class="mrgn-b-lg clearfix">
-                        <div class="pull-left"> <span class="show">Today's Sales</span> <span>85% Of Target</span> </div>
-                        <div class="pull-right text-right">
-                            <span class="font-counter">$<span class="count-item" data-count="12000">0</span></span>
-                        </div>
-                    </div>
-                    <div class="prtm-card-progress">
-                        <div class="progress progress-xs-height">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-width="85%"> <span class="sr-only">50% Complete (secondary)</span> </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--prtm-card closed-->
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 half-col-lg-md">
-            <div class="prtm-card prtm-card-box order bg-success pad-all-md mrgn-b-lg">
-                <div class="prtm-card-info">
-                    <div class="mrgn-b-lg clearfix">
-                        <div class="pull-left"> <span class="show">New Orders</span> <span>90% Of Target</span> </div>
-                        <div class="pull-right text-right">
-                            <span class="font-counter"><span class="count-item" data-count="350">0</span></span>
-                        </div>
-                    </div>
-                    <div class="prtm-card-progress">
-                        <div class="progress progress-xs-height">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-width="90%"> <span class="sr-only">50% Complete (secondary)</span> </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--prtm-card closed-->
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 half-col-lg-md">
-            <div class="prtm-card prtm-card-box invoices bg-info pad-all-md mrgn-b-lg">
-                <div class="prtm-card-info">
-                    <div class="mrgn-b-lg clearfix">
-                        <div class="pull-left"> <span class="show">New Customers</span> <span>70% Of Yesterday</span> </div>
-                        <div class="pull-right text-right">
-                            <span class="font-counter"><span class="count-item" data-count="700">0</span></span>
-                        </div>
-                    </div>
-                    <div class="prtm-card-progress">
-                        <div class="progress progress-xs-height">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-width="70%"> <span class="sr-only">8% Complete (secondary)</span> </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--prtm-card closed-->
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 half-col-lg-md">
-            <div class="prtm-card prtm-card-box tickets bg-secondary pad-all-md mrgn-b-lg">
-                <div class="prtm-card-info">
-                    <div class="mrgn-b-lg clearfix">
-                        <div class="pull-left"> <span class="show">Open Tickets</span> <span>4% From the Yesterday</span> </div>
-                        <div class="pull-right text-right">
-                            <span class="font-counter"><span class="count-item" data-count="35">0</span></span>
-                        </div>
-                    </div>
-                    <div class="prtm-card-progress">
-                        <div class="progress progress-xs-height">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-width="10%"> <span class="sr-only">80% Complete (secondary)</span> </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--prtm-card closed-->
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
-            <div class="prtm-block">
-                <div class="prtm-block-title mrgn-b-lg">
-                    <div class="caption">
-                        <h3>Site Visits</h3>
-                    </div>
-                    <div class="contextual-link">
-                        <div class="dropdown">
-                            <a href="javascript:;" class="mrgn-l-xs more-btn" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true">more<i class="fa fa-angle-down"></i></a>
-                            <ul class="dropdown-menu dropdown-icon pull-right">
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-eye"></i> <span class="mrgn-l-sm">View</span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-pencil"></i> <span class="mrgn-l-sm">Edit </span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-trash-o"></i> <span class="mrgn-l-sm">Delete</span> </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="prtm-block-content">
-                    <div class="d-area-chart chart"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
-            <div class="prtm-block">
-                <div class="prtm-block-title mrgn-b-lg">
-                    <div class="caption">
-                        <h3>Revenue</h3>
-                    </div>
-                    <div class="contextual-link">
-                        <div class="dropdown">
-                            <a href="javascript:;" class="mrgn-l-xs more-btn" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true">more<i class="fa fa-angle-down"></i></a>
-                            <ul class="dropdown-menu dropdown-icon pull-right">
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-eye"></i> <span class="mrgn-l-sm">View</span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-pencil"></i> <span class="mrgn-l-sm">Edit </span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-trash-o"></i> <span class="mrgn-l-sm">Delete</span> </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="prtm-block-content">
-                    <div class="d-area-points-chart chart"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
-            <div class="prtm-block">
-                <div class="prtm-block-title mrgn-b-lg">
-                    <div class="caption">
-                        <h3>Chat History</h3>
-                    </div>
-                    <div class="contextual-link">
-                        <div class="dropdown display-ib">
-                            <a href="javascript:;" class="mrgn-l-xs" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true"><i class="fa fa-cog fa-lg base-dark"></i></a>
-                            <ul class="dropdown-menu dropdown-arrow dropdown-menu-right">
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-eye"></i> <span class="mrgn-l-sm">View</span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-pencil"></i> <span class="mrgn-l-sm">Edit </span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-trash-o"></i> <span class="mrgn-l-sm">Delete</span> </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="prtm-block-content">
-                    <div class="prtm-chat-wrap">
-                        <div class="slimscrollbar" style="height: 428px;" data-always-visible="1" data-rail-visible="0">
-                            <div class="chat-wrap-list">
-                                <div class="clearfix">
-                                    <div class="col-lg-custom-3"> <img class="img-responsive img-circle" src="~/assets/img/blog-post-author.jpg" width="64" height="64" alt="User Image"> </div>
-                                    <div class="col-lg-custom-9">
-                                        <h6 class="text-primary">Devy Finn</h6>
-                                        <div class="prtm-chat-content prtm-msg-block">
-                                            <p>Wow! This is something exactly I needed. You guys did a great work.</p>
-                                        </div>
-                                        <div class="post-meta"> <span>3 Min ago</span> <a href="javascript:;"><i class="fa fa-reply text-success mrgn-l-xs" aria-hidden="true"></i></a> </div>
-                                    </div>
-                                </div>
-                                <div class="clearfix right-side">
-                                    <div class="col-lg-custom-3"> <img class="img-responsive img-circle" src="~/assets/img/register-user-3.jpg" width="64" height="64" alt="User Image"> </div>
-                                    <div class="col-lg-custom-9">
-                                        <h6 class="text-primary">Harry Snooka</h6>
-                                        <div class="prtm-chat-content prtm-msg-block">
-                                            <p>Thank you :) We are always here to help you. Our customer care service is 24X7. You may reach us anytime.</p>
-                                        </div>
-                                        <div class="post-meta"> <span>45 min ago</span> <a href="javascript:;"><i class="fa fa-reply text-success mrgn-l-xs" aria-hidden="true"></i></a> </div>
-                                    </div>
-                                </div>
-                                <div class="clearfix">
-                                    <div class="col-lg-custom-3"> <img class="img-responsive img-circle" src="~/assets/img/register-user-3.jpg" width="64" height="64" alt="User Image"> </div>
-                                    <div class="col-lg-custom-9">
-                                        <h6 class="text-primary">Jaime Garner</h6>
-                                        <div class="prtm-chat-content prtm-msg-block">
-                                            <p>I am impressed with your immediate help. I got my work done efficiently. </p>
-                                        </div>
-                                        <div class="post-meta"> <span>1 hours ago</span> <a href="javascript:;"><i class="fa fa-reply text-success mrgn-l-xs" aria-hidden="true"></i></a> </div>
-                                    </div>
-                                </div>
-                                <div class="clearfix right-side">
-                                    <div class="col-lg-custom-3"> <img class="img-responsive img-circle" src="~/assets/img/register-user-4.jpg" width="64" height="64" alt="User Image"> </div>
-                                    <div class="col-lg-custom-9">
-                                        <h6 class="text-primary">Vic Gannis</h6>
-                                        <div class="prtm-chat-content prtm-msg-block">
-                                            <p> You can find the date time picker and notification & alerts under "Components" menu. It is really very easy to use them. </p>
-                                        </div>
-                                        <div class="post-meta"> <span>7 hours ago</span> <a href="javascript:;"><i class="fa fa-reply text-success mrgn-l-xs" aria-hidden="true"></i></a> </div>
-                                    </div>
-                                </div>
-                                <div class="clearfix">
-                                    <div class="col-lg-custom-3"> <img class="img-responsive img-circle" src="~/assets/img/register-user-2.jpg" width="64" height="64" alt="User Image"> </div>
-                                    <div class="col-lg-custom-9">
-                                        <h6 class="text-primary">Eally Punto</h6>
-                                        <div class="prtm-chat-content prtm-msg-block">
-                                            <p>Hey please tell me where can I find date time picker and notifications & alerts in it.</p>
-                                        </div>
-                                        <div class="post-meta"> <span>13 min ago</span> <a href="javascript:;"><i class="fa fa-reply text-success mrgn-l-xs" aria-hidden="true"></i></a> </div>
-                                    </div>
-                                </div>
-                                <div class="clearfix right-side">
-                                    <div class="col-lg-custom-3"> <img class="img-responsive img-circle" src="~/assets/img/histroy-user-2.png" width="64" height="64" alt="User Image"> </div>
-                                    <div class="col-lg-custom-9">
-                                        <h6 class="text-primary">Gonny Duke</h6>
-                                        <div class="prtm-chat-content prtm-msg-block">
-                                            <p>I love the charts and animations. This theme has super cool stuff to use.</p>
-                                        </div>
-                                        <div class="post-meta"> <span>3 hours ago</span> <a href="javascript:;"><i class="fa fa-reply text-success mrgn-l-xs" aria-hidden="true"></i></a> </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="send-msg-wrapper">
-                            <form class="send-msg-form" action="javascript:;" method="post">
-                                <div class="clearfix">
-                                    <textarea class="form-control msg-box" placeholder="Enter your text"></textarea>
-                                    <input class="send-msg-btn btn btn-primary" type="submit" value="submit">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <!--prtm-chat-wrap closed-->
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
-            <div class="prtm-block">
-                <div class="prtm-block-title mrgn-b-lg">
-                    <div class="caption">
-                        <h3>New Users</h3>
-                    </div>
-                    <div class="contextual-link">
-                        <span class="badge badge-primary">16 New Users</span>
-                        <div class="dropdown display-ib">
-                            <a href="javascript:;" class="mrgn-l-xs" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true"><i class="fa fa-cog fa-lg base-dark"></i></a>
-                            <ul class="dropdown-menu dropdown-arrow dropdown-menu-right">
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-eye"></i> <span class="mrgn-l-sm">View</span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-pencil"></i> <span class="mrgn-l-sm">Edit </span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-trash-o"></i> <span class="mrgn-l-sm">Delete</span> </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="prtm-block-content">
-                    <div class="row prtm-new-user-list mrgn-b-md">
-                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
-                            <div class="feature-box-thumb"> <img src="~/assets/img/register-user-1.jpg" alt="user's avtar" class="img-responsive width-full" width="100" height="100" /> </div>
-                            <div class="feature-box-info"> <span class="base-dark show fw-normal">Gavy</span> <span>Usa</span> </div>
-                        </div>
-                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
-                            <div class="feature-box-thumb"> <img src="~/assets/img/register-user-2.jpg" alt="user's avtar" class="img-responsive width-full" width="100" height="100" /> </div>
-                            <div class="feature-box-info"> <span class="base-dark show fw-normal">Nethi</span> <span>Japan</span> </div>
-                        </div>
-                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
-                            <div class="feature-box-thumb"> <img src="~/assets/img/register-user-3.jpg" alt="user's avtar" class="img-responsive width-full" width="100" height="100" /> </div>
-                            <div class="feature-box-info"> <span class="base-dark show fw-normal">Ruby</span> <span>Rome</span> </div>
-                        </div>
-                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
-                            <div class="feature-box-thumb"> <img src="~/assets/img/register-user-4.jpg" alt="user's avtar" class="img-responsive width-full" width="100" height="100" /> </div>
-                            <div class="feature-box-info"> <span class="base-dark show fw-normal">John</span> <span>UK</span> </div>
-                        </div>
-                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
-                            <div class="feature-box-thumb"> <img src="~/assets/img/user-1.jpg" alt="user's avtar" class="img-responsive width-full" width="100" height="100" /> </div>
-                            <div class="feature-box-info"> <span class="base-dark show fw-normal">Nancy</span> <span>USA</span> </div>
-                        </div>
-                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
-                            <div class="feature-box-thumb"> <img src="~/assets/img/user-2.jpg" alt="user's avtar" class="img-responsive width-full" width="100" height="100" /> </div>
-                            <div class="feature-box-info"> <span class="base-dark show fw-normal">Phill</span> <span>Canada</span> </div>
-                        </div>
-                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
-                            <div class="feature-box-thumb"> <img src="~/assets/img/dami-user.png" alt="user's avtar" class="img-responsive width-full" width="100" height="100" /> </div>
-                            <div class="feature-box-info"> <span class="base-dark show fw-normal">Garry</span> <span>Rome</span> </div>
-                        </div>
-                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
-                            <div class="feature-box-thumb"> <img src="assets/img/user-4.jpg" alt="user's avtar" class="img-responsive width-full" width="100" height="100" /> </div>
-                            <div class="feature-box-info"> <span class="base-dark show fw-normal">Hema</span> <span>India</span> </div>
-                        </div>
-                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
-                            <div class="feature-box-thumb"> <img src="~/assets/img/user-5.jpg" alt="user's avtar" class="img-responsive width-full" width="100" height="100" /> </div>
-                            <div class="feature-box-info"> <span class="base-dark show fw-normal">Brook</span> <span>London</span> </div>
-                        </div>
-                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
-                            <div class="feature-box-thumb"> <img src="~/assets/img/user-9.jpg" alt="user's avtar" class="img-responsive width-full" width="100" height="100" /> </div>
-                            <div class="feature-box-info"> <span class="base-dark show fw-normal">Harby</span> <span>USA</span> </div>
-                        </div>
-                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
-                            <div class="feature-box-thumb"> <img src="~/assets/img/user-7.jpg" alt="user's avtar" class="img-responsive width-full" width="100" height="100" /> </div>
-                            <div class="feature-box-info"> <span class="base-dark show fw-normal">Grick</span> <span>USA</span> </div>
-                        </div>
-                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
-                            <div class="feature-box-thumb"> <img src="~/assets/img/dami-user.png" alt="user's avtar" class="img-responsive width-full" width="100" height="100" /> </div>
-                            <div class="feature-box-info"> <span class="base-dark show fw-normal">Nathaniel</span> <span>India</span> </div>
-                        </div>
-                    </div>
-                    <div><a href="javascript:;" class="text-center btn-block">View all</a></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
-            <div class="prtm-block">
-                <div class="prtm-block-title mrgn-b-lg">
-                    <div class="caption">
-                        <h3>weather</h3>
-                    </div>
-                    <div class="contextual-link">
-                        <div class="dropdown display-ib">
-                            <a href="javascript:;" class="mrgn-l-xs" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true"><i class="fa fa-cog fa-lg base-dark"></i></a>
-                            <ul class="dropdown-menu dropdown-arrow dropdown-menu-right">
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-eye"></i> <span class="mrgn-l-sm">View</span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-pencil"></i> <span class="mrgn-l-sm">Edit </span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-trash-o"></i> <span class="mrgn-l-sm">Delete</span> </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="prtm-block-content">
-                    <div class="prtm-wheather-widget text-center">
-                        <h2 class="fw-normal base-dark fw-light" id="date">&nbsp;</h2>
-                        <div class="bg-inverse city-active">
-                            <h3 class="fw-light" id="city">&nbsp;</h3>
-                        </div>
-                        <h3 id="today-temp" class="fw-normal base-dark mrgn-b-md text-capitalize">&nbsp;</h3>
-                        <div class="wheather-view">
-                            <div class="wheather-view" id="today-icon">
-                                <canvas class="weather-icon pad-t-md" width="150" height="150" data-color="#758494"></canvas>
-                            </div>
-                        </div>
-                        <div class="clearfix mrgn-b-xs">
-                            <div class="pull-left temp-status"> <img class="img-responsive display-ib" src="~/assets/img/bottom-down.png" width="26" height="49" alt="arrow down"> <span id="min-temp" class="temp-value base-dark"><i class="fa fa-circle text-success pull-right" aria-hidden="true"></i></span> </div>
-                            <div class="pull-right temp-status"> <img class="img-responsive display-ib" src="~/assets/img/bottom-up.png" width="26" height="49" alt="arrow down"> <span id="max-temp" class="temp-value base-dark"><i class="fa fa-circle base-secondary pull-right" aria-hidden="true"></i></span> </div>
-                        </div>
-                        <div class="bg-inverse wheather-list-wrap clearfix">
-                            <div class="feature-box-list col-xs-3 col-sm-3 col-md-3 col-lg-3 pad-all-none">
-                                <div class="square-50">
-                                    <canvas class="weather-icon pad-t-xs" width="40" height="40"></canvas>
-                                </div> <span class="show gray">Now</span>
-                            </div>
-                            <div class="feature-box-list col-xs-3 col-sm-3 col-md-3 col-lg-3 pad-all-none">
-                                <div class="square-50">
-                                    <canvas class="weather-icon pad-t-xs" width="40" height="40"></canvas>
-                                </div> <span class="show gray">Morning</span>
-                            </div>
-                            <div class="feature-box-list col-xs-3 col-sm-3 col-md-3 col-lg-3 pad-all-none">
-                                <div class="square-50">
-                                    <canvas class="weather-icon pad-t-xs" width="40" height="40"></canvas>
-                                </div> <span class="show gray">Evening</span>
-                            </div>
-                            <div class="feature-box-list col-xs-3 col-sm-3 col-md-3 col-lg-3 pad-all-none">
-                                <div class="square-50">
-                                    <canvas class="weather-icon" width="40" height="40"> </canvas>
-                                </div> <span class="show gray">Night</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 full-col-lg-md">
-            <div class="prtm-block overflow-wrapper">
-                <div class="prtm-block-title mrgn-b-sm">
-                    <div class="caption">
-                        <h3>Visitor Origin</h3>
-                    </div>
-                    <div class="contextual-link">
-                        <div class="dropdown display-ib">
-                            <a href="javascript:;" class="mrgn-l-xs" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true"><i class="fa fa-cog fa-lg base-dark"></i></a>
-                            <ul class="dropdown-menu dropdown-arrow dropdown-menu-right">
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-eye"></i> <span class="mrgn-l-sm">View</span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-pencil"></i> <span class="mrgn-l-sm">Edit </span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-trash-o"></i> <span class="mrgn-l-sm">Delete</span> </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="prtm-block-content overflow-pad">
-                    <div class="row">
-                        <div class="col-md-8 pad-all-none">
-                            <div class="embed-responsive-item">
-                                <div class="world-map-markers vector"></div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 pad-all-none">
-                            <div class="visitor-map-content">
-                                <h6 class="text-uppercase">Continent</h6>
-                                <ul class="list-unstyled progress-list">
-                                    <li>
-                                        <div class="row">
-                                            <div class="col-sm-6 col-md-6"> <span>Asia</span> </div>
-                                            <div class="col-sm-6 col-md-6"> <span class="pull-right">60%</span> </div>
-                                        </div>
-                                        <div class="progress progress-sm-height progress-rounded">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" data-width="60%"> <span class="sr-only">90% Complete</span> </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="row">
-                                            <div class="col-sm-6 col-md-6"> <span>Europe</span> </div>
-                                            <div class="col-sm-6 col-md-6"> <span class="pull-right">25%</span> </div>
-                                        </div>
-                                        <div class="progress progress-sm-height progress-rounded">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" data-width="25%"> <span class="sr-only">80% Complete</span> </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="row">
-                                            <div class="col-sm-6 col-md-6"> <span>Africa</span> </div>
-                                            <div class="col-sm-6 col-md-6"> <span class="pull-right">5%</span> </div>
-                                        </div>
-                                        <div class="progress progress-sm-height progress-rounded">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" data-width="5%"> <span class="sr-only">5% Complete</span> </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="row">
-                                            <div class="col-sm-6 col-md-6"> <span>South America</span> </div>
-                                            <div class="col-sm-6 col-md-6"> <span class="pull-right">10%</span> </div>
-                                        </div>
-                                        <div class="progress progress-sm-height progress-rounded">
-                                            <div class="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" data-width="10%"> <span class="sr-only">10% Complete</span> </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 half-col-lg-md">
-            <div class="prtm-card-box bg-inverse pad-all-lg mrgn-b-lg">
-                <div class="prtm-block-title mrgn-b-lg">
-                    <div class="caption">
-                        <h3 class="text-capitalize base-reverse">Email statistics</h3>
-                    </div>
-                    <div class="contextual-link">
-                        <div class="dropdown display-ib">
-                            <a href="javascript:;" class="mrgn-l-xs" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true"><i class="fa fa-cog fa-lg base-reverse"></i></a>
-                            <ul class="dropdown-menu dropdown-arrow dropdown-menu-right">
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-eye"></i> <span class="mrgn-l-sm">View</span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-pencil"></i> <span class="mrgn-l-sm">Edit </span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-trash-o"></i> <span class="mrgn-l-sm">Delete</span> </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="prtm-block-content">
-                    <div id="dashboard3-email" class="email-map" style="height:325px;"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 half-col-lg-md">
-            <div class="prtm-block mrgn-b-lg">
-                <div class="prtm-block-title mrgn-b-lg">
-                    <div class="caption">
-                        <h3 class="text-capitalize">User Agent</h3>
-                    </div>
-                    <div class="contextual-link">
-                        <div class="dropdown display-ib">
-                            <a href="javascript:;" class="mrgn-l-xs" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true"><i class="fa fa-cog fa-lg base-dark"></i></a>
-                            <ul class="dropdown-menu dropdown-arrow dropdown-menu-right">
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-eye"></i> <span class="mrgn-l-sm">View</span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-pencil"></i> <span class="mrgn-l-sm">Edit </span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-trash-o"></i> <span class="mrgn-l-sm">Delete</span> </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="prtm-block-content">
-                    <div class="user-agent">
-                        <div class="agent-list">
-                            <ul class="list-unstyled">
-                                <li class="mrgn-b-lg clearfix">
-                                    <div class="pull-left"><i class="fa fa-safari fa-lg" aria-hidden="true"></i> <span>safari</span></div>
-                                    <div class="pull-right"><span>40%</span></div>
-                                </li>
-                                <li class="mrgn-b-lg clearfix">
-                                    <div class="pull-left"><i class="fa fa-chrome fa-lg" aria-hidden="true"></i> <span>chrome</span></div>
-                                    <div class="pull-right">50%</div>
-                                </li>
-                                <li class="mrgn-b-lg clearfix">
-                                    <div class="pull-left"><i class="fa fa-internet-explorer fa-lg" aria-hidden="true"></i> <span>IE</span></div>
-                                    <div class="pull-right">75%</div>
-                                </li>
-                                <li class="mrgn-b-lg clearfix">
-                                    <div class="pull-left"><i class="fa fa-firefox fa-lg" aria-hidden="true"></i> <span>firefox</span></div>
-                                    <div class="pull-right">80%</div>
-                                </li>
-                                <li class="mrgn-b-lg clearfix">
-                                    <div class="pull-left"><i class="fa fa-opera fa-lg" aria-hidden="true"></i> <span class="bws-name">opera</span></div>
-                                    <div class="pull-right">30%</div>
-                                </li>
-                            </ul>
-                            <div class="bg-info pad-all-sm base-reverse-all">
-                                <ul class="list-inline list-summery">
-                                    <li class=""> <span><i class="fa fa-apple fa-lg" aria-hidden="true"></i></span> <span>40%</span> </li>
-                                    <li class=""> <span><i class="fa fa-android fa-lg" aria-hidden="true"></i></span> <span>80%</span> </li>
-                                    <li class=""> <span><i class="fa fa-windows fa-lg" aria-hidden="true"></i></span> <span>90%</span> </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
-            <div class="prtm-block">
-                <div class="prtm-block-title">
-                    <div class="caption">
-                        <h3>Customer Support</h3>
-                    </div>
-                    <div class="contextual-link">
-                        <div class="dropdown display-ib">
-                            <a href="javascript:;" class="mrgn-l-xs" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true"><i class="fa fa-cog fa-lg base-dark"></i></a>
-                            <ul class="dropdown-menu dropdown-arrow dropdown-menu-right">
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-eye"></i> <span class="mrgn-l-sm">View</span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-pencil"></i> <span class="mrgn-l-sm">Edit </span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-trash-o"></i> <span class="mrgn-l-sm">Delete</span> </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="prtm-block-content">
-                    <div class="slimscrollbar" style="height: 520px;" data-always-visible="1" data-rail-visible="0">
-                        <div class="prtm-customer-support">
-                            <div class="prtm-customer-list">
-                                <div class="row mrgn-b-xs">
-                                    <div class="col-xs-7 col-sm-3 col-md-6 col-lg-8">
-                                        <div class="pull-left mrgn-r-sm"> <img class="img-responsive display-ib img-circle" src="~/assets/img/register-user-1.jpg" width="64" height="64" alt="User Photo"> </div>
-                                        <div class="pull-left">
-                                            <h6 class="text-primary">Tina Denver</h6>
-                                            <div class="post-meta"> <span>3 hours ago</span> </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-5 col-sm-9 col-md-6 col-lg-4"> <span class="text-right text-warning show"><i class="fa fa-dot-circle-o"></i> Pending</span> </div>
-                                </div>
-                                <p>Thanks for the chartlist. There are awesome designs and very user friendly.</p>
-                            </div>
-                            <div class="prtm-customer-list">
-                                <div class="row mrgn-b-xs">
-                                    <div class="col-xs-7 col-sm-3 col-md-6 col-lg-8">
-                                        <div class="pull-left mrgn-r-sm"> <img class="img-responsive display-ib img-circle" src="~/assets/img/register-user-2.jpg" width="64" height="64" alt="User Photo"> </div>
-                                        <div class="pull-left">
-                                            <h6 class="text-primary">Gera Pattinson</h6>
-                                            <div class="post-meta"> <span>3 hours ago</span> </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-5 col-sm-9 col-md-6 col-lg-4"> <span class="text-right text-success show"><i class="fa fa-dot-circle-o"></i> Open</span> </div>
-                                </div>
-                                <p>User profile that you are providing is great. </p>
-                            </div>
-                            <div class="prtm-customer-list">
-                                <div class="row mrgn-b-xs">
-                                    <div class="col-xs-7 col-sm-3 col-md-6 col-lg-8">
-                                        <div class="pull-left mrgn-r-sm"> <img class="img-responsive display-ib img-circle" src="~/assets/img/blog-post-author.jpg" width="64" height="64" alt="User Photo"> </div>
-                                        <div class="pull-left">
-                                            <h6 class="text-primary">Susan Wood</h6>
-                                            <div class="post-meta"> <span>56 Min ago</span> </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-5 col-sm-9 col-md-6 col-lg-4"> <span class="text-right text-warning show"><i class="fa fa-dot-circle-o"></i> Pending</span> </div>
-                                </div>
-                                <p>Having plenty of options is really cool. I can choose what suits to my work.</p>
-                            </div>
-                            <div class="prtm-customer-list">
-                                <div class="row mrgn-b-xs">
-                                    <div class="col-xs-7 col-sm-3 col-md-6 col-lg-8">
-                                        <div class="pull-left mrgn-r-sm"> <img class="img-responsive display-ib img-circle" src="~/assets/img/user-10.jpg" width="64" height="64" alt="User Photo"> </div>
-                                        <div class="pull-left">
-                                            <h6 class="text-primary">Shady Hugh</h6>
-                                            <div class="post-meta"> <span>1 hours ago</span> </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-5 col-sm-9 col-md-6 col-lg-4"> <span class="text-right text-success show"><i class="fa fa-dot-circle-o"></i> Open</span> </div>
-                                </div>
-                                <p>Doing work with such a tool is really fun.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
-            <div class="prtm-block">
-                <div class="prtm-block-title mrgn-b-lg">
-                    <div class="caption">
-                        <h3>To Do List</h3>
-                    </div>
-                    <div class="contextual-link">
-                        <div class="dropdown display-ib">
-                            <a href="javascript:;" class="mrgn-l-xs" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true"><i class="fa fa-cog fa-lg base-dark"></i></a>
-                            <ul class="dropdown-menu dropdown-arrow dropdown-menu-right">
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-eye"></i> <span class="mrgn-l-sm">View</span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-pencil"></i> <span class="mrgn-l-sm">Edit </span> </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> <i class="fa fa-trash-o"></i> <span class="mrgn-l-sm">Delete</span> </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="prtm-block-content">
-                    <div class="slimscrollbar" style="height: 500px;" data-always-visible="1" data-rail-visible="0">
-                        <div class="prtm-to-do">
-                            <ul class="list-unstyled border-list-xs">
-                                <li>
-                                    <div class="row">
-                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                                            <span class="to-do-icon pull-left">
-                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                            </span> <span class="list-description pull-left">Be strategic about your energy to do things.</span>
-                                        </div>
-                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right to-do-check-box">
-                                            <a href="javascript:;" class="text-success mrgn-r-xs"><i class="fa fa-check" aria-hidden="true"></i></a>
-                                            <a href="javascript:;" class="text-danger"> <i class="fa fa-times" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="row">
-                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                                            <span class="to-do-icon pull-left">
-                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                            </span> <span class="list-description pull-left">Most important task completed before moving on to anything else.</span>
-                                        </div>
-                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right to-do-check-box">
-                                            <a href="javascript:;" class="text-success mrgn-r-xs"><i class="fa fa-check" aria-hidden="true"></i></a>
-                                            <a href="javascript:;" class="text-danger"> <i class="fa fa-times" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="row">
-                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                                            <span class="to-do-icon pull-left">
-                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                            </span> <span class="list-description pull-left"><del>Send agreement to Stephen.</del></span>
-                                        </div>
-                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right to-do-check-box">
-                                            <a href="javascript:;" class="text-success mrgn-r-xs"><i class="fa fa-check" aria-hidden="true"></i></a>
-                                            <a href="javascript:;" class="text-danger"> <i class="fa fa-times" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="row">
-                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                                            <span class="to-do-icon pull-left">
-                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                            </span> <span class="list-description pull-left">Finalize monthly earnings report.</span>
-                                        </div>
-                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right to-do-check-box">
-                                            <a href="javascript:;" class="text-success mrgn-r-xs"><i class="fa fa-check" aria-hidden="true"></i></a>
-                                            <a href="javascript:;" class="text-danger"> <i class="fa fa-times" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="row">
-                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                                            <span class="to-do-icon pull-left">
-                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                            </span> <span class="list-description pull-left">Create QR code for every user on website.</span>
-                                        </div>
-                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right to-do-check-box">
-                                            <a href="javascript:;" class="text-success mrgn-r-xs"><i class="fa fa-check" aria-hidden="true"></i></a>
-                                            <a href="javascript:;" class="text-danger"> <i class="fa fa-times" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="row">
-                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                                            <span class="to-do-icon pull-left">
-                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                            </span> <span class="list-description pull-left">Research new tools and softwares to do things faster.</span>
-                                        </div>
-                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right to-do-check-box">
-                                            <a href="javascript:;" class="text-success mrgn-r-xs"><i class="fa fa-check" aria-hidden="true"></i></a>
-                                            <a href="javascript:;" class="text-danger"> <i class="fa fa-times" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="row">
-                                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                                            <span class="to-do-icon pull-left">
-                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                            </span> <span class="list-description pull-left">What can be pushed off till tonight?</span>
-                                        </div>
-                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-right to-do-check-box">
-                                            <a href="javascript:;" class="text-success mrgn-r-xs"><i class="fa fa-check" aria-hidden="true"></i></a>
-                                            <a href="javascript:;" class="text-danger"> <i class="fa fa-times" aria-hidden="true"></i></a>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
-            <div class="prtm-full-block overflow-wrapper">
-                <div id="full-clndr" class="clearfix">
-                    <script type="text/template" id="full-clndr-template">
-                        <div class="clndr-controls">
-                            <div class="clndr-previous-button"><span><i class="fa fa-angle-double-left fa-2x" aria-hidden="true"></i></span></div>
-                            <div class="clndr-next-button"><span><i class="fa fa-angle-double-right fa-2x" aria-hidden="true"></i></span></div>
-                            <div class="current-month">
-                                <%= month %>
-                                <%= year %>
-                            </div>
-                        </div>
-                        <div class="clndr-grid">
-                            <div class="days-of-the-week clearfix">
-                                <% _.each(daysOfTheWeek, function(day) { %>
-                                <div class="header-day">
-                                    <%= day %>
-                                </div>
-                                <% }); %>
-                            </div>
-                            <div class="days">
-                                <% _.each(days, function(day) { %>
-                                <div class="<%= day.classes %>" id="<%= day.id %>"><span class="day-number"><%= day.day %></span></div>
-                                <% }); %>
-                            </div>
-                        </div>
-                        <div class="event-listing">
-                            <% _.each(eventsThisMonth, function(event) { %>
-                            <div class="event-item">
-                                <div class="event-item-name">
-                                    <%= event.title %>
-                                </div>
-                                <div class="event-item-location">
-                                    <%= event.location %>
-                                </div>
-                            </div>
-                            <% }); %>
-                        </div>
-                    </script>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="prtm-social-widgets">
-        <h6 class="text-uppercase">Marketing Campaign</h6>
-        <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                <div class="stock-list prtm-card-box bg-primary mrgn-b-lg">
-                    <div class="clearfix">
-                        <div class="stk-icon"> <span class="show stock-main"><i class="fa fa-facebook"></i></span> <span><i class="fa fa-long-arrow-up"></i> 2.43%</span> </div>
-                        <div class="prtm-stk-des">
-                            <div class="brand-info clearfix">
-                                <h6 class="prtm-brand-name text-uppercase">Facebook</h6>
-                            </div>
-                            <div class="clearfix">
-                                <div class="prtm-brand-min"> <span class="show stock-sub-head">client</span> <span>Min.time</span> </div>
-                                <div class="prtm-brand-budget"> <span class="show stock-sub-head">budget</span> <span>$4650</span> </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                <div class="stock-list prtm-card-box bg-danger mrgn-b-lg">
-                    <div class="clearfix">
-                        <div class="stk-icon"> <span class="show stock-main"><i class="fa fa-youtube"></i></span> <span><i class="fa fa-long-arrow-up"></i> 5.66%</span> </div>
-                        <div class="prtm-stk-des">
-                            <div class="brand-info clearfix">
-                                <h6 class="prtm-brand-name text-uppercase">youtube</h6>
-                            </div>
-                            <div class="clearfix">
-                                <div class="prtm-brand-min"> <span class="show stock-sub-head">client</span> <span>Min.time</span> </div>
-                                <div class="prtm-brand-budget"> <span class="show stock-sub-head">budget</span> <span>$6796</span> </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                <div class="stock-list prtm-card-box bg-info mrgn-b-lg">
-                    <div class="clearfix">
-                        <div class="stk-icon"> <span class="show stock-main"><i class="fa fa-twitter"></i></span> <span><i class="fa fa-long-arrow-up"></i> 1.87%</span> </div>
-                        <div class="prtm-stk-des">
-                            <div class="brand-info clearfix">
-                                <h6 class="prtm-brand-name text-uppercase">Twitter</h6>
-                            </div>
-                            <div class="clearfix">
-                                <div class="prtm-brand-min"> <span class="show stock-sub-head">client</span> <span>Min.time</span> </div>
-                                <div class="prtm-brand-budget"> <span class="show stock-sub-head">budget</span> <span>$4779</span> </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                <div class="stock-list prtm-card-box bg-success mrgn-b-lg">
-                    <div class="clearfix">
-                        <div class="stk-icon"> <span class="show stock-main"><i class="fa fa-google"></i></span> <span><i class="fa fa-long-arrow-up"></i> 4.78%</span> </div>
-                        <div class="prtm-stk-des">
-                            <div class="brand-info clearfix">
-                                <h6 class="prtm-brand-name text-uppercase">Google Ads</h6>
-                            </div>
-                            <div class="clearfix">
-                                <div class="prtm-brand-min"> <span class="show stock-sub-head">client</span> <span>Min.time</span> </div>
-                                <div class="prtm-brand-budget"> <span class="show stock-sub-head">budget</span> <span>$1247</span> </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>*@
+    .column {
+        flex: 50%;
+    }
+</style>
 
-<div style="display:inline-block; width:250px; max-width:250px; height:600px;">
-
+<div class="frow" style="padding-left:20px; padding-top:10px">
+    <h2>Dashboard</h2>
 </div>
+<div class="frow mrgn-b-sm">
+    <div class="col-md-8 col-lg-8">
+        <button class="btn btn-primary btn-xs sbmtBtn" id="addClientOrderBtn" type="button"><i class="fa fa-plus" aria-hidden="true"></i> New Order </button>
+        <button name="button" value="Save" onclick="saveOrderFunction();" class="btn btn-xs btn-warning sbmtBtn" id="signupform"><i class="fa fa-list" aria-hidden="true"></i> OrderList </button>
+        <button name="button" value="Save" onclick="saveOrderFunction();" class="btn btn-xs btn-success sbmtBtn" id="signupform"><i class="fa fa-plus" aria-hidden="true"></i> Make Appointment </button>
+    </div>
+</div>
+<div id="odrBtnDiv" class="frow">
+    <div class="col-md-8 col-lg-8">
+        <button name="button" value="Save" onclick="saveOrderFunction();" class="btn btn-xs btn-danger sbmtBtn" id="signupform"><i class="fa fa-times" aria-hidden="true"></i> Back </button>
+        <button name="button" value="Save" onclick="saveOrderFunction();" class="btn btn-xs btn-primary sbmtBtn" id="signupform"><i class="fa fa-check" aria-hidden="true"></i> Save </button>
+        <button name="submit" id="postUpdatebtn" value="Update" class="btn btn-xs btn-warning sbmtBtn"><i class="fa fa-check" aria-hidden="true"></i> Update </button>
+    </div>
+</div>
+
+<div id="mainDiv" class="frow" style="padding-left:20px; padding-top:10px">
+    <div class="column">
+        <div class="panel-group wrap" id="bs-collapse">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-info="Department" href="#one">
+                            Pending Orders
+                        </a>
+                    </h4>
+                </div>
+                <div id="one" class="panel-collapse collapse in">
+                    <div class="row" style="padding-top:3px; padding-bottom: 3px;">
+                        <div class="col-md-12 text-left search-block">
+                            <div class="input-group pull-right" id="adv-search">
+                                <input type="text" data-info="398" name="detailSearch" id="detailsearch" class="form-control detailsearch" placeholder="Search Lookup..." autocomplete="off"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body" id="pendingOrderList">
+                        <table class="table table-hover table-bordered table-striped" id="relative-table">
+                            <thead>
+                                <tr class="">
+                                    <th>Order No</th>
+                                    <th>Order Date</th>
+                                    <th>Order DueDate</th>
+                                    <th>Client Name</th>
+                                    <th>Client City</th>
+                                    <th>Gene Temp</th>
+                                    <th>Status</th>
+                                    <th colspan="2">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in Model.PendingOrders)
+                                {
+                                    <tr>
+                                        <td>
+                                            @order.OrderNo
+                                        </td>
+                                        <td>
+                                            @order.OrderDate.Value.ToShortDateString()
+                                        </td>
+                                        <td>
+                                            @order.OrderDueDate.Value.ToShortDateString()
+                                        </td>
+                                        <td>
+                                            @order.User?.EnFirstName @order.User?.EnSecondName @order.User?.EnThirdName
+                                        </td>
+                                        <td>
+                                            @order.User?.PatientPersonalInformation?.City?.Name
+                                        </td>
+                                        <td>
+                                            @order.Template?.TemplateType?.Name
+                                        </td>
+                                        <td>
+                                            @if (order.Status != null)
+                                            {
+                                                <span class="label label-success btn-rounded">@order.Status.Name</span>
+                                            }
+
+                                        </td>
+                                        <td colspan="2">
+                                            <button type="button" class="btn btn-xs btn-warning UpdtOrdrBtn" value="@order.ID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update</button>
+                                            <button type="button" class="btn btn-xs btn-success AttchOrdrBtn" value="@order.UserID"><i class="fa fa-paperclip" aria-hidden="true"></i> Attachment</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-info="Admission" href="#three">
+                            All Orders
+                        </a>
+                    </h4>
+                </div>
+                <div id="three" class="panel-collapse collapse in">
+                    <div class="row" style="padding-top:3px; padding-bottom: 3px;">
+                        <div class="col-md-12 text-left search-block">
+                            <div class="input-group pull-right" id="adv-search">
+                                <input type="text" data-info="397" name="detailSearch" id="detailsearch" class="form-control detailsearch" placeholder="Search Lookup..." autocomplete="off"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body" id="AllOrderList">
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-info="Status" href="#two">
+                            Test Orders
+                        </a>
+                    </h4>
+                </div>
+                <div id="two" class="panel-collapse collapse in">
+                    <div class="row" style="padding-top:3px; padding-bottom: 3px;">
+                        <div class="col-md-12 text-left search-block">
+                            <div class="input-group pull-right" id="adv-search">
+                                <input type="text" data-info="100" name="detailSearch" id="detailsearch" class="form-control detailsearch" placeholder="Search Lookup..." autocomplete="off"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body" id="TestOrderList">
+                        <table class="table table-hover table-bordered table-striped" id="relative-table">
+                            <thead>
+                                <tr class="">
+                                    <th>Order No</th>
+                                    <th>Order Date</th>
+                                    <th>Order DueDate</th>
+                                    <th>Client Name</th>
+                                    <th>Client City</th>
+                                    <th>Test Type</th>
+                                    <th>Status</th>
+                                    <th colspan="2">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in Model.TestOrders)
+                                {
+                                    <tr>
+                                        <td>
+                                            @order.OrderNo
+                                        </td>
+                                        <td>
+                                            @order.OrderDate.Value.ToShortDateString()
+                                        </td>
+                                        <td>
+                                            @order.OrderDueDate.Value.ToShortDateString()
+                                        </td>
+                                        <td>
+                                            @order.User?.EnFirstName @order.User?.EnSecondName @order.User?.EnThirdName
+                                        </td>
+                                        <td>
+                                            @order.User?.PatientPersonalInformation?.City?.Name
+                                        </td>
+                                        <td>
+                                            @order.Template?.TemplateType?.Name
+                                        </td>
+                                        <td>
+                                            @if (order.Status != null)
+                                            {
+                                                <span class="label label-success btn-rounded">@order.Status.Name</span>
+                                            }
+                                        </td>
+                                        <td colspan="2">
+                                            <button type="button" class="btn btn-xs btn-success AttchOrdrBtn" value="@order.UserID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> TestUpdate</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="column" style="padding-left:10px; padding-right:20px">
+        <div id="calender"></div>
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><span id="eventTitle"></span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <button id="btnDelete" class="btn btn-default btn-sm pull-right">
+                            <span class="glyphicon glyphicon-remove"></span> Remove
+                        </button>
+                        <button id="btnEdit" class="btn btn-default btn-sm pull-right" style="margin-right:5px;">
+                            <span class="glyphicon glyphicon-pencil"></span> Edit
+                        </button>
+                        <p id="pDetails"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="myModalSave" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Save Event</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="col-md-12 form-horizontal">
+                            <input type="hidden" id="hdEventID" value="0" />
+                            <div class="form-group">
+                                <label>Subject</label>
+                                <input type="text" id="txtSubject" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label>Start</label>
+                                <div class="input-group date" id="dtp1">
+                                    <input type="text" id="txtStart" class="form-control" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="chkIsFullDay" checked="checked" />  Is Full Day event</label>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divEndDate" style="display:none">
+                                <label>End</label>
+                                <div class="input-group date" id="dtp2">
+                                    <input type="text" id="txtEnd" class="form-control" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="txtDescription" rows="3" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Theme Color</label>
+                                <select id="ddThemeColor" class="form-control">
+                                    <option value="">Default</option>
+                                    <option value="red">Red</option>
+                                    <option value="blue">Blue</option>
+                                    <option value="black">Black</option>
+                                    <option value="green">Green</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Event Type</label>
+                                <select id="ddThemeColor" class="form-control">
+                                    <option value="">Type</option>
+                                    <option value="red">Appointment</option>
+                                    <option value="red">Reminder</option>
+                                </select>
+                            </div>
+                            <button type="button" id="btnSave" class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="orderArea"></div>
+
+<link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css" rel="stylesheet" />
+<link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.print.css" rel="stylesheet" media="print" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chosen-js@1.8.7/chosen.jquery.js" integrity="sha256-TDtzz+WOGufaQuQzqpEnnxdJQW5xrU+pzjznwBtaWs4=" crossorigin="anonymous"></script>
+
+    <script>
+        function loadMultiSelect() {
+            $('.tryMultiselect').chosen();
+        }
+
+        $(document).on('keyup', '.detailsearch', function () {
+            var orderType = $(this).attr('data-info');
+            var searchKey = $(this).val();
+            $.ajax({
+                url: '/admin/dashboard/SearchOrders',
+                 type: 'get',
+                data: {
+                    orderType: orderType,
+                    searchKey: searchKey
+                },
+                success: function (result) {
+                    if (orderType == 398)
+                        $("#pendingOrderList").html(result);
+                    else if (orderType == 397)
+                        $("#AllOrderList").html(result);
+                    else
+                        $("TestOrderList").html(result);
+                },
+                error: function () {
+
+                }
+            })
+        });
+
+        $(document).on('click', '.UpdtOrdrBtn', function () {
+            var orderId = $(this).val();
+            $.ajax({
+                url: '/admin/clientOrder/updateOrder',
+                type: 'GET',
+                data: {
+                    orderId: orderId
+                },
+                success: function (result) {
+                    $("#mainDiv").hide();
+                    $('#orderArea').html(result);
+                    loadMultiSelect();
+                    //$("#postUpdatebtn").show();
+                    //$("#getPndOrdrBtn").hide();
+                    //$("#signupform").hide();
+                    //$("#addClientOrderBtn").hide();
+                    //$("#cancelOrderBtn").show();
+                    //document.getElementById("quickSearchBlock").hidden = true;
+                    //document.getElementById("postUpdatebtn").addEventListener("click", function () {
+                    //    updateOrderData();
+                    //});
+                },
+                error: function () {
+                    toastr.error("Something went wrong!");
+                }
+            });
+
+        });
+
+
+        $(document).ready(function () {
+            $("#odrBtnDiv").hide();
+            var events = [];
+            var selectedEvent = null;
+            FetchEventAndRenderCalendar();
+            function FetchEventAndRenderCalendar() {
+                events = [];
+                $.ajax({
+                    type: "GET",
+                    url: "/Admin/Dashboard/GetEvents",
+                    success: function (data) {
+                        $.each(data.data, function (i, v) {
+                            console.log(v);
+                            debugger
+                            events.push({
+                                eventID: v.id,
+                                title: v.subject,
+                                description: v.description,
+                                start: moment(v.start),
+                                end: v.end != null ? moment(v.end) : null,
+                                color: v.themeColor,
+                                allDay: v.isFullDay
+                            });
+                            console.log(events);
+                        })
+
+                        GenerateCalender(events);
+                    },
+                    error: function (error) {
+                        alert('failed');
+                    }
+                })
+            }
+
+            function GenerateCalender(events) {
+                $('#calender').fullCalendar('destroy');
+                $('#calender').fullCalendar({
+                    contentHeight: 400,
+                    defaultDate: new Date(),
+                    timeFormat: 'h(:mm)a',
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'month,basicWeek,basicDay,agenda'
+                    },
+                    eventLimit: true,
+                    eventColor: '#378006',
+                    events: events,
+                    eventClick: function (calEvent, jsEvent, view) {
+                        selectedEvent = calEvent;
+                        $('#myModal #eventTitle').text(calEvent.title);
+                        var $description = $('<div/>');
+                        $description.append($('<p/>').html('<b>Start:</b>' + calEvent.start.format("DD-MMM-YYYY HH:mm a")));
+                        if (calEvent.end != null) {
+                            $description.append($('<p/>').html('<b>End:</b>' + calEvent.end.format("DD-MMM-YYYY HH:mm a")));
+                        }
+                        $description.append($('<p/>').html('<b>Description:</b>' + calEvent.description));
+                        $('#myModal #pDetails').empty().html($description);
+
+                        $('#myModal').modal();
+                    },
+                    selectable: true,
+                    select: function (start, end) {
+                        selectedEvent = {
+                            eventID: 0,
+                            title: '',
+                            description: '',
+                            start: start,
+                            end: end,
+                            allDay: false,
+                            color: ''
+                        };
+                        openAddEditForm();
+                        $('#calendar').fullCalendar('unselect');
+                    },
+                    editable: true,
+                    eventDrop: function (event) {
+                        var data = {
+                            EventID: event.eventID,
+                            Subject: event.title,
+                            Start: event.start.format('DD/MM/YYYY HH:mm A'),
+                            End: event.end != null ? event.end.format('DD/MM/YYYY HH:mm A') : null,
+                            Description: event.description,
+                            ThemeColor: event.color,
+                            IsFullDay: event.allDay
+                        };
+                        SaveEvent(data);
+                    }
+                })
+            }
+
+            $('#btnEdit').click(function () {
+                //Open modal dialog for edit event
+                openAddEditForm();
+            })
+            $('#btnDelete').click(function () {
+                if (selectedEvent != null && confirm('Are you sure?')) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Admin/Dashboard/DeleteEvent',
+                        data: { 'eventID': selectedEvent.eventID },
+                        success: function (data) {
+                            if (data.status) {
+                                //Refresh the calender
+                                FetchEventAndRenderCalendar();
+                                $('#myModal').modal('hide');
+                            }
+                        },
+                        error: function () {
+                            alert('Failed');
+                        }
+                    })
+                }
+            })
+
+            $('#dtp1,#dtp2').datetimepicker({
+                format: 'DD/MM/YYYY HH:mm A'
+            });
+
+            $('#chkIsFullDay').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#divEndDate').hide();
+                }
+                else {
+                    $('#divEndDate').show();
+                }
+            });
+
+            function openAddEditForm() {
+                if (selectedEvent != null) {
+                    $('#hdEventID').val(selectedEvent.eventID);
+                    $('#txtSubject').val(selectedEvent.title);
+                    $('#txtStart').val(selectedEvent.start.format('DD/MM/YYYY HH:mm A'));
+                    $('#chkIsFullDay').prop("checked", selectedEvent.allDay || false);
+                    $('#chkIsFullDay').change();
+                    $('#txtEnd').val(selectedEvent.end != null ? selectedEvent.end.format('DD/MM/YYYY HH:mm A') : '');
+                    $('#txtDescription').val(selectedEvent.description);
+                    $('#ddThemeColor').val(selectedEvent.color);
+                }
+                $('#myModal').modal('hide');
+                $('#myModalSave').modal();
+            }
+
+            $('#btnSave').click(function () {
+                //Validation/
+                if ($('#txtSubject').val().trim() == "") {
+                    alert('Subject required');
+                    return;
+                }
+                if ($('#txtStart').val().trim() == "") {
+                    alert('Start date required');
+                    return;
+                }
+                if ($('#chkIsFullDay').is(':checked') == false && $('#txtEnd').val().trim() == "") {
+                    alert('End date required');
+                    return;
+                }
+                else {
+                    var startDate = moment($('#txtStart').val(), "DD/MM/YYYY HH:mm A").toDate();
+                    var endDate = moment($('#txtEnd').val(), "DD/MM/YYYY HH:mm A").toDate();
+                    if (startDate > endDate) {
+                        alert('Invalid end date');
+                        return;
+                    }
+                }
+
+                var data = {
+                    ID: $('#hdEventID').val(),
+                    Subject: $('#txtSubject').val().trim(),
+                    Start: $('#txtStart').val().trim(),
+                    End: $('#chkIsFullDay').is(':checked') ? null : $('#txtEnd').val().trim(),
+                    Description: $('#txtDescription').val(),
+                    ThemeColor: $('#ddThemeColor').val(),
+                    IsFullDay: $('#chkIsFullDay').is(':checked')
+                }
+                SaveEvent(data);
+                // call function for submit data to the server
+            })
+
+            function SaveEvent(data) {
+                $.ajax({
+                    type: "POST",
+                    url: '/Admin/Dashboard/SaveEvent',
+                    data: data,
+                    success: function (data) {
+                        if (data.status) {
+                            //Refresh the calender
+                            FetchEventAndRenderCalendar();
+                            $('#myModalSave').modal('hide');
+                        }
+                    },
+                    error: function () {
+                        alert('Failed');
+                    }
+                })
+            }
+        })
+    </script>
+}

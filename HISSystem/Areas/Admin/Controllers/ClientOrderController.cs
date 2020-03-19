@@ -74,7 +74,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
             ViewBag.Doctors = db.UserService.GetByRole(3).Select(x => new { ID = x.ID, Name = x.EnFirstName + " " + x.EnThirdName });
             ViewBag.Clients = db.UserService.GetPatients().Select(x => new { ID = x.ID, Name = x.EnFirstName + " " + x.EnThirdName });
             ViewBag.Templates = db.DynamicTemplateService.GetAllTemplates().Select(x => new { x.ID, x.TemplateType.Name }).DistinctBy(x => x.Name);
-            ViewBag.TestTypes = db.LookupService.GetLookUpByTypeName("TemplateType");
+            ViewBag.TestTypes = db.LookupService.GetLookUpByTypeName("TestTempType");
             ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
             ViewBag.FollowUp = db.LookupService.GetLookUpByTypeName("FollowUpType");
 
@@ -131,7 +131,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
             ClientOrder clientOrder = db.ClientOrderService.GetClientOrderByID(orderId);
             viewModel.ClientOrder = clientOrder;
             ViewBag.FollowUp = db.LookupService.GetLookUpByTypeName("FollowUpType");
-            ViewBag.TestTypes = db.LookupService.GetLookUpByTypeName("TemplateType"); 
+            ViewBag.TestTypes = db.LookupService.GetLookUpByTypeName("TestTempType");
             ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
             ViewBag.FollowUp = db.LookupService.GetLookUpByTypeName("FollowUpType");
             ViewBag.Element = db.LookupService.GetLookUpByTypeName("Element");
@@ -216,7 +216,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
                 ViewBag.Doctors = db.UserService.GetByRole(3).Select(x => new { ID = x.ID, Name = x.EnFirstName + " " + x.EnThirdName });
                 ViewBag.Clients = db.UserService.GetPatients().Select(x => new { ID = x.ID, Name = x.EnFirstName + " " + x.EnThirdName });
                 ViewBag.Templates = db.DynamicTemplateService.GetAllTemplates().Select(x => new { x.ID, x.TemplateType.Name }).DistinctBy(x => x.Name);
-                ViewBag.TestTypes = db.LookupService.GetLookUpByTypeName("TemplateType");
+                ViewBag.TestTypes = db.LookupService.GetLookUpByTypeName("TestTempType");
                 ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
                 ViewBag.FollowUp = db.LookupService.GetLookUpByTypeName("FollowUpType");
                 ViewBag.Element = db.LookupService.GetLookUpByTypeName("Element");

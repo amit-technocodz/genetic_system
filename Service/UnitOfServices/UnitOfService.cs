@@ -39,12 +39,25 @@ namespace Service.UnitOfServices
         private MedicalDictionaryService _MedicalDictionaryService;
         private TestDynamicTemplateService _TestDynamicTemplateService;
         private TestTempService _TestTempService;
+        private ReminderService _ReminderService;
 
         public UnitOfService()
         {
             this._rep = new UnitOfWork();
         }
-
+        public ReminderService ReminderService
+        {
+            get
+            {
+                if (_ReminderService != null)
+                    return _ReminderService;
+                else
+                {
+                    _ReminderService = new ReminderService(_rep);
+                    return _ReminderService;
+                }
+            }
+        }
         public TestTempService TestTempService
         {
             get

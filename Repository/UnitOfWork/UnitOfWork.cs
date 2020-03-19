@@ -93,13 +93,29 @@ namespace Repository.UnitOfWork
         Repository<MasterTempCol> _MasterTempCol;
         Repository<TestTempCol> _TestTempCol;
         Repository<TestTempData> _TestTempData;
+        Repository<Reminder> _Reminder;
 
         public UnitOfWork()
         {
             this._context = new ApplicationContext();
         
         }
+        public IRepository<Reminder> Reminder
+        {
+            get
+            {
+                if (_Reminder != null)
+                {
+                    return _Reminder;
+                }
+                else
+                {
+                    _Reminder = new Repository<Reminder>(_context);
+                    return _Reminder;
+                }
 
+            }
+        }
         public IRepository<TestTempData> TestTempData
         {
             get
