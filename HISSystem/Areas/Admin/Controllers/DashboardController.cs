@@ -36,6 +36,18 @@ namespace HISSystem.Areas.Admin.Controllers
             return View(dashboardVM);
         }
 
+        //public IActionResult _Index()
+        //{
+        //    DashboardVM dashboardVM = new DashboardVM
+        //    {
+        //        PendingOrders = db.ClientOrderService.GetPendingOrderForDashboard(),
+        //        AllOrders = db.ClientOrderService.GetAllOrderForDashboard(),
+        //        TestOrders = db.ClientOrderService.GetTestOrderForDashboard()
+        //    };
+
+        //    return PartialView("_Index", dashboardVM);
+        //}
+
         public JsonResult GetEvents()
         {
             var reminderList = db.ReminderService.GetAllReminders();

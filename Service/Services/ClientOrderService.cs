@@ -262,6 +262,7 @@ namespace Service.Services
                 clientOrder.User = null;
                 clientOrder.Doctor = null;
                 clientOrder.IsActive = true;
+                clientOrder.StatusID = 398;
                 db.ClientOrder.Update(clientOrder);
                 db.ClientOrder.SaveChanges();
 

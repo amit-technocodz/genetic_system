@@ -9,6 +9,7 @@ using Service.UnitOfServices;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using GeneticSystem.Areas.Admin.Models;
 
 namespace HISSystem.Controllers
 {
@@ -79,10 +80,12 @@ namespace HISSystem.Controllers
                     Response.Cookies.Append("UserName", user.UserName, option);
                     Response.Cookies.Append("RoleID", Convert.ToString(user.RoleID), option);
                     Response.Cookies.Append("ID", Convert.ToString(user.ID), option);
+                    HttpContext.Session.SetString("FullName", Convert.ToString((user.EnFirstName ?? "") + " " + (user.EnSecondName ?? "") + " " + (user.EnThirdName)));
                     HttpContext.Session.SetString("UserName", user.UserName);
+                    HttpContext.Session.SetInt32("UserID", user.ID);
                     HttpContext.Session.SetString("RoleID", Convert.ToString(user.RoleID));
-                    if(user.ImagePath != null)
-                    HttpContext.Session.SetString("Image", user.ImagePath);
+                    if (user.ImagePath != null)
+                        HttpContext.Session.SetString("Image", user.ImagePath);
 
                     var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                     identity.AddClaim(new Claim(ClaimTypes.Name, user.Role.Name));
@@ -95,7 +98,7 @@ namespace HISSystem.Controllers
 
                     return Redirect("/admin/dashboard/index");
                 }
-                    else
+                else
                 {
                     var image = db.CompanyProfileService.GetImageByTypeId(180);
                     var logo = db.CompanyProfileService.GetImageByTypeId(181);
@@ -116,5 +119,26 @@ namespace HISSystem.Controllers
         {
             return RedirectToAction("Login");
         }
+
+        public bool ChangePassword(ChangePassVM changePass)
+        {
+            if (changePass.userName != null && changePass.oldPass != null && changePass.newPass != null)
+            {
+                var user = db.UserService.Login(changePass.userName, CommonMethod.Encrypt(changePass.oldPass));
+
+                if (user == null)
+                    return false;
+
+                else
+                    user.Password = CommonMethod.Encrypt(changePass.newPass);
+
+                db.UserService.UpdateUser(user);
+                return true;
+
+            }
+            else
+                return false;
+        }
+
     }
 }
