@@ -30,5 +30,7 @@ namespace Data.Models
         public string[] FollowUpArray { get; set; }
         [NotMapped]
         public string[] TestTypeArray { get; set; }
+        [NotMapped]
+        public List<string> TestArrayStrings { get; set; }
     }
 }

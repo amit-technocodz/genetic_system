@@ -1267,7 +1267,11 @@ namespace HISSystem.Areas.Admin.Controllers
             {
                 var result = context.Where(x => x.ID.ToString().Contains(Id.ToString(), StringComparison.OrdinalIgnoreCase) ||
                 (x.EnFirstName != null && x.EnFirstName.Contains(Id, StringComparison.OrdinalIgnoreCase)) ||
+                (x.ArFirstName != null && x.ArFirstName.Contains(Id, StringComparison.OrdinalIgnoreCase)) ||
+                (x.ArSecondName != null && x.ArSecondName.Contains(Id, StringComparison.OrdinalIgnoreCase)) ||
+                (x.ArThirdName != null && x.ArThirdName.Contains(Id, StringComparison.OrdinalIgnoreCase)) ||
                 (x.EnSecondName != null && x.EnSecondName.Contains(Id, StringComparison.OrdinalIgnoreCase)) ||
+                (x.EnThirdName != null && x.EnThirdName.Contains(Id, StringComparison.OrdinalIgnoreCase)) ||
                 (x.RegisterationNo != null && x.RegisterationNo.Contains(Id, StringComparison.OrdinalIgnoreCase)) ||
                 (x.Mobile != null && x.Mobile.ToString().Contains(Id, StringComparison.OrdinalIgnoreCase)))
                 .OrderByDescending(x => x.AddedDate).Take(PageSize).ToList();

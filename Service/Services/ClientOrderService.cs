@@ -69,9 +69,24 @@ namespace Service.Services
         }
         public List<ClientOrder> GetTestOrderForDashboard()
         {
-            return db.ClientOrder.Get().Where(x => x.TestType != null).OrderByDescending(x => x.OrderDate).Take(5)
+            var result = db.ClientOrder.Get().Where(x => x.TestType != null).OrderByDescending(x => x.OrderDate).Take(5)
                 .Include(x => x.User).ThenInclude(p => p.PatientPersonalInformation).ThenInclude(c => c.City)
                 .Include(x => x.Template).ThenInclude(t => t.TemplateType).Include(x => x.Status).ToList();
+
+            foreach(var item in result)
+            {
+                item.TestArrayStrings = new List<string>();
+                item.TestTypeArray = item.TestType.Split(",");
+
+                foreach (var xitem in item.TestTypeArray)
+                {
+                    var sitem = db.Lookup.Get().Where(x => x.ID == Convert.ToInt32(xitem)).FirstOrDefault().Name;
+                    
+                    item.TestArrayStrings.Add((sitem + " "));
+                }
+            }
+
+            return result;
         }
         public ClientOrder GetClientOrderByID(int id)
         {
@@ -92,6 +107,43 @@ namespace Service.Services
                 return null;
             }
 
+        }
+
+        public ClientOrder CloseClientOrderByID(int id)
+        {
+            try
+            {
+                var result = db.ClientOrder.Get().Where(x => x.ID == id).FirstOrDefault();
+                result.StatusID = 397;
+                db.ClientOrder.Update(result);
+                db.ClientOrder.SaveChanges();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
+
+        public IEnumerable<ClientOrder> GetClientOrdersByUserID(int id)
+        {
+            var result = db.ClientOrder.Get().Where(x => x.UserID == id).Include(x => x.Doctor).Include(x => x.Template).ThenInclude(x => x.TemplateType).Include(x => x.Status);
+
+            foreach (var item in result.Where(x => x.TestType != null))
+            {
+                item.TestArrayStrings = new List<string>();
+                item.TestTypeArray = item.TestType.Split(",");
+
+                foreach (var xitem in item.TestTypeArray)
+                {
+                    var sitem = db.Lookup.Get().Where(x => x.ID == Convert.ToInt32(xitem)).FirstOrDefault().Name;
+
+                    item.TestArrayStrings.Add((sitem + " "));
+                }
+            }
+
+            return result;
         }
 
         public IEnumerable<ClientOrder> SearchClientOrderByType(int orderType, string searchKey)
@@ -143,12 +195,13 @@ namespace Service.Services
 
                 }
             }
+
         }
 
         public IEnumerable<ClientOrder> SearchClientOrderTestType(string searchkey)
         {
             if(searchkey != null) { 
-            return db.ClientOrder.Get().Where(x => x.TestType != null && x.OrderNo.ToString().StartsWith(searchkey, StringComparison.OrdinalIgnoreCase)
+            var result =  db.ClientOrder.Get().Where(x => x.TestType != null && x.OrderNo.ToString().StartsWith(searchkey, StringComparison.OrdinalIgnoreCase)
             || x.User.EnFirstName.StartsWith(searchkey, StringComparison.OrdinalIgnoreCase) || x.User.ArFirstName.StartsWith(searchkey, StringComparison.OrdinalIgnoreCase)
             || x.Doctor.EnFirstName.StartsWith(searchkey, StringComparison.OrdinalIgnoreCase) || x.Doctor.ArFirstName.StartsWith(searchkey, StringComparison.OrdinalIgnoreCase)
             || x.User.Mobile.StartsWith(searchkey, StringComparison.OrdinalIgnoreCase) || x.User.PatientPersonalInformation.City.Name.StartsWith(searchkey, StringComparison.OrdinalIgnoreCase)
@@ -156,12 +209,42 @@ namespace Service.Services
                 .OrderByDescending(x => x.OrderDate).Take(5)
                    .Include(x => x.User).ThenInclude(p => p.PatientPersonalInformation).ThenInclude(c => c.City)
                    .Include(x => x.Template).ThenInclude(t => t.TemplateType).Include(x => x.Status);
+
+                foreach (var item in result)
+                {
+                    item.TestArrayStrings = new List<string>();
+                    item.TestTypeArray = item.TestType.Split(",");
+
+                    foreach (var xitem in item.TestTypeArray)
+                    {
+                        var sitem = db.Lookup.Get().Where(x => x.ID == Convert.ToInt32(xitem)).FirstOrDefault().Name;
+
+                        item.TestArrayStrings.Add((sitem + " "));
+                    }
+                }
+
+                return result;
             }
             else
             {
-                return db.ClientOrder.Get().Where(x => x.TestType != null).OrderByDescending(x => x.OrderDate).Take(5)
+                var result =  db.ClientOrder.Get().Where(x => x.TestType != null).OrderByDescending(x => x.OrderDate).Take(5)
              .Include(x => x.User).ThenInclude(p => p.PatientPersonalInformation).ThenInclude(c => c.City)
              .Include(x => x.Template).ThenInclude(t => t.TemplateType).Include(x => x.Status).ToList();
+
+                foreach (var item in result)
+                {
+                    item.TestArrayStrings = new List<string>();
+                    item.TestTypeArray = item.TestType.Split(",");
+
+                    foreach (var xitem in item.TestTypeArray)
+                    {
+                        var sitem = db.Lookup.Get().Where(x => x.ID == Convert.ToInt32(xitem)).FirstOrDefault().Name;
+
+                        item.TestArrayStrings.Add((sitem + " "));
+                    }
+                }
+
+                return result;
             }
         }
 

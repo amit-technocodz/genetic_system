@@ -12,10 +12,15 @@
     .column {
         flex: 50%;
     }
+    .mr-2 {
+    margin-right: 2px;
+}
 </style>
 
 <div id="markUpDiv">
-    <div class="frow" style="padding-left:20px; padding-top:10px">
+    <div class="frow" style="        padding-left: 20px;
+        padding-top: 10px
+">
         <h2>Dashboard</h2>
     </div>
     <div id="dshbrdBtnDiv" class="frow mrgn-b-sm" style="padding-left:10px; padding-top:10px">
@@ -86,7 +91,7 @@
                                             @order.User?.PatientPersonalInformation?.City?.Name
                                         </td>
                                         <td>
-                                            @order.Template?.TemplateType?.Name
+                                            <label class="label label-danger mr-2 btn-rounded">@order.Template?.TemplateType?.Name</label>
                                         </td>
                                         <td>
                                             @if (order.Status != null)
@@ -180,7 +185,10 @@
                                             @order.User?.PatientPersonalInformation?.City?.Name
                                         </td>
                                         <td>
-                                            @order.Template?.TemplateType?.Name
+                                            @foreach(var item in order.TestArrayStrings)
+                                            {
+                                            <label class="label label-danger mr-2 btn-rounded">@item</label>
+                                            }
                                         </td>
                                         <td>
                                             @if (order.Status != null)

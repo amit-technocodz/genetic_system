@@ -33,7 +33,10 @@
                     @order.User?.PatientPersonalInformation?.City?.Name
                 </td>
                 <td>
-                    @order.Template?.TemplateType?.Name
+                    @foreach (var item in order.TestArrayStrings)
+                    {
+                        <label class="label label-danger mr-2 btn-rounded">@item</label>
+                    }
                 </td>
                 <td>
                     @if (order.Status != null)
