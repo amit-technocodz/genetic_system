@@ -114,6 +114,9 @@ namespace Repository
         public DbSet<MasterTempCol> MasterTempCol { get; set; }
         public DbSet<TestTempData> TestTempData { get; set; }
         public DbSet<Reminder> Reminder { get; set; }
+        public DbSet<FollowUpByDoc> FollowUpByDoc { get; set; }
+        public DbSet<FollowUpByDocConv> FollowUpByDocConv { get; set; }
+        public DbSet<FollowUpByDocResult> FollowUpByDocResult { get; set; }
 
     }
 }

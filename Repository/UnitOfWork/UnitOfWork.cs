@@ -94,11 +94,62 @@ namespace Repository.UnitOfWork
         Repository<TestTempCol> _TestTempCol;
         Repository<TestTempData> _TestTempData;
         Repository<Reminder> _Reminder;
+        Repository<FollowUpByDoc> _FollowUpByDoc;
+        Repository<FollowUpByDocConv> _FollowUpByDocConv;
+        Repository<FollowUpByDocResult> _FollowUpByDocResult;
 
         public UnitOfWork()
         {
             this._context = new ApplicationContext();
         
+        }
+        public IRepository<FollowUpByDoc> FollowUpByDoc
+        {
+            get
+            {
+                if (_FollowUpByDoc != null)
+                {
+                    return _FollowUpByDoc;
+                }
+                else
+                {
+                    _FollowUpByDoc = new Repository<FollowUpByDoc>(_context);
+                    return _FollowUpByDoc;
+                }
+
+            }
+        }
+        public IRepository<FollowUpByDocConv> FollowUpByDocConv
+        {
+            get
+            {
+                if (_FollowUpByDocConv != null)
+                {
+                    return _FollowUpByDocConv;
+                }
+                else
+                {
+                    _FollowUpByDocConv = new Repository<FollowUpByDocConv>(_context);
+                    return _FollowUpByDocConv;
+                }
+
+            }
+        }
+        public IRepository<FollowUpByDocResult> FollowUpByDocResult
+        {
+            get
+            {
+                if (_FollowUpByDocResult != null)
+                {
+                    return _FollowUpByDocResult;
+                }
+                else
+                {
+                    _FollowUpByDocResult = new Repository<FollowUpByDocResult>(_context);
+                    return _FollowUpByDocResult;
+                }
+
+            }
         }
         public IRepository<Reminder> Reminder
         {

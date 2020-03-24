@@ -85,6 +85,18 @@ namespace GeneticSystem.Areas.Admin.Controllers
             ViewBag.ConsumptionType = db.LookupService.GetLookUpByTypeName("ConsumptionType");
             ViewBag.FeederType = db.LookupService.GetLookUpByTypeName("FeederType");
 
+            var listwithIndex = testTemp.TestTempDataList.Select((value, index) => new { index, value }).ToList();
+
+            var TestTempDataCols = testTemp.TestTempDataList.Select(x => x.TestTempColID).Distinct().ToList();
+            int tempColCount = TestTempDataCols.Count();
+            testTemp.expData = new List<TestTempData>[testTemp.TestTempDataList.Count() / tempColCount];
+            for (int i = 0; i < testTemp.TestTempDataList.Count()/ tempColCount; i++){
+                
+                testTemp.expData[i] = listwithIndex.Where(x => (x.index >= (i * tempColCount) && x.index < ((i + 1) * tempColCount))).Select(x => x.value).ToList();
+            }
+
+            Console.WriteLine(testTemp.expData);
+
             return PartialView("_GetTempDetail", testTemp);
         }
 

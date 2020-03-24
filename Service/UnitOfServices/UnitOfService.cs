@@ -40,10 +40,24 @@ namespace Service.UnitOfServices
         private TestDynamicTemplateService _TestDynamicTemplateService;
         private TestTempService _TestTempService;
         private ReminderService _ReminderService;
+        private FollowUpService _FollowUpService;
 
         public UnitOfService()
         {
             this._rep = new UnitOfWork();
+        }
+        public FollowUpService FollowUpService
+        {
+            get
+            {
+                if (_FollowUpService != null)
+                    return _FollowUpService;
+                else
+                {
+                    _FollowUpService = new FollowUpService(_rep);
+                    return _FollowUpService;
+                }
+            }
         }
         public ReminderService ReminderService
         {

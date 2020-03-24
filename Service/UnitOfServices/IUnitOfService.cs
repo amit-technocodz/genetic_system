@@ -41,6 +41,7 @@ namespace Service.UnitOfServices
         TestDynamicTemplateService TestDynamicTemplateService { get; }
         TestTempService TestTempService { get; }
         ReminderService ReminderService { get; }
+        FollowUpService FollowUpService { get; }
     }
 }
 

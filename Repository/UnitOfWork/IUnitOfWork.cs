@@ -92,5 +92,8 @@ namespace Repository.UnitOfWork
         IRepository<TestTempCol> TestTempCol { get; }
         IRepository<TestTempData> TestTempData { get; }
         IRepository<Reminder> Reminder { get; }
+        IRepository<FollowUpByDoc> FollowUpByDoc { get; }
+        IRepository<FollowUpByDocConv> FollowUpByDocConv { get; }
+        IRepository<FollowUpByDocResult> FollowUpByDocResult { get; }
     }
 }

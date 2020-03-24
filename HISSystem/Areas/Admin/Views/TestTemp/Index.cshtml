@@ -417,7 +417,7 @@ debugger
                       debugger
                       if (response == true) {
                           toastr.info('Record saved');
-                          GetTemplateDetailFix(values);
+                          //GetTemplateDetailFix(values);
                       }
                 },
                   error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -428,7 +428,8 @@ debugger
 
         });
 
-            function GetTemplateDetailFix(type) {
+        function GetTemplateDetailFix(type) {
+                alert('this got called')
             var fields = type.split('>>');
             var temptype = fields[0];
             var subtemptype = fields[1];

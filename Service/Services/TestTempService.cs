@@ -49,7 +49,7 @@ namespace Service.Services
 
         public IEnumerable<TestTempData> GetTempDataByTempId(int tempId)
         {
-            return db.TestTempData.Get().Where(x => x.TestTempID == tempId && x.IsActive == true);
+            return db.TestTempData.Get().Where(x => x.TestTempID == tempId/* && x.IsActive == true*/);
         }
 
         public bool SaveTemplDataList(List<TestTempData> tempDatas)

@@ -62,6 +62,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetOrderData(int orderId)
         {
+            FollowUpVM followUpVM = new FollowUpVM();
             ClientOrderViewModel viewModel = new ClientOrderViewModel();
             List<ClientOrderData> clientOrderDatas = new List<ClientOrderData>();
 
@@ -94,16 +95,26 @@ namespace GeneticSystem.Areas.Admin.Controllers
               new SelectListItem{ Text="Low", Value = "3" }
             };
 
-
-            return PartialView("_GetTempOrder", viewModel);
+            followUpVM.ClientOrderViewModel = viewModel;
+            followUpVM.FollowUpByDocConvList = db.FollowUpService.GetByDocConvs(viewModel.ClientOrder.ID);
+            return PartialView("_GetTempOrder", followUpVM);
         }
 
         [HttpGet]
-
         public bool CloseOrder(int orderId)
         {
             db.ClientOrderService.CloseClientOrderByID(orderId);
             return true;
+        }
+
+        [HttpPost]
+        public IActionResult AddFollowUpSummary (FollowUpByDocConv followUpByDoc)
+        {
+            FollowUpVM followUpVM = new FollowUpVM();
+            int? senderID = Convert.ToInt32(HttpContext.Request.Cookies["ID"]);
+            followUpByDoc.SenderID =  senderID != null ? Convert.ToInt32(senderID) : 1;
+            followUpVM.FollowUpByDocConvList = db.FollowUpService.AddMessage(followUpByDoc);
+            return PartialView("_FollowUpByDocMessage", followUpVM);
         }
     }
 }

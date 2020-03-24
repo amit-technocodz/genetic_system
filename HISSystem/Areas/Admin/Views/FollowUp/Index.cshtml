@@ -116,61 +116,45 @@
                     </div>
                     <div class="col-md-10">
                         <div class="prtm-block">
-                            <div class="line-slide-tab">
-                                <ul class="nav nav-tabs">
-                                    <li class="active"> <a data-toggle="tab" href="#tab-26" aria-expanded="true"><i class="fa fa-history" aria-hidden="true"></i> Visit History </a> </li>
-                                    <li><a data-toggle="tab" href="#tab-27" aria-expanded="false"><i class="fa fa-th-list" aria-hidden="true"></i> Followup by doctor </a> </li>
-                                </ul>
-                                <div class="tab-content pad-all-sm">
-                                    <div id="tab-26" class="tab-pane fade in active">
-                                        <div class="row mrgn-b-sm">
-                                            <div class="col-md-12">
-                                                <div class="prtm-block-content">
-                                                    <div class="table-responsive">
-                                                        <div id="userList" class="unseen">
-                                                            @if (Model.User != null)
-                                                            {
-                                                                <table id="patientTbl" class="table table-hover table-bordered table-striped">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th class="numeric">Order No  </th>
-                                                                            <th class="numeric">Order Date </th>
-                                                                            <th class="numeric">Test Type</th>
-                                                                            <th class="numeric">Follow up Needed</th>
-                                                                            <th class="numeric">Test Nedded</th>
-                                                                            <th class="numeric">Asign Doctor</th>
-                                                                            <th class="numeric">Attachment</th>
-                                                                            <th>Action</th>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td class="numeric">45454d</td>
-                                                                            <td class="numeric">24/4/2020</td>
-                                                                            <td class="numeric">Test Type</td>
-                                                                            <td class="numeric">Follow up Needed</td>
-                                                                            <td class="numeric">Test Nedded</td>
-                                                                            <td class="numeric">Asign Doctor</td>
-                                                                            <td class="numeric">Attachment</td>
-                                                                            <td>asdfsd
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody></tbody>
-                                                                </table>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </div>
+                            <div class="row mrgn-b-sm">
+                                <div class="col-md-12">
+                                    <div class="prtm-block-content">
+                                        <div class="table-responsive">
+                                            <div id="userList" class="unseen">
+                                                @if (Model.User != null)
+                                                {
+                                                    <table id="patientTbl" class="table table-hover table-bordered table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="numeric">Order No  </th>
+                                                                <th class="numeric">Order Date </th>
+                                                                <th class="numeric">Test Type</th>
+                                                                <th class="numeric">Follow up Needed</th>
+                                                                <th class="numeric">Test Nedded</th>
+                                                                <th class="numeric">Asign Doctor</th>
+                                                                <th class="numeric">Attachment</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="numeric">45454d</td>
+                                                                <td class="numeric">24/4/2020</td>
+                                                                <td class="numeric">Test Type</td>
+                                                                <td class="numeric">Follow up Needed</td>
+                                                                <td class="numeric">Test Nedded</td>
+                                                                <td class="numeric">Asign Doctor</td>
+                                                                <td class="numeric">Attachment</td>
+                                                                <td>asdfsd
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                }
                                             </div>
                                         </div>
-                                        <div id="orderDataDiv" class="row">
-                                            <div class="col-md-12">
-                                                accordian will here...
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="tab-27" class="tab-pane fade in">
-                                        sdfsadfasd
                                     </div>
                                 </div>
+                            </div>
+                            <div id="ordrPrcdArea">
                             </div>
                         </div>
                     </div>
@@ -183,6 +167,45 @@
 
 @section Scripts {
 <script>
+
+    $(document).on('click', '#addSmryBtn', function () {
+        var formdata = new FormData();
+        formdata.append("Message", $("#fllwpInput").val());
+        formdata.append("OrderID", $("#clntOrdrIdHdn").val());
+        formdata.append("SenderID", $("#dctrIdHdn").val());
+        $.ajax({
+            type: 'POST',
+            url: "/admin/followup/AddFollowUpSummary",
+            data: formdata,
+            dataType: "text",
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                $("#flwUpConvDiv").html(response);
+            },
+            error: function (xhr, status) {
+                toastr.error('Something went wrong');
+            }
+        });
+    });
+
+        $(document).on('click', '#ordrFllwUpDiv', function (event) {
+        debugger
+        var orderId = $(this).val();
+        $.ajax({
+            url: "/admin/followup/closeorder",
+            type: "get",
+            data: { 'orderId': orderId },
+            success: function (data) {
+                if (result == true)
+                    toastr.success("This order has been closed!")
+                event.target.parentElement.previousElementSibling.firstElementChild.classList.remove("label-danger");
+                event.target.parentElement.previousElementSibling.firstElementChild.classList.add("label-success");
+            },
+            error: function () {
+            }
+        });
+    });
 
     $(document).on('click', '.ClsOrdr', function (event) {
         debugger
@@ -283,7 +306,7 @@
                 orderId: orderId
             },
             success: function (result) {
-                $("#orderDataDiv").html(result);
+                $("#ordrPrcdArea").html(result);
             }
         });
     });
