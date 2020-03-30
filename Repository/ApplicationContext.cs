@@ -16,10 +16,12 @@ namespace Repository
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-           //optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Server=192.168.1.34;Database=genetic_db;Trusted_Connection=True;MultipleActiveResultSets=true");
-           //optionsBuilder.UseSqlServer(@"Data Source = 192.168.0.34; Initial Catalog = genetic_db; User ID = sa; Password = techno@123");
-           optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Server=sql6009.site4now.net;Database=db_a3cd7d_genetic2019;user id=DB_A3CD7D_genetic2019_admin;password=Israrassi@1988;MultipleActiveResultSets=true");
+            //optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Server=192.168.1.34;Database=genetic_db;Trusted_Connection=True;MultipleActiveResultSets=true");
+            //optionsBuilder.UseSqlServer(@"Data Source = 192.168.0.34; Initial Catalog = genetic_db; User ID = sa; Password = techno@123");
+            //optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Server=sql6009.site4now.net;Database=DB_A56ED5_capsys;user id=DB_A56ED5_capsys_admin;password=ffEKfuH334;MultipleActiveResultSets=true");
+            optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Server=sql6009.site4now.net;Database=db_a3cd7d_genetic2019;user id=DB_A3CD7D_genetic2019_admin;password=Israrassi@1988;MultipleActiveResultSets=true");
         }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -117,6 +119,8 @@ namespace Repository
         public DbSet<FollowUpByDoc> FollowUpByDoc { get; set; }
         public DbSet<FollowUpByDocConv> FollowUpByDocConv { get; set; }
         public DbSet<FollowUpByDocResult> FollowUpByDocResult { get; set; }
+        public DbSet<FollowUpTestTempData> FollowUpTestTempData { get; set; }
+        public DbSet<ClientOrderTest> ClientOrderTest { get; set; }
 
     }
 }

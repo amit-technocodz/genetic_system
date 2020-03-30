@@ -15,12 +15,72 @@
     .mr-2 {
     margin-right: 2px;
 }
+input[type="checkbox"], input[type="radio"] {
+    position: absolute;
+    right: 90px;
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 20px;
+}
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 12px;
+            width: 11px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .slider {
+        background-color: #f39521;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #f39521;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
 </style>
 
 <div id="markUpDiv">
-    <div class="frow" style="        padding-left: 20px;
-        padding-top: 10px
-">
+    <div class="frow" style=" padding-left: 20px; padding-top: 10px ">
         <h2>Dashboard</h2>
     </div>
     <div id="dshbrdBtnDiv" class="frow mrgn-b-sm" style="padding-left:10px; padding-top:10px">
@@ -244,81 +304,137 @@
                         <div class="modal-body">
                             <form class="col-md-12 form-horizontal">
                                 <input type="hidden" id="hdEventID" value="0" />
-                                <div class="form-group">
-                                    <label>Subject</label>
-                                    <input type="text" id="txtSubject" class="form-control" />
-                                </div>
-                                <div class="form-group">
-                                    <label>Start</label>
-                                    <div class="input-group date" id="dtp1">
-                                        <input type="text" id="txtStart" class="form-control" />
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                        </span>
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Client Name</label>
+                                            <select id="ddThemeColor" class="form-control">
+                                                <option value="">Type</option>
+                                                <option value="red">Appointment</option>
+                                                <option value="red">Reminder</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Test Name</label>
+                                            <select id="ddThemeColor" class="form-control">
+                                                <option value="">Type</option>
+                                                <option value="red">Appointment</option>
+                                                <option value="red">Reminder</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="form-check">
-                                        <label><input type="checkbox" id="chkIsFullDay" checked="checked" />  Is Full Day event</label>
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Subject</label>
+                                            <input type="text" id="txtSubject" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Gene Name</label>
+                                            <select id="ddThemeColor" class="form-control">
+                                                <option value="">Type</option>
+                                                <option value="red">Appointment</option>
+                                                <option value="red">Reminder</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group" id="divEndDate" style="display:none">
-                                    <label>End</label>
-                                    <div class="input-group date" id="dtp2">
-                                        <input type="text" id="txtEnd" class="form-control" />
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                        </span>
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Start</label>
+                                            <div class="input-group date" id="dtp1">
+                                                <input type="text" id="txtStart" class="form-control" />
+                                                <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" hidden>
+                                        <div class="checkbox">
+                                            <label><input type="checkbox" id="chkIsFullDay" checked="checked" />  Is Full Day event</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group" id="divEndDate" style="display:none">
+                                            <label>End</label>
+                                            <div class="input-group date" id="dtp2">
+                                                <input type="text" id="txtEnd" class="form-control" />
+                                                <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Pattern</label>
-                                    <select id="ddThemeColor" class="form-control">
-                                        <option value="">Type</option>
-                                        <option value="red">Appointment</option>
-                                        <option value="red">Reminder</option>
-                                    </select>
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Description</label>
+                                            <textarea id="txtDescription" rows="3" class="form-control"></textarea>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Description</label>
-                                    <textarea id="txtDescription" rows="3" class="form-control"></textarea>
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>
+                                                Recurrence:
+                                                <label class="switch">
+                                                    <input type="checkbox" checked>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Theme Color</label>
-                                    <select id="ddThemeColor" class="form-control">
-                                        <option value="">Default</option>
-                                        <option value="red">Red</option>
-                                        <option value="blue">Blue</option>
-                                        <option value="black">Black</option>
-                                        <option value="green">Green</option>
-                                    </select>
+                                <div id="recurrenceDiv">
+                                    <div class="form-row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Pattern</label>
+                                                <select id="ddThemeColor" class="form-control">
+                                                    <option value="">Type</option>
+                                                    <option value="red">Daily</option>
+                                                    <option value="red">Weekly</option>
+                                                    <option value="red">Monthly</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <span><label>End After</label> <input type="number" placeholder="Ocurrences" class="form-control" /></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Theme Color</label>
+                                                <select id="ddThemeColor" class="form-control">
+                                                    <option value="">Default</option>
+                                                    <option value="red">Red</option>
+                                                    <option value="blue">Blue</option>
+                                                    <option value="black">Black</option>
+                                                    <option value="green">Green</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="padding-top:10px">
+                                                <button type="button" id="btnSave" class="btn btn-success">Save</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>ClientName</label>
-                                    <select id="ddThemeColor" class="form-control">
-                                        <option value="">Type</option>
-                                        <option value="red">Appointment</option>
-                                        <option value="red">Reminder</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>TestName</label>
-                                    <select id="ddThemeColor" class="form-control">
-                                        <option value="">Type</option>
-                                        <option value="red">Appointment</option>
-                                        <option value="red">Reminder</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>GeneName</label>
-                                    <select id="ddThemeColor" class="form-control">
-                                        <option value="">Type</option>
-                                        <option value="red">Appointment</option>
-                                        <option value="red">Reminder</option>
-                                    </select>
-                                </div>
-                                <button type="button" id="btnSave" class="btn btn-success">Save</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      
                             </form>
                         </div>
                     </div>

@@ -97,11 +97,45 @@ namespace Repository.UnitOfWork
         Repository<FollowUpByDoc> _FollowUpByDoc;
         Repository<FollowUpByDocConv> _FollowUpByDocConv;
         Repository<FollowUpByDocResult> _FollowUpByDocResult;
+        Repository<FollowUpTestTempData> _FollowUpTestTempData;
+        Repository<ClientOrderTest> _ClientOrderTest;
 
         public UnitOfWork()
         {
             this._context = new ApplicationContext();
         
+        }
+        public IRepository<ClientOrderTest> ClientOrderTest
+        {
+            get
+            {
+                if (_ClientOrderTest != null)
+                {
+                    return _ClientOrderTest;
+                }
+                else
+                {
+                    _ClientOrderTest = new Repository<ClientOrderTest>(_context);
+                    return _ClientOrderTest;
+                }
+
+            }
+        }
+        public IRepository<FollowUpTestTempData> FollowUpTestTempData
+        {
+            get
+            {
+                if (_FollowUpTestTempData != null)
+                {
+                    return _FollowUpTestTempData;
+                }
+                else
+                {
+                    _FollowUpTestTempData = new Repository<FollowUpTestTempData>(_context);
+                    return _FollowUpTestTempData;
+                }
+
+            }
         }
         public IRepository<FollowUpByDoc> FollowUpByDoc
         {

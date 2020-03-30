@@ -156,6 +156,22 @@
                             </div>
                             <div id="ordrPrcdArea">
                             </div>
+                            <div id="appndBox" hidden>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <textarea id="" class="form-control" rows="5"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="button" name="submit" class="btn btn-xs btn-primary" id="addSmryBtn" value="Post">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -166,7 +182,104 @@
 </html>
 
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chosen-js@1.8.7/chosen.jquery.js" integrity="sha256-TDtzz+WOGufaQuQzqpEnnxdJQW5xrU+pzjznwBtaWs4=" crossorigin="anonymous"></script>
 <script>
+
+    $(document).on('change', '.addRsltdrpdwn', function () {
+        var slctd = $(this).val();
+        var ordrId = $("#clntOrdrIdHdn").val();
+        alert(ordrId);
+        if (slctd == 0 || slctd == undefined || slctd == "")
+            return false;
+
+        $.ajax({
+            url: '/admin/followup/gettesttemp',
+            type: 'GET',
+            data: { orderId: ordrId, selectedVal: slctd },
+            success: function (response) {
+                $('#selectedTestArea').html(response);
+            },
+            error: function () {
+                toastr.error('Something went wrong');
+            }
+        });
+    });
+
+    $(document).on("click", ".AttchOrdrBtn", function () {
+                alert('clicked')
+            var userId = $(this).val();
+            debugger
+            $.ajax({
+                url: '/admin/clientOrder/Attachment',
+                type: 'GET',
+                data: { userID: userId },
+                success: function (response) {
+                    $(".modal-content").html(response);
+                    $("#exampleModalCenter").modal().toggle();
+                },
+                error: function () {
+                    toastr.error('Something went wrong');
+                }
+            });
+        });
+
+    $(document).on('click', '#svTstDtBtn', function () {
+        var formdata = new FormData($('#fllwTstForm').get(0));
+       
+                    $.ajax({
+                type: 'POST',
+                url: "/admin/followup/addtestdata",
+                data: formdata,
+                dataType: "text",
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    //toastr.info('Record updated');
+                    //$("#odrBtnDiv").hide();
+                    //$("#dshbrdBtnDiv").show();
+                    //$.ajax({
+                    //    url: '/admin/dashboard/index',
+                    //    type: 'GET',
+                    //    success: function (response) {
+                    //        document.open("text/html", "replace");
+                    //        document.write(response);
+                    //        startLoader();
+                    //        document.close();
+                    //        $('.prtm-loader-wrap').fadeOut(200);
+                    //    },
+                    //    error: function () {
+                    //        toastr.error('Something went wrong');
+                    //    }
+                    //});
+                },
+                error: function (xhr, status) {
+                    toastr.error('Something went wrong');
+                }
+            });
+    });
+
+    $(document).on('click', '.replyBtn', function (event) {
+        alert('clicked')
+        var elm = document.getElementById('appndBox');
+        event.target.parentElement.append(elm);
+    });
+
+    $(document).on("click", ".addRsltBtn", function () {
+            var orderId = $("#clntOrdrIdHdn").val();
+            debugger
+            $.ajax({
+                url: '/admin/followup/addresult',
+                type: 'GET',
+                data: { orderId: orderId },
+                success: function (response) {
+                    $(".modal-content").html(response);
+                    $("#exampleModalCenter").modal().toggle();
+                },
+                error: function () {
+                    toastr.error('Something went wrong');
+                }
+            });
+        });
 
     $(document).on('click', '#addSmryBtn', function () {
         var formdata = new FormData();
@@ -189,23 +302,23 @@
         });
     });
 
-        $(document).on('click', '#ordrFllwUpDiv', function (event) {
-        debugger
-        var orderId = $(this).val();
-        $.ajax({
-            url: "/admin/followup/closeorder",
-            type: "get",
-            data: { 'orderId': orderId },
-            success: function (data) {
-                if (result == true)
-                    toastr.success("This order has been closed!")
-                event.target.parentElement.previousElementSibling.firstElementChild.classList.remove("label-danger");
-                event.target.parentElement.previousElementSibling.firstElementChild.classList.add("label-success");
-            },
-            error: function () {
-            }
-        });
-    });
+    //    $(document).on('click', '#ordrFllwUpDiv', function (event) {
+    //    debugger
+    //    var orderId = $(this).val();
+    //    $.ajax({
+    //        url: "/admin/followup/closeorder",
+    //        type: "get",
+    //        data: { 'orderId': orderId },
+    //        success: function (data) {
+    //            if (result == true)
+    //                toastr.success("This order has been closed!")
+    //            event.target.parentElement.previousElementSibling.firstElementChild.classList.remove("label-danger");
+    //            event.target.parentElement.previousElementSibling.firstElementChild.classList.add("label-success");
+    //        },
+    //        error: function () {
+    //        }
+    //    });
+    //});
 
     $(document).on('click', '.ClsOrdr', function (event) {
         debugger
@@ -307,6 +420,7 @@
             },
             success: function (result) {
                 $("#ordrPrcdArea").html(result);
+                $(".tryMultiselect").chosen();
             }
         });
     });

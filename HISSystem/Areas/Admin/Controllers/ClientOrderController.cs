@@ -74,7 +74,13 @@ namespace GeneticSystem.Areas.Admin.Controllers
             ViewBag.Doctors = db.UserService.GetByRole(3).Select(x => new { ID = x.ID, Name = x.EnFirstName + " " + x.EnThirdName });
             ViewBag.Clients = db.UserService.GetPatients().Select(x => new { ID = x.ID, Name = x.EnFirstName + " " + x.EnThirdName });
             ViewBag.Templates = db.DynamicTemplateService.GetAllTemplates().Select(x => new { x.ID, x.TemplateType.Name }).DistinctBy(x => x.Name);
-            ViewBag.TestTypes = db.LookupService.GetLookUpByTypeName("TestTempType");
+
+            ViewBag.TestTypes = db.TestTempService.GetTestTemps().Select(x => new SelectListItem
+            {
+                Text = (x.TestTempType?.Name + ">>" + x.SubTestTempType?.Name),
+                Value = x.ID.ToString()
+            }).ToList();
+
             ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
             ViewBag.FollowUp = db.LookupService.GetLookUpByTypeName("FollowUpType");
 
@@ -90,15 +96,28 @@ namespace GeneticSystem.Areas.Admin.Controllers
                 if (clientOrder.ClientOrder.FollowUpArray != null)
                     clientOrder.ClientOrder.FollowUp = string.Join(',', clientOrder.ClientOrder.FollowUpArray);
 
-                if (clientOrder.ClientOrder.TestTypeArray != null)
-                    clientOrder.ClientOrder.TestType = string.Join(',', clientOrder.ClientOrder.TestTypeArray);
-
                 for (int i = 0; i < clientOrder.ClientOrderData.Count(); i++)
                 {
                     if (clientOrder.ClientOrderData[i].Genes != null)
                         clientOrder.ClientOrderData[i].GeneID = string.Join(',', clientOrder.ClientOrderData[i].Genes);
                 }
+
                 ClientOrder order = clientOrder.ClientOrder;
+                order.ClientOrderTests = new List<ClientOrderTest>();
+
+                if (clientOrder.ClientOrder.TestTypeArray != null)
+                {
+                    for (int i = 0; i < clientOrder.ClientOrder.TestTypeArray.Count(); i++)
+                    {
+                        ClientOrderTest orderTest = new ClientOrderTest
+                        {
+                            TestTemplateID = Convert.ToInt32(clientOrder.ClientOrder.TestTypeArray[i]),
+                            Done = false
+                        };
+                        order.ClientOrderTests.Add(orderTest);
+                    }
+                }
+
                 order.ClientOrderData = clientOrder.ClientOrderData;
                 order.OrderNo = db.ClientOrderService.GetMaxOrderNo();
                 db.ClientOrderService.AddClientOrder(order);
@@ -112,7 +131,6 @@ namespace GeneticSystem.Areas.Admin.Controllers
                 var clientOrderList = db.ClientOrderService.GetClientOrderList();
                 var clientOrders = new PagedData<ClientOrder>();
                 clientOrders.Data = (clientOrderList).Take(PageSize);
-                //clientOrders.Data = clientOrderList;
                 clientOrders.NumberOfPages = Convert.ToInt32(Math.Ceiling((double)clientOrderList.Count() / PageSize));
                 return PartialView("_Index", clientOrders);
             }
@@ -131,7 +149,11 @@ namespace GeneticSystem.Areas.Admin.Controllers
             ClientOrder clientOrder = db.ClientOrderService.GetClientOrderByID(orderId);
             viewModel.ClientOrder = clientOrder;
             ViewBag.FollowUp = db.LookupService.GetLookUpByTypeName("FollowUpType");
-            ViewBag.TestTypes = db.LookupService.GetLookUpByTypeName("TestTempType");
+            ViewBag.TestTypes = db.TestTempService.GetTestTemps().Select(x => new SelectListItem
+            {
+                Text = (x.TestTempType?.Name + ">>" + x.SubTestTempType?.Name),
+                Value = x.ID.ToString()
+            }).ToList();
             ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
             ViewBag.FollowUp = db.LookupService.GetLookUpByTypeName("FollowUpType");
             ViewBag.Element = db.LookupService.GetLookUpByTypeName("Element");
@@ -168,10 +190,23 @@ namespace GeneticSystem.Areas.Admin.Controllers
             if (clientOrder.ClientOrder.FollowUpArray != null)
                 clientOrder.ClientOrder.FollowUp = string.Join(',', clientOrder.ClientOrder.FollowUpArray);
 
-            if (clientOrder.ClientOrder.TestTypeArray != null)
-                clientOrder.ClientOrder.TestType = string.Join(',', clientOrder.ClientOrder.TestTypeArray);
-
             ClientOrder order = clientOrder.ClientOrder;
+
+            order.ClientOrderTests = new List<ClientOrderTest>();
+
+            if (clientOrder.ClientOrder.TestTypeArray != null)
+            {
+                for (int i = 0; i < clientOrder.ClientOrder.TestTypeArray.Count(); i++)
+                {
+                    ClientOrderTest orderTest = new ClientOrderTest
+                    {
+                        TestTemplateID = Convert.ToInt32(clientOrder.ClientOrder.TestTypeArray[i]),
+                        ClientOrderID = order.ID,
+                        Done = false
+                    };
+                    order.ClientOrderTests.Add(orderTest);
+                }
+            }
 
             if (clientOrder.ClientOrderData != null)
             {
@@ -191,6 +226,8 @@ namespace GeneticSystem.Areas.Admin.Controllers
                 db.ClientOrderService.RemoveClientOrderDataList(previousData.ToList());
             }
             
+            db.ClientOrderService.RemoveClientOrderTestByOrderID(order.ID);
+
 
             db.ClientOrderService.UpdateClientOrder(order);
 
@@ -216,7 +253,11 @@ namespace GeneticSystem.Areas.Admin.Controllers
                 ViewBag.Doctors = db.UserService.GetByRole(3).Select(x => new { ID = x.ID, Name = x.EnFirstName + " " + x.EnThirdName });
                 ViewBag.Clients = db.UserService.GetPatients().Select(x => new { ID = x.ID, Name = x.EnFirstName + " " + x.EnThirdName });
                 ViewBag.Templates = db.DynamicTemplateService.GetAllTemplates().Select(x => new { x.ID, x.TemplateType.Name }).DistinctBy(x => x.Name);
-                ViewBag.TestTypes = db.LookupService.GetLookUpByTypeName("TestTempType");
+                ViewBag.TestTypes = db.TestTempService.GetTestTemps().Select(x => new SelectListItem
+                {
+                    Text = (x.TestTempType?.Name + ">>" + x.SubTestTempType?.Name),
+                    Value = x.ID.ToString()
+                }).ToList();
                 ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
                 ViewBag.FollowUp = db.LookupService.GetLookUpByTypeName("FollowUpType");
                 ViewBag.Element = db.LookupService.GetLookUpByTypeName("Element");

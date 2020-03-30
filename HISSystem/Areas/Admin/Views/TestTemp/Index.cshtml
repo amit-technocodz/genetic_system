@@ -4,6 +4,11 @@
     Layout = "~/Views/Shared/_Admin.cshtml";
 }
 <style>
+.ui-sortable-handle {
+    -ms-touch-action: none;
+    touch-action: none;
+    cursor: pointer;
+}
     .alert {
         padding: 10px;
         color: white;
@@ -122,7 +127,6 @@
     </div>
 </div>
 @section scripts{
-    @*<script src="https://cdn.jsdelivr.net/npm/chosen-js@1.8.7/chosen.jquery.js" integrity="sha256-TDtzz+WOGufaQuQzqpEnnxdJQW5xrU+pzjznwBtaWs4=" crossorigin="anonymous"></script>*@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.js" integrity="sha256-TDtzz+WOGufaQuQzqpEnnxdJQW5xrU+pzjznwBtaWs4=" crossorigin="anonymous"></script>
     <script>
         var getGlobalHTML;
@@ -148,29 +152,61 @@
 		//});
   //      }
 
+        //$('input.updtchk').on('change', function () {
+        //    $('input.updtchk').not(this).prop('checked', false);
+        //});
+
+        $(document).on('change', 'input.updtchk', function () {
+            if ($(this).prop('checked') == true) {
+                $('#updtTmpDtBtn').attr('data-info', $(this).attr('data-info'));
+                $('#updtTmpDtBtn').attr('data-val', $(this).attr('data-val'));
+            } else {
+                $('#updtTmpDtBtn').attr('data-info', "");
+                $('#updtTmpDtBtn').attr('data-val', "");
+            }
+            $('input.updtchk').not(this).prop('checked', false);
+        });
+
+        $(document).on('click', '#updtTmpDtBtn', function () {
+            var rowNo = $(this).attr('data-info');
+            var tempID = $(this).attr('data-val');
+
+            if (rowNo == null || tempID == null || rowNo == "" || tempID == "") {
+                toastr.error('You must select a row!')
+                return false;
+            }
+
+            $.ajax({
+                type: "GET",
+                url: '/admin/testtemp/updatetempdata',
+                data: { rowNo: rowNo, tempId: tempID },
+                success: function (data) {
+                    $("#DataLookup").html(data);
+                    $('.tryMultiselect').chosen();
+                },
+                error: function () {
+                    alert("Content load failed.");
+                }
+            });
+        });
+
         function GetTemplateDetail(current, ID) {
-debugger
-            //alert(ID);
-            //false;
-            //var fields = type.split('>>');
-            //var temptype = fields[0];
-            //var subtemptype = fields[1];
-		$(".list-group-item").removeClass('active')
-		$(current).addClass('active')
-		$.ajax({
-			url: '/admin/testtemp/getdynamictemplate?tempID=' + ID,
-			contentType: 'application/json; charse=utf-8',
-			type: 'get',
-			success: function (result) {
-                debugger
-                $("#DataLookup").html(result);
-                $('.tryMultiselect').chosen();
-			},
-			error: function (xhr, status) {
-				alert(status)
-			}
-		});
-	}
+            $(".list-group-item").removeClass('active')
+            $(current).addClass('active')
+            $.ajax({
+                url: '/admin/testtemp/getdynamictemplate?tempID=' + ID,
+                contentType: 'application/json; charse=utf-8',
+                type: 'get',
+                success: function (result) {
+                    debugger
+                    $("#DataLookup").html(result);
+                    $('.tryMultiselect').chosen();
+                },
+                error: function (xhr, status) {
+                    alert(status)
+                }
+            });
+        }
 
 
         $(document).on("click", ".addMasterTemp", function(){
@@ -184,6 +220,7 @@ debugger
                     success: function (data) {
                         $("#DataLookup").empty();
                         $("#DataLookup").append(data);
+                        $('tfoot').sortable();
                         document.getElementById("TestTemplate_TestTemplateType").addEventListener("change", function () {
                         TempValidation();
                     });
@@ -201,6 +238,7 @@ debugger
             var drpdwntype = event.target.parentElement.parentElement.getElementsByClassName("drptype")[0];
             if (event.target.value == 2) {
                 drpdwntype.style.display = "block";
+                drpdwntype.disabled = false;
                 }
             else {
                 drpdwntype.value = '';
@@ -239,6 +277,8 @@ debugger
 
         }
 
+        
+
         function disableTemplateData(event) {
              var targetElement = event.target.parentElement;
             var id = targetElement.previousElementSibling.getAttribute("data-info");
@@ -260,16 +300,12 @@ debugger
             disableTemplateData(event);
             var formRow = targetElement.parentElement;
             formdata.append("TestTemp.ID", targetElement.previousElementSibling.getAttribute("data-info"));
-            //formdata.append("TestTemplateData.TestTemplateID", formRow.getAttribute("data-info"));
             $(formRow).each(function (a, b) {
                 var fields = $(this).find(":input");
                 for (i = 0; i < fields.length; i++) {
                     formdata.append(fields[i].name, fields[i].value);
                 }
             });
-            for (var pair of formdata.entries()) {
-                console.log(pair[0] + ', ' + pair[1]);
-            }
             $.ajax({
                 type: "POST",
                 url: '/admin/testtemp/updatetemplatedata',
@@ -302,7 +338,6 @@ debugger
             disableTemplateData(event);
             var formRow = targetElement.parentElement;
             formdata.append("TestTemp.ID", targetElement.previousElementSibling.getAttribute("data-info"));
-            //formdata.append("TestTemplateData.TestTemplateID", formRow.getAttribute("data-info"));
             $(formRow).each(function (a, b) {
                 var fields = $(this).find(":input");
                 for (i = 0; i < fields.length; i++) {
@@ -640,11 +675,12 @@ debugger
         var maxFields = 5; //Maximum number of formRows allowed (global variable)
 
         function AddField() {
-            debugger
             var $tableBody = $('#relative-table').find("tfoot");
             $trLast = $tableBody.find("tr:last");
             $trNew = $trLast.clone();
             $trNew.find(':text').val('');
+            $trNew.find('.ColTypDrp').prop('disabled', false);
+            //$trNew.find('.hdnid').val('0');
             $trLast.after($trNew);
         }
         function RemoveField(event) {
@@ -667,6 +703,7 @@ debugger
 				debugger
                 $("#DataLookup").empty();
                 $("#DataLookup").append(result);
+                $('tfoot').sortable();
 			},
 			error: function (xhr, status) {
 				alert(status)
@@ -676,23 +713,32 @@ debugger
 
 
         function updateTemplateCol() {
-            var values = $("#TestTemplate_TestTemplateType option:selected").text() + ">>" + $("#TestTemplate_SubTestTemplateTypeID option:selected").text();
             var formdata = new FormData();
-            formdata.append('TestTemplate.ID', $('#Template_ID').val());
-            formdata.append('TestTemplate.TestTemplateTypeID', $('#Template_TemplateTypeID').val());
-            formdata.append('TestTemplate.SubTestTemplateTypeID', $('#Template_SubTemplateTypeID').val());
+            var values = $("#TestTemp_TestTempTypeID option:selected").text() + ">>" + $("#TestTemp_SubTestTempTypeID option:selected").text();
 
-              $('#relative-table tfoot tr').each(function (a, b) {
-                  var fields = $(this).find(":input");
-                  debugger
-                  formdata.append("TestTemplateColumns[" + a + "].TestTemplateFieldID", fields.eq(0).val());
-                  formdata.append("TestTemplateColumns[" + a + "].DisplayName", fields.eq(1).val());
-                  formdata.append("TestTemplateColumns["+ a +"].TestTemplateID", $('#UpdtTemplateID').val());
-              });
+            formdata.append('TestTemp.TestTempTypeID', $('#TestTemp_TestTempTypeID').val());
+            formdata.append('TestTemp.SubTestTempTypeID', $('#TestTemp_SubTestTempTypeID').val());
+            formdata.append('TestTemp.IsActive', true);
+            formdata.append('TestTemp.ID', $('#hdnTmpId').val());
+
+            $('#relative-table tfoot tr').each(function (a, b) {
+                var fields = $(this).find(":input");
+                var rowNo = (a + 1);
+                formdata.append("TestTemp.TestTempCols[" + a + "].TestTempID", $('#hdnTmpId').val());
+                formdata.append("TestTemp.TestTempCols[" + a + "].ID", fields.eq(0).val());
+                formdata.append("TestTemp.TestTempCols[" + a + "].TempColTypeID", fields.eq(1).val());
+                formdata.append("TestTemp.TestTempCols[" + a + "].TestColName", fields.eq(2).val());
+                formdata.append("TestTemp.TestTempCols[" + a + "].DataSourceID", fields.eq(3).val());
+                formdata.append("TestTemp.TestTempCols[" + a + "].PositionNo", rowNo);
+            });
+
+            for (var pair of formdata.entries()) {
+                console.log(pair[0] + ', ' + pair[1]);
+            }
 
             $.ajax({
                 type: "POST",
-                url: '/admin/testdynamictemplate/UpdateTemplate',
+                url: '/admin/testtemp/UpdateTemplate',
                 data: formdata,
                 dataType: "text",
                 processData: false,
@@ -706,7 +752,7 @@ debugger
                     //data == true ? toastr.success('record updated') : toastr.error('Something went wrong');
                 },
                 error: function (xhr, status) {
-                    GetTemplateDetailFix(values);
+                    //GetTemplateDetailFix(values);
                 }
             });
         }

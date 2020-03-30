@@ -17,5 +17,7 @@ namespace GeneticSystem.Areas.Admin.Models.FollowUp
         public FollowUpByDoc FollowUpByDoc { get; set; }
         public List<FollowUpByDocResult> FollowUpByDocResultList { get;set;}
         public List<FollowUpByDocConv> FollowUpByDocConvList { get; set; }
+        public List<SelectListItem> orderTest { get; set; }
+        public List<List<FollowUpTestTempData>[]> followUpTestTempDataList { get; set; }
     }
 }

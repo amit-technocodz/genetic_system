@@ -8,76 +8,67 @@
                 &nbsp;Add Template Data
             </button>
             &nbsp;
-            @*<h3 id="lName"></h3>*@
-            <button type="button" class="btn btn-xs edit-post btn-outline-primary updateTemplate" onclick="TempID(@Model.TestTemp.ID)">
+            <button type="button" data-info="" data-val="" id="updtTmpDtBtn" class="btn btn-xs edit-post btn-outline-primary updateTemplateData" @*onclick="TempID(@Model.TestTemp.ID)"*@>
+                <i class="fa fa-edit" aria-hidden="true"></i>
+                &nbsp;Edit Template Data
+            </button>
+            &nbsp;
+            <button type="button" class="btn btn-xs edit-post btn-success updateTemplate" onclick="TempID(@Model.TestTemp.ID)">
                 <i class="fa fa-edit" aria-hidden="true"></i>
                 &nbsp;Edit Template Columns
             </button>
         </div>
-        &nbsp;
         <div class="col-md-12">
             <table id="userTbl" class="table table-hover table-bordered table-striped">
                 <thead>
                     <tr class="">
+                        <th>
+                            Select
+                        </th>
                         @foreach (var item in Model.TestTemp.TestTempCols)
                         {
                             <th> @item.TestColName </th>
                         }
-
-                        @*<th class="numeric">Action</th>*@
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int i = 0; i < Model.TestTempDataList.Count() / Model.TestTemp.TestTempCols.Count(); i++)
+                    @for (int i = 0; i < Model.expData.Count(); i++)
                     {
                         <tr>
-                            @foreach (var item in Model.TestTempDataList.Select((value, index) => new { index, value }))
+                            <td>
+                                <div class="form-check">
+                                    <label>
+                                        <input type="checkbox" value="false" class="updtchk" data-info="@Model.expData[i][0].RowNo" data-val="@Model.expData[i][0].TestTempID"><span class="label-text"></span>
+                                    </label>
+                                </div>
+                            </td>
+
+                            @for (int j = 0; j < Model.expData[i].Count(); j++)
                             {
-                                @if ((item.index >= (i * Model.TestTempDataList.Select(x => x.TestTempCol).Distinct().Count())) && (item.index < ((i + 1) * Model.TestTempDataList.Select(x => x.TestTempCol).Distinct().Count())))
-                                {
-                                    <td>
-                                        @foreach (var col in Model.TestTempDataList.Select(x => x.TestTempCol).Distinct().Select((value, cindex) => new { cindex, value}))
-                                        {
+                                <td>
+                                    @if (Model.expData[i][j].TestTempCol.TempColType.ColName == "Checkbox")
+                                    {
 
-                                            @if (item.value.TestTempColID == col.value.ID && col.value.TempColType.ColName == "Checkbox")
-                                            {
-                                                <input name="TestTempDataList[@col.cindex].ID" value="@item.value.ID" hidden />
-                                                <input name="TestTempDataList[@col.cindex].TestTempID" value="@item.value.TestTempID" hidden />
-                                                <input name="TestTempDataList[@col.cindex].TestTempColID" value="@item.value.TestTempColID" hidden />
-                                                <input name="TestTempDataList[@col.cindex].IsActive" value="true" hidden />
-                                                <div class="form-check">
-                                                    <label>
-                                                        <input type="checkbox" name="TestTempDataList[@col.cindex].BoolValue" value="@Model.TestTempDataList[item.index].BoolValue" class="itemDatadsbl" disabled @(Model.TestTempDataList[item.index].BoolValue == true ? "checked" : "")><span class="label-text"></span>
-                                                    </label>
-                                                </div>
+                                        <div class="form-check">
+                                            <label>
+                                                <input type="checkbox" value="@Model.expData[i][j].BoolValue" class="itemDatadsbl" disabled @(Model.expData[i][j].BoolValue == true ? "checked" : "")><span class="label-text"></span>
+                                            </label>
+                                        </div>
 
-                                            }
-                                            else if (item.value.TestTempColID == col.value.ID && col.value.TempColType.ColName == "Textbox")
-                                            {
-                                                <input name="TestTempDataList[@col.cindex].TestTempID" value="@item.value.TestTempID" hidden />
-                                                <input name="TestTempDataList[@col.cindex].TestTempColID" value="@item.value.TestTempColID" hidden />
-                                                <input name="TestTempDataList[@col.cindex].IsActive" value="true" hidden />
-                                                <input name="TestTempDataList[@col.cindex].ID" value="@item.value.ID" hidden />
-                                                <input type="text" name="TestTempDataList[@col.cindex].StringValue" class="form-control itemDatadsbl" value="@Model.TestTempDataList[item.index].StringValue" disabled>
-                                            }
-                                            else if (item.value.TestTempColID == col.value.ID && col.value.TempColType.ColName == "Dropdown")
-                                            {
-                                                <input name="TestTempDataList[@col.cindex].TestTempID" value="@item.value.TestTempID" hidden />
-                                                <input name="TestTempDataList[@col.cindex].ID" value="@item.value.ID" hidden />
-                                                <input name="TestTempDataList[@col.cindex].TestTempColID" value="@item.value.TestTempColID" hidden />
-                                                <input name="TestTempDataList[@col.cindex].IsActive" value="true" hidden />
-                                                @Html.DropDownList("TestTempDataList[" + @col.cindex + "].StringValue", new SelectList(ViewBag.Element, "ID", "Name", @Model.TestTempDataList[item.index].StringValue), "Select Element Type", new { @class = "form-control dropdown itemDatadsbl", @disabled = true })
-                                            }
-                                        }
-                                    </td>
-                                }
+                                    }
+                                    else if (Model.expData[i][j].TestTempCol.TempColType.ColName == "Textbox")
+                                    {
+                                        <label> @Model.expData[i][j].StringValue </label>
+                                    }
+                                    else if (Model.expData[i][j].TestTempCol.TempColType.ColName == "Dropdown")
+                                    {
+                                        <label>
+                                            @Model.expData[i][j].multiSelectString
+                                        </label>
+                                    }
+                                </td>
                             }
-                            @*<td>
-                                <a href="javascript:void(0);" class="fa fa fa-pencil mrgn-l-xs fa-1x" onclick="editTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Trach"></a>
-                                <a href="javascript:void(0);" class="fa fa-trash mrgn-l-xs fa-1x" onclick="deleteTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Trach"></a>
-                                <a href="javascript:void(0);" class="fa fa-floppy-o mrgn-l-xs fa-1x" onclick="updateTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Trach" hidden></a>
-                                <a href="javascript:void(0);" class="fa fa-times mrgn-l-xs fa-1x" onclick="cancelTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Trach" hidden></a>
-                            </td>*@
+
                         </tr>
                     }
                 </tbody>

@@ -51,7 +51,16 @@ namespace Repository.Classes
             entities.Update(entity);
             context.SaveChanges();
         }
-
+        public void RemoveList(List<T> entityList)
+        {
+            if (entityList == null)
+                throw new ArgumentNullException("entityList");
+            else
+            {
+                entities.RemoveRange(entityList);
+                context.SaveChanges();
+            }
+        }
         public void InsertList(List<T> entityList)
         {
             if (entityList == null)

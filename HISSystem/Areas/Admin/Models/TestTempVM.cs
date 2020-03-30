@@ -13,5 +13,7 @@ namespace GeneticSystem.Areas.Admin.Models
         public IEnumerable<DropDownVM> DropDown { get; set; }
         public List<TestTempData> TestTempDataList { get; set; }
         public List<TestTempData>[] expData { get; set; }
+        //row no for adding/editing template data
+        public int rowNo { get; set; }
     }
 }

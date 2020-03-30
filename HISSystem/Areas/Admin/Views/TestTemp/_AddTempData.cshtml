@@ -33,6 +33,7 @@
                             <td>
                                 <input name="TestTempDataList[@item.i].TestTempID" value="@Model.TestTemp.ID" hidden>
                                 <input name="TestTempDataList[@item.i].TestTempColID" value="@item.value.ID" hidden>
+                                <input name="TestTempDataList[@item.i].RowNo" value="@Model.rowNo" hidden/>
 
                                 @if (item.value.TempColType.ColName == "Checkbox")
                                 {

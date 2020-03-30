@@ -129,8 +129,8 @@
                                         <div class="row">
                                             <div class="col-md-8">
                                                 <div class="form-group">
-                                                    <h4>@*@ViewBag.TemplateName*@ TestName </h4>
-                                                    @Html.ListBox("clientOrder.ClientOrder.TestTypeArray", new MultiSelectList(ViewBag.TestTypes, "ID", "Name", Model?.ClientOrder?.TestTypeArray), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
+                                                    <h4>@*@ViewBag.TemplateName*@ Test Name </h4>
+                                                    @Html.ListBox("clientOrder.ClientOrder.TestTypeArray", new MultiSelectList(ViewBag.TestTypes, "Value", "Text", Model?.ClientOrder?.TestTypeArray), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
                                                 </div>
                                             </div>
                                         </div>

@@ -33,6 +33,11 @@ namespace Service.Services
 
             return context.Lookup.Where(x => x.Type == Type).AsNoTracking();
         }
+
+        public string GetLookUpNameByID(int id)
+        {
+            return db.Lookup.Get().Where(x => x.ID == id).FirstOrDefault().Name;
+        }
         public Lookup GetLookup(long id)
         {
             return db.Lookup.Get().Where(x => x.ID == id).FirstOrDefault();

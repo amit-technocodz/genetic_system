@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Data.Helpers;
 using Data.Models;
 using GeneticSystem.Areas.Admin.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -24,7 +26,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
             this._appEnvironment = _appEnvironment;
         }
 
-        public  IActionResult Index()
+        public IActionResult Index()
         {
             TestTempVM testTemp = new TestTempVM();
             testTemp.DropDown = db.TestTempService.GetTestTemps().Select(x => new DropDownVM { ID = x.ID, Name = x.TestTempType.Name + ">>" + x.SubTestTempType.Name });
@@ -72,7 +74,38 @@ namespace GeneticSystem.Areas.Admin.Controllers
             {
                 TestTemp = db.TestTempService.GetTemplateById(tempID)
             };
+
+            int tmpClCnt = 0;
+
             testTemp.TestTempDataList = db.TestTempService.GetTempDataByTempId(testTemp.TestTemp.ID).ToList();
+
+            if(testTemp.TestTempDataList != null && testTemp.TestTempDataList.Count() > 0)
+            {
+                tmpClCnt = testTemp.TestTempDataList.Max(x => x.RowNo);
+            }
+            
+
+            testTemp.expData = new List<TestTempData>[tmpClCnt];
+
+            if(tmpClCnt > 0) { 
+            for (int i = 0; i < tmpClCnt; i++)
+            {
+                testTemp.expData[i] = testTemp.TestTempDataList.Where(x => x.RowNo == (i + 1)).ToList();
+
+                for (int j = 0; j < testTemp.expData[i].Count(); j++)
+                {
+                    if (testTemp.expData[i][j].multiSelect != null)
+                    {
+                        testTemp.expData[i][j].multiSelectString = new StringBuilder();
+
+                        for (int k = 0; k < testTemp.expData[i][j].multiSelect.Count(); k++)
+                        {
+                            testTemp.expData[i][j].multiSelectString.Append(((db.LookupService.GetLookUpNameByID(Convert.ToInt32(Convert.ToInt32(testTemp.expData[i][j].multiSelect[k])))) + " "));
+                        }
+                    }
+                }
+            }
+            }
 
             ViewBag.Result = new List<SelectListItem>
             {
@@ -85,18 +118,6 @@ namespace GeneticSystem.Areas.Admin.Controllers
             ViewBag.ConsumptionType = db.LookupService.GetLookUpByTypeName("ConsumptionType");
             ViewBag.FeederType = db.LookupService.GetLookUpByTypeName("FeederType");
 
-            var listwithIndex = testTemp.TestTempDataList.Select((value, index) => new { index, value }).ToList();
-
-            var TestTempDataCols = testTemp.TestTempDataList.Select(x => x.TestTempColID).Distinct().ToList();
-            int tempColCount = TestTempDataCols.Count();
-            testTemp.expData = new List<TestTempData>[testTemp.TestTempDataList.Count() / tempColCount];
-            for (int i = 0; i < testTemp.TestTempDataList.Count()/ tempColCount; i++){
-                
-                testTemp.expData[i] = listwithIndex.Where(x => (x.index >= (i * tempColCount) && x.index < ((i + 1) * tempColCount))).Select(x => x.value).ToList();
-            }
-
-            Console.WriteLine(testTemp.expData);
-
             return PartialView("_GetTempDetail", testTemp);
         }
 
@@ -106,7 +127,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
             TestTempVM testTemp = new TestTempVM();
 
             testTemp.TestTemp = db.TestTempService.GetTemplateById(templateId);
-
+            testTemp.rowNo = db.TestTempService.GetRowID(testTemp.TestTemp.ID);
             ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
             ViewBag.Element = db.LookupService.GetLookUpByTypeName("Element");
             ViewBag.ConsumptionType = db.LookupService.GetLookUpByTypeName("ConsumptionType");
@@ -125,23 +146,36 @@ namespace GeneticSystem.Areas.Admin.Controllers
         [HttpPost]
         public bool AddTemplateDetail(TestTempVM testTempVM)
         {
-            try
-            {
-                List<TestTempData> templateData = testTempVM.TestTempDataList;
+            var newData = testTempVM.TestTempDataList.Where(x => x.ID == 0);
 
-                foreach(var item in templateData)
-                {
-                    if(item.multiSelect != null)
-                        item.StringValue = string.Join(',', item.multiSelect);
-                }
-                bool result = db.TestTempService.SaveTemplDataList(templateData);
-                return result;
-            }
-            catch (Exception ex)
+            if(newData != null)
             {
-                Console.WriteLine(ex);
-                return false;
+                var mltiList = newData.Where(x => x.multiSelect != null);
+                if(mltiList != null)
+                {
+                    var mltiSl = mltiList.ToList();
+                    for (int i = 0; i < mltiSl.Count(); i++)
+                        mltiSl[i].StringValue = string.Join(',', mltiSl[i].multiSelect);
+                }
+                    
+                db.TestTempService.AddTestTempDataList(newData.ToList());
             }
+
+            var olderData = testTempVM.TestTempDataList.Where(x => x.ID != 0);
+
+            if(olderData != null)
+            {
+                var mltiList = olderData.Where(x => x.multiSelect != null);
+                if (mltiList != null)
+                {
+                    var mltiSl = mltiList.ToList();
+                    for (int i = 0; i < mltiSl.Count(); i++)
+                        mltiSl[i].StringValue = string.Join(',', mltiSl[i].multiSelect);
+                }
+                db.TestTempService.UpdateTemplateDataList(olderData.ToList());
+            }
+
+            return false;
         }
 
         [HttpPost]
@@ -198,6 +232,95 @@ namespace GeneticSystem.Areas.Admin.Controllers
             testTempVM.TestTemp = db.TestTempService.GetTemplateById(ID);
 
             return PartialView("_UpdateTemp", testTempVM);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateTemplate(TestTempVM testTempVM)
+        {
+            var newCol = testTempVM.TestTemp.TestTempCols.Where(x => x.ID == 0);
+            var orgCol = db.TestTempService.GetTestTempColsByTempId(testTempVM.TestTemp.ID);
+            var deletedList = orgCol.Except(testTempVM.TestTemp.TestTempCols.Where(x => x.ID != 0), new TempColEqComparer()).ToList();
+            var prevCol = testTempVM.TestTemp.TestTempCols.Where(x => x.ID != 0).ToList();
+
+
+            if (deletedList != null)
+            {
+                 bool result = await DeleteTestTempCols(deletedList);
+            }
+
+            if (prevCol != null)
+            {
+                db.TestTempService.UpdateTemplateCol(prevCol);
+            }
+            if (newCol != null)
+            {
+                db.TestTempService.AddTestTempCol(newCol.ToList());
+            }
+
+            return null;
+        }
+
+        public async Task<bool> DeleteTestTempCols(List<TestTempCol> testTempCols)
+        {
+            if (testTempCols != null)
+            {
+                for (int i = 0; i < testTempCols.Count(); i++)
+                {
+                    try { 
+                    await db.TestTempService.DeleteTempDataByColID(testTempCols[i].ID);
+                    await db.TestTempService.DeleteTempColByID(testTempCols[i].ID);
+                    }
+                    catch(Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+            return true;
+        }
+        [HttpGet]
+        public IActionResult UpdateTempData(int rowNo, int tempId)
+        {
+            if (rowNo == 0 || tempId == 0)
+                return null;
+
+
+            TestTempVM testTempVM = new TestTempVM();
+
+            testTempVM.TestTemp = db.TestTempService.GetTemplateById(tempId);
+            testTempVM.TestTempCol = db.TestTempService.GetTestTempColsByTempId(tempId);
+            testTempVM.TestTempDataList = db.TestTempService.GetTestTempDataByRowNoAndTempID(rowNo, tempId);
+
+            ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
+            ViewBag.Element = db.LookupService.GetLookUpByTypeName("Element");
+            ViewBag.ConsumptionType = db.LookupService.GetLookUpByTypeName("ConsumptionType");
+            ViewBag.FeederType = db.LookupService.GetLookUpByTypeName("FeederType");
+
+            testTempVM.expData = new List<TestTempData>[1];
+            List<TestTempData> tempList = new List<TestTempData>();
+
+            if(testTempVM.TestTempCol != null)
+            {
+                for(int i = 0; i < testTempVM.TestTempCol.Count(); i++)
+                {
+                    TestTempData tempData = testTempVM.TestTempDataList.Where(x => x.TestTempColID == testTempVM.TestTempCol[i].ID && x.RowNo == rowNo).FirstOrDefault();
+
+                    if(tempData == null)
+                    {
+                        tempData = new TestTempData();
+                        tempData.TestTempColID = testTempVM.TestTempCol[i].ID;
+                        tempData.TestTempCol = testTempVM.TestTempCol[i];
+                        tempData.TestTempID = tempId;
+                        tempData.RowNo = rowNo;
+                        tempData.ID = 0;
+                    }
+
+                    tempList.Add(tempData);
+                }
+
+                testTempVM.expData[0] = tempList;
+            }
+
+            return PartialView("_UpdateTempData", testTempVM);
         }
     }
 }

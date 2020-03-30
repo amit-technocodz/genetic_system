@@ -92,13 +92,16 @@ namespace Service.Services
         {
             try
             {
-                var result = db.ClientOrder.Get().Where(x => x.ID == id).Include(x => x.ClientOrderData/*.Where(y => y.IsActive == true)*/).Include(x => x.Template).FirstOrDefault();
+                var result = db.ClientOrder.Get().Where(x => x.ID == id).Include(x => x.ClientOrderData/*.Where(y => y.IsActive == true)*/).Include(x => x.Template).Include(x => x.ClientOrderTests).
+                    ThenInclude(y => y.TestTemplate).ThenInclude(z => z.TestTempType).Include(x => x.ClientOrderTests).ThenInclude(y => y.TestTemplate).ThenInclude(z => z.SubTestTempType).FirstOrDefault();
 
                 if (result.FollowUp != null)
                     result.FollowUpArray = result.FollowUp.Split(",");
 
-                if (result.TestType != null)
-                    result.TestTypeArray = result.TestType.Split(",");
+                if (result.ClientOrderTests != null)
+                {
+                    result.TestTypeArray = result.ClientOrderTests.Select(x => x.TestTemplateID.ToString()).ToArray();
+                }
 
                 return result;
             }
@@ -128,18 +131,20 @@ namespace Service.Services
 
         public IEnumerable<ClientOrder> GetClientOrdersByUserID(int id)
         {
-            var result = db.ClientOrder.Get().Where(x => x.UserID == id).Include(x => x.Doctor).Include(x => x.Template).ThenInclude(x => x.TemplateType).Include(x => x.Status);
+            var result = db.ClientOrder.Get().Where(x => x.UserID == id).Include(x => x.Doctor).Include(x => x.Template).ThenInclude(x => x.TemplateType).Include(x => x.Status).Include(x => x.ClientOrderTests);
 
-            foreach (var item in result.Where(x => x.TestType != null))
+            foreach(var item in result.Where(x => x.ClientOrderTests != null))
             {
                 item.TestArrayStrings = new List<string>();
-                item.TestTypeArray = item.TestType.Split(",");
+                item.TestTypeArray = item.ClientOrderTests.Select(x => Convert.ToString(x.TestTemplateID)).ToArray();
 
-                foreach (var xitem in item.TestTypeArray)
+                foreach(var xitem in item.ClientOrderTests)
                 {
-                    var sitem = db.Lookup.Get().Where(x => x.ID == Convert.ToInt32(xitem)).FirstOrDefault().Name;
+                    var sitem = db.TestTemp.Get().Where(x => x.ID == Convert.ToInt32(xitem.TestTemplateID)).Include(x => x.TestTempType).Include(x => x.SubTestTempType).FirstOrDefault();
 
-                    item.TestArrayStrings.Add((sitem + " "));
+                    string Name = sitem.TestTempType.Name + ">>" + sitem.SubTestTempType.Name; 
+
+                    item.TestArrayStrings.Add((Name + " "));
                 }
             }
 
@@ -285,6 +290,22 @@ namespace Service.Services
             catch (Exception ex)
             {
                 return null;
+            }
+        }
+
+        public bool RemoveClientOrderTestByOrderID(int orderId)
+        {
+            try
+            {
+
+                var result =  db.ClientOrderTest.Get().Where(x => x.ClientOrderID == orderId);
+                if (result != null)
+                    db.ClientOrderTest.RemoveList(result.ToList());
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
 

@@ -21,11 +21,13 @@ namespace Data.Models
         public int UserID { get; set; }
         public int OrderNo { get; set; }
         public int? StatusID { get; set; }
+        public bool FollowUpTestAdded { get; set; }
         public virtual Lookup Status { get; set; }
         public virtual User Doctor { get; set; }
         public virtual User User { get; set; }
         public virtual Template Template { get; set; }
         public virtual List<ClientOrderData> ClientOrderData { get; set; }
+        public virtual List<ClientOrderTest> ClientOrderTests { get; set; }
         [NotMapped]
         public string[] FollowUpArray { get; set; }
         [NotMapped]

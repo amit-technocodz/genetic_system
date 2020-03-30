@@ -95,5 +95,7 @@ namespace Repository.UnitOfWork
         IRepository<FollowUpByDoc> FollowUpByDoc { get; }
         IRepository<FollowUpByDocConv> FollowUpByDocConv { get; }
         IRepository<FollowUpByDocResult> FollowUpByDocResult { get; }
+        IRepository<FollowUpTestTempData> FollowUpTestTempData { get; }
+        IRepository<ClientOrderTest> ClientOrderTest { get; }
     }
 }

@@ -4,7 +4,7 @@
     <div class="prtm-content">
         <div class="row mrgn-b-sm">
             <div class="col-md-4 col-lg-4">
-                <input type="button" name="submit" id="addTemplateBtn" onclick="addTemplate();" value="Save" class="btn btn-xs btn-primary" />
+                <input type="button" name="submit" id="postUpdtTempBtn" onclick="updateTemplateCol();" value="Save" class="btn btn-xs btn-primary" />
                 <input type="button" id="closeModal" name="submit" value="Back" class="btn btn-xs btn-warning" />
             </div>
             <div class="col-md-8 col-lg-8 text-right">
@@ -38,6 +38,7 @@
                             </div>
                             <div class="col-md-12 col-lg-12">
                                 <div id="NearbyFormWrapper">
+                                    <input type="hidden" id="hdnTmpId" value="@Model.TestTemp.ID" />
                                     <table class="table table-hover table-bordered table-striped" id="relative-table">
                                         <thead>
                                             <tr class="">
@@ -52,6 +53,9 @@
                                             @if (Model.TestTemp.TestTempCols.Count() <= 0)
                                             {
                                                 <tr id="formRow1">
+                                                    <td style="display:none;">
+                                                        <input id="TestTemplateColumns[0].ID" value="0" hidden />
+                                                    </td>
                                                     <td>
                                                         @Html.DropDownList("TestTemplateColumns[0].ColumnType", new SelectList(ViewBag.TemplateField, "Value", "Text"), "--Select Column--", new { @class = "form-control dropdown ColTypDrp" })
                                                     </td>
@@ -69,14 +73,15 @@
                                                 @foreach (var item in Model.TestTemp.TestTempCols.Select((value, i) => new { i, value }))
                                                 {
                                                     <tr id="formRow1">
+                                                        <td style="display:none;">
+                                                            <input id="TestTemplateColumns[0].ID" value="@item.value.ID" hidden />
+                                                        </td>
                                                         <td>
-                                                            @Html.DropDownList("TestTemplateColumns[0].ColumnType", new SelectList(ViewBag.TemplateField, "Value", "Text", item.value.TempColTypeID), "--Select Column--", new { @class = "form-control dropdown ColTypDrp" })
+                                                            @Html.DropDownList("TestTemplateColumns[0].ColumnType", new SelectList(ViewBag.TemplateField, "Value", "Text", item.value.TempColTypeID), "--Select Column--", new { @class = "form-control dropdown ColTypDrp", @disabled = true })
                                                         </td>
                                                         <td> @Html.TextBox("TestTemplateColumns[0].DisplayName", item.value.TestColName, new { @class = "form-control", autocomplete = "true" })</td>
                                                         <td>
-                                                            @if(item.value.DataSourceID != null) { 
-                                                            @Html.DropDownList("TestTemplateColumns[0].ColumnName", new SelectList(ViewBag.DropDownType, "ID", "Name", item.value.DataSourceID), "--Select Data Source--", new { @class = "form-control dropdown drptype"})
-                                                                }
+                                                                @Html.DropDownList("TestTemplateColumns[0].ColumnName", new SelectList(ViewBag.DropDownType, "ID", "Name", item.value.DataSourceID), "--Select Data Source--", new { @class = "form-control dropdown drptype", @disabled = true, @style = "display:none;" })
                                                         </td>
                                                         <td class="text-right">
                                                             <a href="javascript:void(0)"><i class="fa fa-trash" aria-hidden="true" onclick="RemoveField(this)"></i></a>
@@ -84,18 +89,6 @@
                                                     </tr>
                                                 }
                                             }
-                                            @*<tr id="formRow1">
-                                                    <td>
-                                                        @Html.DropDownList("TestTemplateColumns[0].ColumnType", new SelectList(ViewBag.TemplateField, "Value", "Text"), "--Select Column--", new { @class = "form-control dropdown ColTypDrp" })
-                                                    </td>
-                                                    <td> @Html.TextBox("TestTemplateColumns[0].DisplayName", null, new { @class = "form-control", autocomplete = "true" })</td>
-                                                    <td>
-                                                        @Html.DropDownList("TestTemplateColumns[0].ColumnName", new SelectList(ViewBag.DropDownType, "ID", "Name"), "--Select Data Source--", new { @class = "form-control dropdown drptype", @style = "display:none;" })
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <a href="javascript:void(0)"><i class="fa fa-trash" aria-hidden="true" onclick="RemoveField(this)"></i></a>
-                                                    </td>
-                                                </tr>*@
                                         </tfoot>
                                     </table>
                                 </div>
@@ -107,6 +100,7 @@
         </div>
     </div>
 </form>
+
 
 
 

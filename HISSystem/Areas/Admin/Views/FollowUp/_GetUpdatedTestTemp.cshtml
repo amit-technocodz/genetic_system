@@ -218,13 +218,16 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-xs btn-warning btn-block AttchOrdrBtn" value="@Model.ClientOrderViewModel.ClientOrder.UserID"><i class="fa fa-paperclip" aria-hidden="true"></i> Add Attachment</button>
+                                    <button type="button" class="btn btn-xs btn-warning btn-block AttchOrdrBtn" value="@Model.ClientOrderViewModel.ClientOrder.UserID"><i class="fa fa-paperclip" aria-hidden="true"></i> Add Attachment</button>   
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
+                                    @*<div>
+                                        @Html.DropDownList("addRsltdrpdwn", new SelectList(ViewBag.PendingTest, "Value", "Text"), new { @class="form-control" })
+                                    </div>*@
                                     <div id="rsltList" class="unseen">
                                         <table id="rsltTbl" class="table table-hover table-bordered table-striped">
                                             <thead>
@@ -259,13 +262,13 @@
         </div>
         <div id="tab-28" class="tab-pane fade in">
             <div id="orderTestDiv" class="row">
-                <button id="svTstDtBtn" class="btn btn-primary">
-                    Save Test Data
-                </button>
+                @*<button id="svTstDtBtn" class="btn btn-primary">
+                    Update Test Data
+                </button>*@
                 <form id="fllwTstForm">
                     <input name="ClientOrderViewModel.ClientOrder.ID" value="@Model.ClientOrderViewModel.ClientOrder.ID" hidden>
                     <div class="tab-content pad-all-sm">
-                        @for (int i = 0; i < Model.ClientOrderViewModel.tempDataListVM.Count(); i++)
+                        @for (int i = 0; i < Model.ClientOrderViewModel.followUpTempDataListVM.Count(); i++)
                         {
                             <div id="tab-(@i)" class="tab-pane fade in active">
                                 <div class="row">
@@ -274,7 +277,7 @@
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
                                                     <a data-toggle="collapse" data-info="Department" href="#two-@i">
-                                                        @Model.ClientOrderViewModel.tempDataListVM[i].TestName
+                                                        @Model.ClientOrderViewModel.followUpTempDataListVM[i].TestName
                                                     </a>
                                                 </h4>
                                             </div>
@@ -287,58 +290,57 @@
                                                                     <table id="userTbl" class="table table-hover table-bordered table-striped">
                                                                         <thead>
                                                                             <tr class="">
-                                                                                @foreach (var record in Model.ClientOrderViewModel.tempDataListVM[i].testTempCols)
+                                                                                @foreach (var record in Model.ClientOrderViewModel.followUpTempDataListVM[i].testTempCols)
                                                                                 {
                                                                                     <th> @record.TestColName </th>
                                                                                 }
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            @for (int j = 0; j < Model.ClientOrderViewModel.tempDataListVM[i].expDataList.Count(); j++)
+                                                                            @for (int j = 0; j < Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList.Count(); j++)
                                                                             {
                                                                                 int f = j;
                                                                                 <tr data-info="somerandom">
 
-                                                                                    @for (int k = 0; k < Model.ClientOrderViewModel.tempDataListVM[i].expDataList[j].Count(); k++)
+                                                                                    @for (int k = 0; k < Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList[j].Count(); k++)
                                                                                     {
 
                                                                                         <td>
-                                                                                            <input name="followUpTestTempDataList[@i][@j][@k].ID" value="0" hidden>
-                                                                                            <input name="followUpTestTempDataList[@i][@j][@k].TestTempID" value="@Model.ClientOrderViewModel.tempDataListVM[i].expDataList[j][k].TestTempID" hidden>
-                                                                                            <input name="followUpTestTempDataList[@i][@j][@k].TestTempColID" value="@Model.ClientOrderViewModel.tempDataListVM[i].expDataList[j][k].TestTempColID" hidden>
-                                                                                            <input name="followUpTestTempDataList[@i][@j][@k].RowNo" value="@Model.ClientOrderViewModel.tempDataListVM[i].expDataList[j][k].RowNo" hidden />
-                                                                                            <input name="followUpTestTempDataList[@i][@j][@k].OrderID" value="@Model.ClientOrderViewModel.ClientOrder.ID" hidden />
-                                                                                            @if (Model.ClientOrderViewModel.tempDataListVM[i].expDataList[j][k].TestTempCol.TempColType.ColName == "Checkbox")
+                                                                                            @*<input name="followUpTestTempDataList[@i][@j][@k].ID" value="0" hidden>
+                                                                                            <input name="followUpTestTempDataList[@i][@j][@k].TestTempID" value="@Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList[j][k].TestTempID" hidden>
+                                                                                            <input name="followUpTestTempDataList[@i][@j][@k].TestTempColID" value="@Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList[j][k].TestTempColID" hidden>
+                                                                                            <input name="followUpTestTempDataList[@i][@j][@k].RowNo" value="@Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList[j][k].RowNo" hidden />
+                                                                                            <input name="followUpTestTempDataList[@i][@j][@k].OrderID" value="@Model.ClientOrderViewModel.ClientOrder.ID" hidden />*@
+                                                                                            @if (Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList[j][k].TestTempCol.TempColType.ColName == "Checkbox")
                                                                                             {
 
                                                                                                 <div class="form-check">
                                                                                                     <label>
-                                                                                                        <input type="checkbox" name="followUpTestTempDataList[@i][@j][@k].BoolValue" value="@Model.ClientOrderViewModel.tempDataListVM[i].expDataList[j][k].BoolValue" class="itemDatadsbl" @(Model.ClientOrderViewModel.tempDataListVM[i].expDataList[j][k].BoolValue == true ? "checked" : "")><span class="label-text"></span>
+                                                                                                        <input type="checkbox" name="followUpTestTempDataList[@i][@j][@k].BoolValue" value="@Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList[j][k].BoolValue" class="itemDatadsbl" @(Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList[j][k].BoolValue == true ? "checked" : "") disabled><span class="label-text"></span>
                                                                                                     </label>
                                                                                                 </div>
 
                                                                                             }
-                                                                                            else if (Model.ClientOrderViewModel.tempDataListVM[i].expDataList[j][k].TestTempCol.TempColType.ColName == "Textbox")
+                                                                                            else if (Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList[j][k].TestTempCol.TempColType.ColName == "Textbox")
                                                                                             {
-                                                                                                <textarea name="followUpTestTempDataList[@i][@j][@k].StringValue" class="form-control" rows="4" cols="50">@Model.ClientOrderViewModel.tempDataListVM[i].expDataList[j][k].StringValue</textarea>
+                                                                                                <textarea name="followUpTestTempDataList[@i][@j][@k].StringValue" class="form-control" rows="4" cols="50" disabled>@Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList[j][k].StringValue</textarea>
                                                                                             }
-                                                                                            else if (Model.ClientOrderViewModel.tempDataListVM[i].expDataList[j][k].TestTempCol.TempColType.ColName == "Dropdown")
+                                                                                            else if (Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList[j][k].TestTempCol.TempColType.ColName == "Dropdown")
                                                                                             {
-                                                                                                if (Model.ClientOrderViewModel.tempDataListVM[i].expDataList[j][k].TestTempCol.DataSource.Name == "EffectedGene")
+                                                                                                if (Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList[j][k].TestTempCol.DataSource.Name == "EffectedGene")
                                                                                                 {
-                                                                                                    @Html.ListBox("followUpTestTempDataList[" + i + "[" + j + "]" + "[" + k + "]" + "].multiSelect", new MultiSelectList(ViewBag.EffectedGene, "ID", "Name", @Model.ClientOrderViewModel.tempDataListVM[i].expDataList[j][k].multiSelect), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
+                                                                                                    @Html.ListBox("followUpTestTempDataList[" + i + "[" + j + "]" + "[" + k + "]" + "].multiSelect", new MultiSelectList(ViewBag.EffectedGene, "ID", "Name", @Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList[j][k].multiSelect), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple", @disabled=true })
                                                                                                 }
-                                                                                                else if (Model.ClientOrderViewModel.tempDataListVM[i].expDataList[j][k].TestTempCol.DataSource.Name == "FeederType")
+                                                                                                else if (Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList[j][k].TestTempCol.DataSource.Name == "FeederType")
                                                                                                 {
-                                                                                                    @Html.ListBox("followUpTestTempDataList[" + i + "[" + j + "]" + "[" + k + "]" + "].multiSelect", new MultiSelectList(ViewBag.FeederType, "ID", "Name", @Model.ClientOrderViewModel.tempDataListVM[i].expDataList[j][k].multiSelect), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
+                                                                                                    @Html.ListBox("followUpTestTempDataList[" + i + "[" + j + "]" + "[" + k + "]" + "].multiSelect", new MultiSelectList(ViewBag.FeederType, "ID", "Name", @Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList[j][k].multiSelect), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple", @disabled=true })
                                                                                                 }
-                                                                                                else if (Model.ClientOrderViewModel.tempDataListVM[i].expDataList[j][k].TestTempCol.DataSource.Name == "Element")
+                                                                                                else if (Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList[j][k].TestTempCol.DataSource.Name == "Element")
                                                                                                 {
-                                                                                                    @Html.ListBox("followUpTestTempDataList[" + i + "[" + j + "]" + "[" + k + "]" + "].multiSelect", new MultiSelectList(ViewBag.Element, "ID", "Name", @Model.ClientOrderViewModel.tempDataListVM[i].expDataList[j][k].multiSelect), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })
+                                                                                                    @Html.ListBox("followUpTestTempDataList[" + i + "[" + j + "]" + "[" + k + "]" + "].multiSelect", new MultiSelectList(ViewBag.Element, "ID", "Name", @Model.ClientOrderViewModel.followUpTempDataListVM[i].expDataList[j][k].multiSelect), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple", @disabled=true })
                                                                                                 }
                                                                                             }
 
-                                                                                            @{f++;}
                                                                                         </td>
 
                                                                                     }
