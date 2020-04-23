@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Data.Helpers;
 using Data.Models;
 using GeneticSystem.Areas.Admin.Models;
 using GeneticSystem.Areas.Admin.Models.FollowUp;
@@ -41,7 +42,8 @@ namespace GeneticSystem.Areas.Admin.Controllers
             if (id != null)
             {
                 followUpVM.User = db.UserService.GetPatient(Convert.ToInt32(id));
-                var result = db.ClientOrderService.GetClientOrdersByUserID(Convert.ToInt32(id));
+                var result = db.ClientOrderService.GetClientOrdersByUserID(Convert.ToInt32(id)).ToList();
+                followUpVM.ClientOrderList = new Data.Helpers.PagedData<ClientOrder>();
                 followUpVM.ClientOrderList.Data = (result).Take(PageSize);
                 followUpVM.ClientOrderList.NumberOfPages = Convert.ToInt32(Math.Ceiling((double)result.Count() / PageSize));
             }
@@ -373,7 +375,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
 
                 followUpVM.ClientOrderViewModel = viewModel;
                 followUpVM.FollowUpByDocConvList = db.FollowUpService.GetByDocConvs(viewModel.ClientOrder.ID);
-                followUpVM.FollowUpByDocResultList = db.FollowUpService.GetDocResults(viewModel.ClientOrder.ID);
+                //followUpVM.FollowUpByDocResultList = db.FollowUpService.GetDocResults(viewModel.ClientOrder.ID);
                 return PartialView("_GetUpdatedTestTemp", followUpVM);
 
             }
@@ -397,6 +399,9 @@ namespace GeneticSystem.Areas.Admin.Controllers
         public IActionResult AddFollowUpSummary(FollowUpByDocConv followUpByDoc)
         {
             FollowUpVM followUpVM = new FollowUpVM();
+            followUpVM.ClientOrderViewModel = new ClientOrderViewModel();
+            followUpVM.ClientOrderViewModel.ClientOrder = new ClientOrder();
+            followUpVM.ClientOrderViewModel.ClientOrder = db.ClientOrderService.GetClientOrderByID(followUpByDoc.OrderID);
             int? senderID = Convert.ToInt32(HttpContext.Request.Cookies["ID"]);
             followUpByDoc.SenderID = senderID != null ? Convert.ToInt32(senderID) : 1;
             followUpVM.FollowUpByDocConvList = db.FollowUpService.AddMessage(followUpByDoc);
@@ -406,32 +411,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult AddResult(int orderID)
         {
-            //var testTemps = db.FollowUpService.GetTestTemps(orderID);
-            //List<SelectListItem> selectListItems = new List<SelectListItem>();
             FollowUpVM followUpVM = new FollowUpVM();
-            //if (testTemps != null)
-            //{
-            //    string[] testArr = testTemps.Split(",");
-
-            //    foreach (var item in testArr)
-            //    {
-            //        SelectListItem selectListItem = new SelectListItem
-            //        {
-            //            Value = item,
-            //            Text = db.LookupService.GetLookUpNameByID(Convert.ToInt32(item))
-            //        };
-            //        selectListItems.Add(selectListItem);
-            //    }
-
-            //}
-
-            //ViewBag.PendingTest = testTemps.Where(x => x.Done == false).Select(x => new SelectListItem
-            //{
-
-            //    Text = x.TestTemplate.TestTempType.Name + ">>" + x.TestTemplate.SubTestTempType.Name,
-            //    Value = x.ID.ToString()
-            //}).ToList();
-
             followUpVM.orderTest = db.FollowUpService.GetPendingTests(orderID).Select(x => new SelectListItem
             {
                 Value = x.ID.ToString(),
@@ -440,6 +420,55 @@ namespace GeneticSystem.Areas.Admin.Controllers
 
             return PartialView("_AddResult", followUpVM);
         }
+
+        [HttpGet]
+        public IActionResult AddTest(int orderID)
+        {
+            FollowUpVM followUpVM = new FollowUpVM();
+
+            var completedList = db.FollowUpService.GetCompletedTests(orderID).Select(x => x.TestTemplate).ToList();
+
+            var allTestList = db.TestTempService.GetTestTemps().ToList();
+
+            followUpVM.completedOrderTests = string.Join(", ", (completedList.Select(x => (x.TestTempType?.Name ?? "" + ">>" + x.SubTestTempType?.Name ?? ""))));
+
+            followUpVM.orderTest = allTestList.Except(completedList, new TestTempEqComparer()).Select(x => new SelectListItem
+            {
+                Value = x.ID.ToString(),
+                Text = x.TestTempType.Name + ">>" + x.SubTestTempType.Name
+            }).ToList();
+
+            followUpVM.PendingTestArray = db.FollowUpService.GetPendingTests(orderID).Select(x => x.TestTemplate.ID.ToString()).ToArray();
+
+            return PartialView("_AddTest", followUpVM);
+        }
+
+        [HttpPost]
+        public bool AddTest(FollowUpVM followUpVM)
+        {
+            try { 
+            db.FollowUpService.RemovePendingOrders(followUpVM.ClientOrderViewModel.ClientOrder.ID);
+
+            List<ClientOrderTest> newPendingTests = followUpVM.PendingTestArray.Select(x => new ClientOrderTest
+            {
+                ID = 0,
+                Done = false,
+                TestTemplateID = Convert.ToInt32(x),
+                ClientOrderID = followUpVM.ClientOrderViewModel.ClientOrder.ID
+            }).ToList();
+
+            db.FollowUpService.AddOrderTests(newPendingTests);
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+
+
+        }
+
         [HttpPost]
         public bool AddTestData(FollowUpVM followUpVM)
         {
@@ -462,6 +491,12 @@ namespace GeneticSystem.Areas.Admin.Controllers
                 }
                 clientOrder.FollowUpTestAdded = true;
                 db.ClientOrderService.UpdateClientOrder(clientOrder);
+
+                var orderTest = db.ClientOrderService.MarkOrderTestDone(followUpVM.clientOrderTest.TestTemplateID, followUpVM.ClientOrderViewModel.ClientOrder.ID);
+                //orderTest.Done = true;
+                //db.ClientOrderService.UpdateClientOrderTest(orderTest);
+
+
             }
             return true;
         }
@@ -524,7 +559,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
                                             tempData.TestTempColID = tempVM.TestTempCol[j].ID;
                                             tempData.TestTempCol = tempVM.TestTempCol[j];
                                             tempData.TestTempID = testTemp.ID;
-                                            tempData.RowNo = RowNo;
+                                            tempData.RowNo = (i + 1);
                                             tempData.ID = 0;
                                         }
 

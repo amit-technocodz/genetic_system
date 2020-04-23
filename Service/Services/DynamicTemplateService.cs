@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Repository;
 using Repository.UnitOfWork;
+using Service.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,22 @@ namespace Service.Services
         public IEnumerable<Template> GetAllTemplates()
         {
 
-            return db.Template.Get().Include(x => x.TemplateType).Include(x => x.SubTemplateType).Include(x => x.TemplateColumns).ThenInclude(x => x.TemplateField);
+            try
+            {
+                var result = db.Template.Get().Include(x => x.TemplateType).Include(x => x.SubTemplateType)
+                    .Include(x => x.TemplateColumns).ThenInclude(c => c.TemplateField)
+                    .Include(x => x.TemplateColumns).ThenInclude(y => y.ChkBoxTempDependencies)
+                    .Include(x => x.TemplateColumns).ThenInclude(y => y.ColIDTempDependencies).ToList(); 
+
+                //var sql = result.ToSql();
+                //var finalResult = result.ToList();
+
+                return result;
+
+            }catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
 
@@ -52,20 +68,23 @@ namespace Service.Services
             return db.Template.Get().Where(x => x.TemplateTypeID == tmpId).Include(x => x.TemplateType).Include(x => x.SubTemplateType).Include(x => x.TemplateColumns).ThenInclude(x => x.TemplateField);
         }
 
+        public Template GetTemplateByID(int ID)
+        {
+
+            return db.Template.Get().Where(x => x.ID == ID).Include(x => x.TemplateType).Include(x => x.SubTemplateType).Include(x => x.TemplateColumns).ThenInclude(x => x.TemplateField).FirstOrDefault();
+        }
+
         public Template GetTemplateByName(string temptype, string subtemptype)
         {
             return db.Template.Get().Include(x => x.TemplateType).Include(x => x.SubTemplateType).Where(x => (String.IsNullOrEmpty(temptype) || x.TemplateType.Name == temptype) && x.SubTemplateType.Name == subtemptype).Include(x => x.TemplateColumns).ThenInclude(c => c.TemplateField).FirstOrDefault();
         }
 
-        public Template GetTemplateByID(int Id)
-        {
-            return db.Template.Get().Where(x => x.ID == Id).Include(x => x.TemplateType).Include(x => x.SubTemplateType).Include(x => x.TemplateColumns).ThenInclude(c => c.TemplateField).FirstOrDefault();
-        }
 
         public TemplateData SaveTemplateData(TemplateData templateData)
         {
             try
             {
+                templateData.IsActive = true;
                 db.TemplateData.Insert(templateData);
                 return templateData;
             }
@@ -80,6 +99,7 @@ namespace Service.Services
         {
             try
             {
+                templateData.IsActive = true;
                 db.TemplateData.Update(templateData);
                 db.TemplateData.SaveChanges();
                 return true;
@@ -92,7 +112,7 @@ namespace Service.Services
 
         public List<TemplateData> GetTemplateDataID(int Id)
         {
-            var result = db.TemplateData.Get().Where(x => x.TemplateID == Id).AsNoTracking().ToList();
+            var result = db.TemplateData.Get().Where(x => x.TemplateID == Id && x.IsActive == true).AsNoTracking().ToList();
 
             if (result == null)
                 return new List<TemplateData>();
@@ -105,6 +125,18 @@ namespace Service.Services
                 }
                 return result;
             }
+        }
+
+        public TemplateData GetTemplateDataByID(int dataId)
+        {
+            var result =  db.TemplateData.Get().Where(x => x.ID == dataId).FirstOrDefault();
+
+            if (result.GeneID != null)
+            {
+                result.Genes = result.GeneID.Split(",");
+            }
+
+            return result;
         }
 
         public List<TemplateColumn> GetTemplateColumnsByID(int Id)

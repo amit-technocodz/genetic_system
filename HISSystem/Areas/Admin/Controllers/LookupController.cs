@@ -32,6 +32,11 @@ namespace HISSystem.Areas.Admin.Controllers
             return View(lookupTry);
         }
 
+        public IActionResult DevExpressDemo()
+        {
+            return View();
+        }
+
         public IActionResult GetLookupIndex(string lookupName)
         {
             LookupIndexModel lookupIndex = new LookupIndexModel();

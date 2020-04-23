@@ -137,6 +137,32 @@ namespace GeneticSystem.Areas.Admin.Controllers
         }
 
 
+        [HttpGet]
+        public IActionResult GetDynamicTemplateByID(int tempID)
+        {
+            AddDynamicTemplate dynamicTemplate = new AddDynamicTemplate();
+            var LookupList = db.LookupService.GetLookups();
+
+            dynamicTemplate.Template = db.DynamicTemplateService.GetTemplateByID(tempID);
+            dynamicTemplate.TemplateDataList = db.DynamicTemplateService.GetTemplateDataID(dynamicTemplate.Template.ID);
+
+            ViewBag.TemplateID = dynamicTemplate.Template.ID;
+
+            ViewBag.TestTypes = db.LookupService.GetLookUpByTypeName("TemplateType");
+            ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
+            ViewBag.Element = db.LookupService.GetLookUpByTypeName("Element");
+            ViewBag.ConsumptionType = db.LookupService.GetLookUpByTypeName("ConsumptionType");
+            ViewBag.FeederType = db.LookupService.GetLookUpByTypeName("FeederType");
+
+            ViewBag.Result = new List<SelectListItem>
+            {
+              new SelectListItem{ Text="High", Value = "1" },
+              new SelectListItem{ Text="Medium", Value = "2" },
+              new SelectListItem{ Text="Low", Value = "3" }
+            };
+
+            return PartialView("_GetTemplateDetail", dynamicTemplate);
+        }
 
         [HttpGet]
         public IActionResult GetDynamicTemplate(string temptype, string subtemptype)
@@ -296,11 +322,32 @@ namespace GeneticSystem.Areas.Admin.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult UpdateTemplateData(int tempDataID)
+        {
+            AddDynamicTemplate dynamicTemplate = new AddDynamicTemplate();
+            dynamicTemplate.TemplateData = db.DynamicTemplateService.GetTemplateDataByID(tempDataID);
+            dynamicTemplate.Template = db.DynamicTemplateService.GetTemplateByID(dynamicTemplate.TemplateData.TemplateID);
 
+            ViewBag.TemplateID = dynamicTemplate.Template.ID;
+
+            ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
+            ViewBag.Element = db.LookupService.GetLookUpByTypeName("Element");
+            ViewBag.ConsumptionType = db.LookupService.GetLookUpByTypeName("ConsumptionType");
+            ViewBag.FeederType = db.LookupService.GetLookUpByTypeName("FeederType");
+
+            ViewBag.Result = new List<SelectListItem>
+            {
+              new SelectListItem{ Text="High", Value = "1" },
+              new SelectListItem{ Text="Medium", Value = "2" },
+              new SelectListItem{ Text="Low", Value = "3" }
+            };
+            return PartialView("_UpdateTemplateData", dynamicTemplate);
+        }
 
         [HttpPost]
         public bool UpdateTemplateData(AddDynamicTemplate dynamicTemplate)
-        {
+         {
             TemplateData templateData = dynamicTemplate.TemplateData;
 
             if (templateData.Genes != null)

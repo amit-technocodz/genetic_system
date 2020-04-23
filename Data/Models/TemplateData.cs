@@ -27,7 +27,6 @@ namespace Data.Models
         public virtual Template Template { get; set; }
         public virtual Lookup Element { get; set; }
         public virtual Lookup ConsumptionType { get; set; }
-
         [NotMapped]
         public string[] Genes{ get; set; }
     }

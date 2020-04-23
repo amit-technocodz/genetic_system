@@ -4,6 +4,7 @@ using HISSystem.Filters;
 using HISSystem.Helper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Service.UnitOfServices;
 using System.Collections.Generic;
 using System.Linq;
@@ -104,6 +105,33 @@ namespace HISSystem.Areas.Admin.Controllers
             JsonResult Data = new JsonResult(new { status });
 
             return Data;
+        }
+
+        public IActionResult SchedulerExp()
+        {
+            SchedulerVM schedulerVM = new SchedulerVM();
+
+            schedulerVM.AppointmentExps = db.AppointmentExpService.GetAppointments();
+
+            schedulerVM.Users = db.UserService.GetPatients().Select(x => new SelectListItem
+            {
+                Value = x.ID.ToString(),
+                Text = (x.EnFirstName ?? "" + " " + x.EnSecondName ?? "" + " " + x.EnThirdName ?? "")
+            }).ToList();
+
+            schedulerVM.Genes = db.DynamicTemplateService.GetAllTemplates().Select(x => new SelectListItem
+            {
+                Value = x.ID.ToString(),
+                Text = (x.TemplateType?.Name + ">>" + x.SubTemplateType?.Name)
+            }).ToList();
+
+            schedulerVM.TestTemps = db.TestTempService.GetTestTemps().Select(x => new SelectListItem
+            {
+                Value = x.ID.ToString(),
+                Text = (x.TestTempType?.Name + ">>" + x.SubTestTempType?.Name)
+            }).ToList();
+
+            return View(schedulerVM);
         }
 
         [HttpGet]

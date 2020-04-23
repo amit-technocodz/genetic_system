@@ -25,4 +25,25 @@ namespace Data.Helpers
             return hcode;
         }
     }
+
+    public class TestTempEqComparer : IEqualityComparer<TestTemp>
+    {
+        public bool Equals(TestTemp testTemp1, TestTemp tesTemp2)
+        {
+            if (testTemp1 == null && tesTemp2 == null)
+                return true;
+            else if (testTemp1 == null || tesTemp2 == null)
+                return false;
+            else if (testTemp1.ID == tesTemp2.ID)
+                return true;
+            else
+                return false;
+        }
+
+        public int GetHashCode(TestTemp obj)
+        {
+            int hcode = obj.ID;
+            return hcode;
+        }
+    }
 }

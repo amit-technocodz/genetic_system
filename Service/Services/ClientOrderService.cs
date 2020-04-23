@@ -61,6 +61,43 @@ namespace Service.Services
                 .Include(x => x.Template).ThenInclude(t => t.TemplateType).Include(x => x.Status).ToList();
         }
 
+        public ClientOrderTest GetClientOrderTestByTempOrderID(int tempID, int orderID)
+        {
+            return db.ClientOrderTest.Get().Where(x => x.TestTemplateID == tempID && x.ClientOrderID == orderID).FirstOrDefault();
+        }
+
+        public bool MarkOrderTestDone(int tempID, int orderID)
+        {
+            try { 
+            var orderTest =  db.ClientOrderTest.Get().Where(x => x.TestTemplateID == tempID && x.ClientOrderID == orderID).FirstOrDefault();
+            orderTest.Done = true;
+            db.ClientOrderTest.SaveChanges();
+
+            return true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+
+
+
+        public bool UpdateClientOrderTest(ClientOrderTest orderTest)
+        {
+            try {
+                orderTest.ClientOrder = null;
+                orderTest.TestTemplate = null;
+                db.ClientOrderTest.Update(orderTest);
+                db.ClientOrderTest.SaveChanges();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            
+        }
         public List<ClientOrder> GetAllOrderForDashboard()
         {
             return db.ClientOrder.Get().OrderByDescending(x => x.OrderDate).Take(5)
@@ -93,7 +130,7 @@ namespace Service.Services
             try
             {
                 var result = db.ClientOrder.Get().Where(x => x.ID == id).Include(x => x.ClientOrderData/*.Where(y => y.IsActive == true)*/).Include(x => x.Template).Include(x => x.ClientOrderTests).
-                    ThenInclude(y => y.TestTemplate).ThenInclude(z => z.TestTempType).Include(x => x.ClientOrderTests).ThenInclude(y => y.TestTemplate).ThenInclude(z => z.SubTestTempType).FirstOrDefault();
+                    ThenInclude(y => y.TestTemplate).ThenInclude(z => z.TestTempType).Include(x => x.ClientOrderTests).ThenInclude(y => y.TestTemplate).ThenInclude(z => z.SubTestTempType).Include(x => x.User).AsNoTracking().FirstOrDefault();
 
                 if (result.FollowUp != null)
                     result.FollowUpArray = result.FollowUp.Split(",");

@@ -39,8 +39,8 @@ namespace Service.Services
 
         public IEnumerable<Appointment> GetAll()
         {
-            var xray = db.Appointment.Get().Where(x => x.IsActive == true).Include(x => x.Doctor.PersonalInformation).Include(x=>x.User).Include(x => x.Room).ToList();
-            return db.Appointment.Get().Where(x => x.IsActive == true).Include(x => x.Doctor.PersonalInformation).Include(x => x.Room).ToList();
+            return db.Appointment.Get().Where(x => x.IsActive == true).Include(x => x.User).ThenInclude(y => y.PersonalInformation).Include(x => x.User).ThenInclude(y => y.PatientPersonalInformation)
+                .Include(x => x.Doctor).ThenInclude(y => y.PersonalInformation).Include(x => x.Department).Include(x => x.Room).ToList();
         }
 
         public void Update(Appointment model)

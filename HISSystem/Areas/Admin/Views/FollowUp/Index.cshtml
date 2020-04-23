@@ -20,6 +20,10 @@
 .col-lg-4 {
     margin-bottom: 5px;
 }
+.btn-custSuccess {
+    background: #0099cc;
+    color: #ffffff;
+}
     </style>
 </head>
 
@@ -35,7 +39,7 @@
         <div class="row">
             <div class="col-md-2">
                 <div class="form-group">
-                    @Html.DropDownList("User_ID", new SelectList(Model.patientList, "Value", "Text"), "Select Patient", new { @class = "form-control ptnDrpDwn" })
+                    @Html.DropDownList("User_ID", new SelectList(Model.patientList, "Value", "Text", Model.User?.ID), "Select Patient", new { @class = "form-control ptnDrpDwn" })
                 </div>
             </div>
             <div class="col-md-2">
@@ -46,9 +50,9 @@
                 </div>
             </div>
             <div class="col-md-4 col-lg-4">
-                <button class="btn btn-danger @*btn-xs*@ cancelEvent" id="cancelOrderBtn" type="button"><i class="fa fa-plus" aria-hidden="true"></i> New Order </button>
-                <button class="btn btn-warning @*btn-xs*@ sbmtBtn" id="addClientOrderBtn" type="button"><i class="fa fa-users" aria-hidden="true"></i> Client List </button>
-                <button class="btn btn-success @*btn-xs*@" id="getPndOrdrBtn" type="button"><i class="fa fa-calendar" aria-hidden="true"></i> Appointment </button>
+                <a href="/admin/clientorder/index" class="btn btn-danger"><i class="fa fa-plus" aria-hidden="true"></i> New Order</a>
+                <a href="/admin/patient/index" class="btn btn-warning"><i class="fa fa-users" aria-hidden="true"></i> Client List</a>
+                <a href="/admin/patient/appointment" class="btn btn-success"><i class="fa fa-calendar" aria-hidden="true"></i> Appointment</a>
             </div>
             <div class="col-md-4 col-lg-4 text-right">
                 <span class="info-box">
@@ -121,32 +125,104 @@
                                     <div class="prtm-block-content">
                                         <div class="table-responsive">
                                             <div id="userList" class="unseen">
-                                                @if (Model.User != null)
+                                                @if (Model.ClientOrderList != null)
                                                 {
                                                     <table id="patientTbl" class="table table-hover table-bordered table-striped">
                                                         <thead>
-                                                            <tr>
-                                                                <th class="numeric">Order No  </th>
-                                                                <th class="numeric">Order Date </th>
-                                                                <th class="numeric">Test Type</th>
-                                                                <th class="numeric">Follow up Needed</th>
-                                                                <th class="numeric">Test Nedded</th>
-                                                                <th class="numeric">Asign Doctor</th>
-                                                                <th class="numeric">Attachment</th>
-                                                                <th>Action</th>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="numeric">45454d</td>
-                                                                <td class="numeric">24/4/2020</td>
-                                                                <td class="numeric">Test Type</td>
-                                                                <td class="numeric">Follow up Needed</td>
-                                                                <td class="numeric">Test Nedded</td>
-                                                                <td class="numeric">Asign Doctor</td>
-                                                                <td class="numeric">Attachment</td>
-                                                                <td>asdfsd
+                                                            <tr class="">
+                                                                <th>Order No</th>
+                                                                <th>Order Date</th>
+                                                                <th>Test Type</th>
+                                                                <th>Follow Up Needed</th>
+                                                                <th>Test Needed</th>
+                                                                <th>Assigned Doctor</th>
+                                                                <th>Status</th>
+                                                                <th colspan="2">Actions</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody></tbody>
+                                                        <tbody>
+                                                            @foreach (var order in Model.ClientOrderList.Data)
+                                                            {
+                                                                <tr>
+                                                                    <td>
+                                                                        @order.OrderNo
+                                                                    </td>
+                                                                    <td>
+                                                                        @order.OrderDate
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (order.TestArrayStrings != null)
+                                                                        {
+                                                                            @foreach (var item in order.TestArrayStrings)
+                                                                            {
+                                                                                <label class="label label-primary mr-2 btn-rounded">@item</label>
+                                                                            }
+                                                                        }
+                                                                    </td>
+                                                                    <td>
+                                                                        True
+                                                                    </td>
+                                                                    <td>
+                                                                        True
+                                                                    </td>
+                                                                    <td>
+                                                                        @order.Doctor?.EnFirstName
+                                                                    </td>
+                                                                    <td>
+                                                                        @if (order.Status != null)
+                                                                        {
+                                                                            @if (order.StatusID == 397)
+                                                                            {
+                                                                                <span class="label label-success btn-rounded">@order.Status.Name</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span class="label label-danger btn-rounded">@order.Status.Name</span>
+                                                                            }
+
+                                                                        }
+
+                                                                    </td>
+                                                                    <td colspan="2">
+                                                                        @if (order.Status != null)
+                                                                        {
+                                                                            @if (order.StatusID == 398)
+                                                                            {
+                                                                                <button type="button" class="btn btn-xs btn-warning UpdtOrdrBtn" value="@order.ID"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update</button>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <button type="button" class="btn btn-xs btn-warning" disabled><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update</button>
+                                                                            }
+                                                                        }
+
+                                                                        <button type="button" class="btn btn-xs btn-secondary AttchOrdrBtn" value="@order.UserID"><i class="fa fa-paperclip" aria-hidden="true"></i> Attachment</button>
+                                                                        <button type="button" class="btn btn-xs btn-info GtTmpData" value="@order.ID"><i class="fa fa-tv" aria-hidden="true"></i>  <i class="fa fa-pencil" aria-hidden="true"></i>Order Data</button>
+                                                                        @if (order.Status != null)
+                                                                        {
+                                                                            @if (order.StatusID == 398)
+                                                                            {
+                                                                                <button type="button" class="btn btn-xs btn-primary ClsOrdr" value="@order.ID"><i class="fa fa-pencil" aria-hidden="true"></i>   Close Order</button>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <button type="button" class="btn btn-xs btn-success"><i class="fa fa-check" aria-hidden="true"></i> Order Closed</button>
+                                                                            }
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="17">
+                                                                    @for (int i = 1; i <= Model.ClientOrderList.NumberOfPages; i++)
+                                                                    {
+                                                                        <a class="page-number" href="javascript:void();">@i</a>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        </tfoot>
                                                     </table>
                                                 }
                                             </div>
@@ -172,6 +248,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="modal fade" id="UpdtTestModal" tabindex="-1" role="dialog" aria-labelledby="UpdtTestModalTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-contentTst">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add-modal">
+                                <div id="modalDiv" class="modal fade" aria-hidden="true">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -184,11 +270,27 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chosen-js@1.8.7/chosen.jquery.js" integrity="sha256-TDtzz+WOGufaQuQzqpEnnxdJQW5xrU+pzjznwBtaWs4=" crossorigin="anonymous"></script>
 <script>
+     function SendSMS(id) {
+            var id = id;
+            $.ajax({
+					url: '/admin/patient/ExportViaSMS/' + id,
+					contentType: 'application/json; charse=utf-8',
+					type: 'get',
+					success: function (result) {
+						debugger
+						$('#modalDiv').html(result);
+						$('#modalDiv').modal('show');
+							},
+					error: function (xhr, status) {
+						alert(status)
+							}
+						});
+        }
 
     $(document).on('change', '.addRsltdrpdwn', function () {
         var slctd = $(this).val();
         var ordrId = $("#clntOrdrIdHdn").val();
-        alert(ordrId);
+      
         if (slctd == 0 || slctd == undefined || slctd == "")
             return false;
 
@@ -206,7 +308,7 @@
     });
 
     $(document).on("click", ".AttchOrdrBtn", function () {
-                alert('clicked')
+          
             var userId = $(this).val();
             debugger
             $.ajax({
@@ -224,44 +326,86 @@
         });
 
     $(document).on('click', '#svTstDtBtn', function () {
-        var formdata = new FormData($('#fllwTstForm').get(0));
-       
-                    $.ajax({
-                type: 'POST',
-                url: "/admin/followup/addtestdata",
-                data: formdata,
-                dataType: "text",
-                processData: false,
-                contentType: false,
+        var orderId = $("#clntOrdrIdHdn").val();
+        var formdata = new FormData($('#fllwTstFormData').get(0));
+        $.ajax({
+            type: 'POST',
+            url: "/admin/followup/addtestdata",
+            data: formdata,
+            dataType: "text",
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                  $(".modal-content").html("");
+                    $('#exampleModalCenter').modal('hide');
+                $.ajax({
+                    url: '/admin/followup/getorderdata',
+                    type: 'get',
+                    data: {
+                        orderId: orderId
+                    },
+                    success: function (result) {
+                        $("#ordrPrcdArea").html(result);
+                        if ($("#hddnStatusField").val() == 397) {
+                            $(".fieldDiv :input").attr("disabled", true);
+                            $('.fieldDiv').find('input, textarea, button, select').attr('disabled', 'disabled');
+                        }
+                        $(".tryMultiselect").chosen();
+                    }
+                });
+            },
+            error: function (xhr, status) {
+                toastr.error('Something went wrong');
+            }
+        });
+    });
+
+    //$(document).on('click', '.replyBtn', function (event) {
+        
+    //    var elm = document.getElementById('appndBox');
+    //    event.target.parentElement.append(elm);
+    //});
+    
+        $(document).on("click", ".adddTstBtn", function () {
+            var orderId = $("#clntOrdrIdHdn").val();
+            $.ajax({
+                url: '/admin/followup/addtest',
+                type: 'GET',
+                data: { orderId: orderId },
                 success: function (response) {
-                    //toastr.info('Record updated');
-                    //$("#odrBtnDiv").hide();
-                    //$("#dshbrdBtnDiv").show();
-                    //$.ajax({
-                    //    url: '/admin/dashboard/index',
-                    //    type: 'GET',
-                    //    success: function (response) {
-                    //        document.open("text/html", "replace");
-                    //        document.write(response);
-                    //        startLoader();
-                    //        document.close();
-                    //        $('.prtm-loader-wrap').fadeOut(200);
-                    //    },
-                    //    error: function () {
-                    //        toastr.error('Something went wrong');
-                    //    }
-                    //});
+                     $(".modal-contentTst").html("");
+                    $(".modal-contentTst").html(response);
+                    $(".tryMultiselect").chosen();
+                    $("#UpdtTestModal").modal().toggle();
                 },
-                error: function (xhr, status) {
+                error: function () {
                     toastr.error('Something went wrong');
                 }
             });
-    });
-
-    $(document).on('click', '.replyBtn', function (event) {
-        alert('clicked')
-        var elm = document.getElementById('appndBox');
-        event.target.parentElement.append(elm);
+        });
+    
+    $(document).on("click", ".updttTstsBtn", function () {
+        var orderId = $("#clntOrdrIdHdn").val();
+        var formdata = new FormData($('#updtTstFrm').get(0));
+        formdata.append("ClientOrderViewModel.ClientOrder.ID", $("#clntOrdrIdHdn").val());
+        $.ajax({
+            type: 'POST',
+            url: "/admin/followup/addtest",
+            data: formdata,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response == true) {
+                    toastr.success("Pending tests updated!")
+                    $(".modal-contentTst").html("");
+                    $("#UpdtTestModal").modal('hide');
+                }
+            },
+            error: function (xhr, status) {
+                toastr.error('Something went wrong');
+            }
+        });
     });
 
     $(document).on("click", ".addRsltBtn", function () {
@@ -295,30 +439,13 @@
             contentType: false,
             success: function (response) {
                 $("#flwUpConvDiv").html(response);
+                $("#fllwpInput").val("");
             },
             error: function (xhr, status) {
                 toastr.error('Something went wrong');
             }
         });
     });
-
-    //    $(document).on('click', '#ordrFllwUpDiv', function (event) {
-    //    debugger
-    //    var orderId = $(this).val();
-    //    $.ajax({
-    //        url: "/admin/followup/closeorder",
-    //        type: "get",
-    //        data: { 'orderId': orderId },
-    //        success: function (data) {
-    //            if (result == true)
-    //                toastr.success("This order has been closed!")
-    //            event.target.parentElement.previousElementSibling.firstElementChild.classList.remove("label-danger");
-    //            event.target.parentElement.previousElementSibling.firstElementChild.classList.add("label-success");
-    //        },
-    //        error: function () {
-    //        }
-    //    });
-    //});
 
     $(document).on('click', '.ClsOrdr', function (event) {
         debugger
@@ -330,8 +457,7 @@
             success: function (data) {
                 if (result == true)
                     toastr.success("This order has been closed!")
-                event.target.parentElement.previousElementSibling.firstElementChild.classList.remove("label-danger");
-                event.target.parentElement.previousElementSibling.firstElementChild.classList.add("label-success");
+                location.reload();
             },
             error: function () {
             }
@@ -420,6 +546,10 @@
             },
             success: function (result) {
                 $("#ordrPrcdArea").html(result);
+                if ($("#hddnStatusField").val() == 397) {
+                    $(".fieldDiv :input").attr("disabled", true);
+                    $('.fieldDiv').find('input, textarea, button, select').attr('disabled','disabled');
+                }
                 $(".tryMultiselect").chosen();
             }
         });

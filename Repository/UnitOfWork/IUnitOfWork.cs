@@ -1,4 +1,5 @@
 ﻿using Data.Models;
+using DevExtreme.NETCore.Demos.Models;
 using Repository.Interfaces;
 
 namespace Repository.UnitOfWork
@@ -97,5 +98,6 @@ namespace Repository.UnitOfWork
         IRepository<FollowUpByDocResult> FollowUpByDocResult { get; }
         IRepository<FollowUpTestTempData> FollowUpTestTempData { get; }
         IRepository<ClientOrderTest> ClientOrderTest { get; }
+        IRepository<AppointmentExp> AppointmentExp { get; }
     }
 }

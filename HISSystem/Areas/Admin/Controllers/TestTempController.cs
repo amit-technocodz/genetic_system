@@ -52,18 +52,29 @@ namespace GeneticSystem.Areas.Admin.Controllers
             return PartialView("_AddMasterTemp", testTempVM);
         }
         [HttpPost]
-        public bool AddTemplate(TestTempVM testTempVM)
+        public IActionResult AddTemplate(TestTempVM testTempVM)
         {
+            Response response = new Response();
             try
             {
                 TestTemp addtemp = testTempVM.TestTemp;
-                db.TestTempService.AddTestTemp(addtemp);
-                return true;
+                var result = db.TestTempService.AddTestTemp(addtemp);
+
+
+                response.Code = result.ID;
+                response.Status = "Success";
+               
+
+                return Json(response);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                return false;
+
+                response.Code = 0;
+                response.Status = ex.InnerException.StackTrace;
+
+                return Json(response);
             }
         }
 
@@ -144,7 +155,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public bool AddTemplateDetail(TestTempVM testTempVM)
+        public IActionResult AddTemplateDetail(TestTempVM testTempVM)
         {
             var newData = testTempVM.TestTempDataList.Where(x => x.ID == 0);
 
@@ -175,7 +186,13 @@ namespace GeneticSystem.Areas.Admin.Controllers
                 db.TestTempService.UpdateTemplateDataList(olderData.ToList());
             }
 
-            return false;
+            var response = new Response
+            {
+                Code = testTempVM.TestTempDataList[0].TestTempID,
+                Status = "Success!"
+            };
+
+            return Json(response);
         }
 
         [HttpPost]

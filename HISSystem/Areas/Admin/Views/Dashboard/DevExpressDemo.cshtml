@@ -1,33 +1,49 @@
 ﻿
 @{
     ViewData["Title"] = "DevExpressDemo";
-    Layout = "~/Views/Shared/_Admin.cshtml";
+    Layout = "~/Views/Shared/_DevExtremeLayout";
+
 }
+@using DevExtreme.AspNet.Mvc;
 
-@(Html.DevExtreme().Scheduler()
-    .ID("scheduler")
-    .DataSource(d => d.Mvc()
-        .Controller("SchedulerData")
-        .Key("AppointmentId")
+
+@(Html.DevExtreme().DataGrid<Data.Models.Lookup>()
+    .DataSource(ds => ds.Mvc()
+        .Controller("Lookup")
         .LoadAction("Get")
-        .UpdateAction("Put")
         .InsertAction("Post")
+        .UpdateAction("Put")
         .DeleteAction("Delete")
+        .Key("ID")
     )
-    .RemoteFiltering(true)
-    .Views(new[] {
-        SchedulerViewType.Day,
-        SchedulerViewType.WorkWeek,
-        SchedulerViewType.Month
-    })
-    .CurrentView(SchedulerViewType.Day)
-    .CurrentDate(new DateTime(2017, 5, 23))
-    .StartDayHour(9)
-    .EndDayHour(19)
-    .Height(600)
-    .TextExpr("Text")
-    .StartDateExpr("StartDate")
-    .EndDateExpr("EndDate")
-    .AllDayExpr("AllDay")
-)
+    .RemoteOperations(true)
+    .Columns(columns => {
 
+        columns.AddFor(m => m.Type);
+
+        columns.AddFor(m => m.TypeID);
+
+        columns.AddFor(m => m.Name);
+
+        columns.AddFor(m => m.ParentId);
+
+        columns.AddFor(m => m.ParentFKId).Lookup(lookup => lookup
+            .DataSource(ds => ds.WebApi().Controller("Lookup").LoadAction("LookupLookup").Key("Value"))
+            .ValueExpr("Value")
+            .DisplayExpr("Text")
+        );
+
+        columns.AddFor(m => m.ID);
+
+        columns.AddFor(m => m.AddedDate);
+
+        columns.AddFor(m => m.ModifiedDate);
+
+        columns.AddFor(m => m.IsActive);
+    })
+    .Editing(e => e
+        .AllowAdding(true)
+        .AllowUpdating(true)
+        .AllowDeleting(true)
+    )
+)

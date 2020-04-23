@@ -37,7 +37,7 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label>Client Name</label>
-                                                    @Html.DropDownList("clientOrder.ClientOrder.UserID", new SelectList(ViewBag.Clients, "ID", "Name", Model?.ClientOrder?.UserID), "Select", new { @Class = "form-control dropdown", @onchange = "test();" })
+                                                    @Html.DropDownList("clientOrder.ClientOrder.UserID", new SelectList(ViewBag.Clients, "ID", "Name", Model?.ClientOrder?.User?.ID), "Select", new { @Class = "form-control dropdown", @onchange = "test();" })
                                                 </div>
                                             </div>
                                         </div>
@@ -101,7 +101,7 @@
                                         </div>*@
                                         <br />
                                         <div class="col-md-12" id="setTemplate">
-                                            @if (Model != null)
+                                            @if (Model != null && Model.TemplateList != null)
                                             {
                                                 <input value="@Model.ClientOrder.ID" name="clientOrder.ClientOrder.ID" hidden />
                                                 {

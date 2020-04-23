@@ -69,8 +69,9 @@ namespace GeneticSystem.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddOrder()
+        public IActionResult AddOrder(int? id)
         {
+            ClientOrderViewModel viewModel = new ClientOrderViewModel();
             ViewBag.Doctors = db.UserService.GetByRole(3).Select(x => new { ID = x.ID, Name = x.EnFirstName + " " + x.EnThirdName });
             ViewBag.Clients = db.UserService.GetPatients().Select(x => new { ID = x.ID, Name = x.EnFirstName + " " + x.EnThirdName });
             ViewBag.Templates = db.DynamicTemplateService.GetAllTemplates().Select(x => new { x.ID, x.TemplateType.Name }).DistinctBy(x => x.Name);
@@ -84,7 +85,13 @@ namespace GeneticSystem.Areas.Admin.Controllers
             ViewBag.EffectedGene = db.LookupService.GetLookUpByTypeName("Gene");
             ViewBag.FollowUp = db.LookupService.GetLookUpByTypeName("FollowUpType");
 
-            return PartialView("AddClientOrder");
+            if(id != null && id != 0)
+            {
+                viewModel.ClientOrder = new ClientOrder();
+                viewModel.ClientOrder.User = db.UserService.GetUser(Convert.ToInt64(id));
+            }
+
+            return PartialView("AddClientOrder", viewModel);
         }
 
 
@@ -114,6 +121,7 @@ namespace GeneticSystem.Areas.Admin.Controllers
                             TestTemplateID = Convert.ToInt32(clientOrder.ClientOrder.TestTypeArray[i]),
                             Done = false
                         };
+                        db.TestTempService.MarkTestTempInUse(orderTest.TestTemplateID);
                         order.ClientOrderTests.Add(orderTest);
                     }
                 }
@@ -135,6 +143,59 @@ namespace GeneticSystem.Areas.Admin.Controllers
                 return PartialView("_Index", clientOrders);
             }
             catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public bool AddOrderForPatient(ClientOrderViewModel clientOrder, IFormFile file)
+        {
+            try
+            {
+                if (clientOrder.ClientOrder.FollowUpArray != null)
+                    clientOrder.ClientOrder.FollowUp = string.Join(',', clientOrder.ClientOrder.FollowUpArray);
+
+                if(clientOrder.ClientOrderData != null) { 
+                for (int i = 0; i < clientOrder.ClientOrderData.Count(); i++)
+                {
+                    if (clientOrder.ClientOrderData[i].Genes != null)
+                        clientOrder.ClientOrderData[i].GeneID = string.Join(',', clientOrder.ClientOrderData[i].Genes);
+                }
+                }
+                ClientOrder order = clientOrder.ClientOrder;
+                order.ClientOrderTests = new List<ClientOrderTest>();
+
+                if (clientOrder.ClientOrder.TestTypeArray != null)
+                {
+                    for (int i = 0; i < clientOrder.ClientOrder.TestTypeArray.Count(); i++)
+                    {
+                        ClientOrderTest orderTest = new ClientOrderTest
+                        {
+                            TestTemplateID = Convert.ToInt32(clientOrder.ClientOrder.TestTypeArray[i]),
+                            Done = false
+                        };
+                        order.ClientOrderTests.Add(orderTest);
+                    }
+                }
+
+                order.ClientOrderData = clientOrder.ClientOrderData;
+                order.OrderNo = db.ClientOrderService.GetMaxOrderNo();
+                db.ClientOrderService.AddClientOrder(order);
+
+                if(file != null) { 
+                AttachmentModel attachmentModel = new AttachmentModel
+                {
+                    File = file,
+                    ID = order.UserID,
+                    TableName = "ClientOrder"
+                };
+                UploadAttachment(attachmentModel);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }

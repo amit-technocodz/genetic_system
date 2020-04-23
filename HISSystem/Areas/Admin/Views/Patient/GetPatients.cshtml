@@ -44,11 +44,11 @@
                     @item.Address
                 </td>
                 @*<td>
-                    @if (item.PatientPersonalInformation.PatientType != null)
-                    {
-                        @item.PatientPersonalInformation.PatientType.Name
-                    }
-                </td>*@
+            @if (item.PatientPersonalInformation.PatientType != null)
+            {
+                @item.PatientPersonalInformation.PatientType.Name
+            }
+        </td>*@
                 <td>
                     @if (item.PatientPersonalInformation != null && item.PatientPersonalInformation.City != null)
                     {
@@ -88,15 +88,16 @@
         <input type="button" name="submit" value="Add Test" class="btn btn-xs btn-base" />
         <input type="button" name="submit" value="Add Appointment" class="btn btn-xs btn-warning" />
         <input type="button" name="submit" value="Add Order" class="btn btn-xs btn-info" />*@
-                    <button type="button" class="btn btn-xs btn-warning UpdtOrdrBtn" value=""><i class="fa fa-plus" aria-hidden="true"></i> Reminder</button>
-                    <button type="button" class="btn btn-xs btn-success DltOrdrBtn" value=""><i class="fa fa-plus" aria-hidden="true"></i> Test</button>
-                    <button type="button" class="btn btn-xs btn-danger AttchOrdrBtn" value=""><i class="fa fa-plus" aria-hidden="true"></i> Order</button>
-                    <button type="button" class="btn btn-xs btn-info AttchOrdrBtn" value=""><i class="fa fa-history" aria-hidden="true"></i> Timeline</button>
+                    @*<button type="button" class="btn btn-xs btn-warning UpdtOrdrBtn" value=""><i class="fa fa-plus" aria-hidden="true"></i> Reminder</button>
+        <button type="button" class="btn btn-xs btn-success DltOrdrBtn" value=""><i class="fa fa-plus" aria-hidden="true"></i> Test</button>*@
+                    <button type="button" class="btn btn-xs btn-danger" value="" onclick="addOrderData(@item.ID)"><i class="fa fa-plus" aria-hidden="true"></i> Order</button>
+                    @*<a href="/admin/clientorder/index?id=@item.ID" class="btn btn-xs btn-danger"><i class="fa fa-plus" aria-hidden="true"></i> Order </a>*@
+                    <a href="/admin/followup/index?id=@item.ID" class="btn btn-xs btn-info"><i class="fa fa-history" aria-hidden="true"></i> Timeline</a>
 
                 </td>
                 @*<td>
-                    <input type="button" name="submit" value="Time Line" class="btn btn-xs btn-success"  />
-                </td>*@
+            <input type="button" name="submit" value="Time Line" class="btn btn-xs btn-success"  />
+        </td>*@
             </tr>
         }
         </tbody>

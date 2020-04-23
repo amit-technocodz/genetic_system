@@ -25,7 +25,7 @@ namespace Service.Services
             conv.IsActive = true;
             db.FollowUpByDocConv.Insert(conv);
 
-            return db.FollowUpByDocConv.Get().Where(x => x.IsActive == true).ToList();
+            return db.FollowUpByDocConv.Get().Where(x => x.IsActive == true).Include(x => x.Sender).ToList();
         }
 
         public bool AddFollowUpTestTempDataList(List<FollowUpTestTempData> dataList)
@@ -42,6 +42,19 @@ namespace Service.Services
             }
         }
 
+        public bool AddOrderTests(List<ClientOrderTest> dataList)
+        {
+            try
+            {
+                db.ClientOrderTest.InsertList(dataList);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
         public List<FollowUpByDocConv> GetByDocConvs(int orderID)
         {
             return db.FollowUpByDocConv.Get().Where(x => x.IsActive == true && x.OrderID == orderID).ToList();
@@ -79,6 +92,35 @@ namespace Service.Services
         public List<ClientOrderTest> GetPendingTests(int orderID)
         {
             return db.ClientOrderTest.Get().Where(x => x.ClientOrderID == orderID && x.Done == false).Include(x => x.TestTemplate).ThenInclude(y => y.TestTempType).Include(x => x.TestTemplate).ThenInclude(y => y.SubTestTempType).ToList();
+        }
+
+        public bool RemovePendingOrders(int orderID)
+        {
+            try
+            {
+                var pendingOrders = db.ClientOrderTest.Get().Where(x => x.ClientOrderID == orderID && x.Done == false).ToList();
+
+                if(pendingOrders != null)
+                {
+                    db.ClientOrderTest.RemoveList(pendingOrders);
+                }
+
+                return true;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<ClientOrderTest> GetCompletedTests(int orderID)
+        {
+            return db.ClientOrderTest.Get().Where(x => x.ClientOrderID == orderID && x.Done == true).Include(x => x.TestTemplate).ThenInclude(y => y.TestTempType).Include(x => x.TestTemplate).ThenInclude(y => y.SubTestTempType).ToList();
+        }
+
+        public List<string> GetCompletedTestName(int orderID)
+        {
+            return db.ClientOrderTest.Get().Where(x => x.ClientOrderID == orderID && x.Done == true).Select(x => x.TestTemplate.TestTempType.Name ?? "" + ">>" + x.TestTemplate.SubTestTempType.Name ?? "").ToList();
         }
 
         public IEnumerable<FollowUpTestTempData> GetFollowUpTempDataByTempId(int tempId, int orderId)

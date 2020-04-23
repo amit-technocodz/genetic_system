@@ -1,5 +1,6 @@
 ﻿using Data.Mapping;
 using Data.Models;
+using DevExtreme.NETCore.Demos.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,8 +26,25 @@ namespace Repository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //base.OnModelCreating(modelBuilder);
-            //new UserMap(modelBuilder.Entity<User>());
+            modelBuilder.Entity<TempDependency>()
+            .HasOne(m => m.Col)
+            .WithOne(t => t.ColIDTempDependencies)
+            .HasForeignKey<TempDependency>(m => m.ColID);
+
+            modelBuilder.Entity<TempDependency>()
+                        .HasOne(m => m.ChkBox)
+                        .WithMany(t => t.ChkBoxTempDependencies)
+                        .HasForeignKey(m => m.ChkBoxID);
+
+            modelBuilder.Entity<TemplateColumn>()
+                .HasMany(t => t.ChkBoxTempDependencies)
+                .WithOne(m => m.ChkBox)
+                .HasForeignKey(m => m.ChkBoxID);
+
+            modelBuilder.Entity<TemplateColumn>()
+                .HasOne(t => t.ColIDTempDependencies)
+                .WithOne(m => m.Col)
+                .HasForeignKey<TempDependency>(m => m.ColID);
         }
 
         public DbSet<User> User { get; set; }
@@ -53,7 +71,7 @@ namespace Repository
         public DbSet<MedicalHistory> MedicalHistory { get; set; }
         public DbSet<LogTable> LogTable { get; set; }
         public DbSet<LogData> LogData { get; set; }
-        public DbSet<IMDetailLookup> IMDetailLookup{ get; set; }
+        public DbSet<IMDetailLookup> IMDetailLookup { get; set; }
         public DbSet<PatientEncounter> PatientEncounter { get; set; }
         public DbSet<PatientPreAssesment> PatientPreAssesment { get; set; }
         public DbSet<PatientPreAssesmentVital> PatientPreAssesmentVital { get; set; }
@@ -121,6 +139,8 @@ namespace Repository
         public DbSet<FollowUpByDocResult> FollowUpByDocResult { get; set; }
         public DbSet<FollowUpTestTempData> FollowUpTestTempData { get; set; }
         public DbSet<ClientOrderTest> ClientOrderTest { get; set; }
+        public DbSet<AppointmentExp> AppointmentExp { get; set; }
+        public DbSet<TempDependency> TempDependency { get; set; }
 
     }
 }

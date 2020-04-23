@@ -212,19 +212,34 @@
         //GLOBAL VARIABLE TO STORE TEMPLATE ROW DATA
         var templateHtml = null;
 
-        function editTemplateData(event) {
+        function editTemplateData(tempDataId) {
             var getInnerHTML = document.getElementById("DataLookup").innerHTML;
             getGlobalHTML = getInnerHTML;
-            var targetElement = event.target.parentElement;
-            var id = targetElement.previousElementSibling.getAttribute("data-info");
-            var multiSelect = targetElement.parentElement.getElementsByClassName('tryMultiselect');
-            $(multiSelect[0]).prop("disabled", false).trigger("chosen:updated");
-            var elements = event.target.parentElement.parentElement.getElementsByClassName('itemDatadsbl');
-            for (i = 0; i < elements.length; i++) { elements[i].disabled = false; }
-            targetElement.lastElementChild.hidden = false;
-            targetElement.firstElementChild.nextElementSibling.hidden = true;
-            targetElement.firstElementChild.nextElementSibling.nextElementSibling.hidden = false;
-            targetElement.firstElementChild.hidden = true;
+            console.log(tempDataId);
+            //var targetElement = event.target.parentElement;
+            //var id = targetElement.previousElementSibling.getAttribute("data-info");
+            //var multiSelect = targetElement.parentElement.getElementsByClassName('tryMultiselect');
+            //$(multiSelect[0]).prop("disabled", false).trigger("chosen:updated");
+            //var elements = event.target.parentElement.parentElement.getElementsByClassName('itemDatadsbl');
+            //for (i = 0; i < elements.length; i++) { elements[i].disabled = false; }
+            //targetElement.lastElementChild.hidden = false;
+            //targetElement.firstElementChild.nextElementSibling.hidden = true;
+            //targetElement.firstElementChild.nextElementSibling.nextElementSibling.hidden = false;
+            //targetElement.firstElementChild.hidden = true;
+
+            $.ajax({
+                type: 'GET',
+                url: '/admin/dynamictemplate/updatetemplatedata?tempDataID=' + tempDataId,
+                success: function (data) {
+                    $("#DataLookup").html(data);
+                    $('.tryMultiselect').chosen();
+                  
+                },
+                error: function () {
+                    alert("Content load failed.");
+                }
+            });
+            
         }
         function cancelTemplateData(event) {
             document.getElementById("DataLookup").innerHTML = getGlobalHTML;
@@ -263,11 +278,15 @@
             formdata.append("TemplateData.ID", targetElement.previousElementSibling.getAttribute("data-info"));
             formdata.append("TemplateData.TemplateID", formRow.getAttribute("data-info"));
             $(formRow).each(function (a, b) {
+                debugger
                 var fields = $(this).find(":input");
                 for (i = 0; i < fields.length; i++) {
                     formdata.append(fields[i].name, fields[i].value);
                 }
             });
+            for (var pair of formdata.entries()) {
+    console.log(pair[0]+ ', ' + pair[1]); 
+}
             $.ajax({
                 type: "POST",
                 url: '/admin/dynamictemplate/updatetemplatedata',
@@ -364,6 +383,29 @@
             });
         });
 
+               $(document).on("click", ".updatetempData", function () {
+                   var values = $(this).attr("data-catch");
+                   console.log(values);
+            var formdata = new FormData($('#updateTemplateDetailFrm').get("0"));
+            $.ajax({
+                type: 'POST',
+                url: '/admin/dynamictemplate/UpdateTemplateData',
+                data: formdata,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response == true) {
+                        toastr.info('Record saved');
+                        GetTemplateDetailByID(values);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    GetTemplateDetailByID(values);
+                    toastr.error('Something went wrong');
+                }
+            });
+        });
 
 
         $(document).on("click", ".addTemplateDetail", function () {
@@ -389,6 +431,23 @@
             });
             GetTemplateDetailFix(values);
         });
+
+        
+        function GetTemplateDetailByID(tempID) {
+            $.ajax({
+                url: '/admin/dynamictemplate/getdynamictemplatebyID?tempID=' + tempID,
+                contentType: 'application/json; charse=utf-8',
+                type: 'get',
+                success: function (result) {
+                    debugger
+                    $("#DataLookup").html(result);
+                    $('.tryMultiselect').chosen();
+                },
+                error: function (xhr, status) {
+                    alert(status)
+                }
+            });
+        }
 
         function GetTemplateDetailFix(type) {
             var fields = type.split('>>');

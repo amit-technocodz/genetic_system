@@ -14,6 +14,7 @@ namespace Data.Models
         public bool IsActive { get; set; }
         public DateTime CreatedOn { get; set; }
         public virtual FollowUpByDocConv Parent { get; set; }
+        public virtual ClientOrder Order { get; set; }
         public virtual User Sender { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Data.Models;
+using DevExtreme.NETCore.Demos.Models;
 using Repository.Classes;
 using Repository.Interfaces;
 
@@ -99,11 +100,28 @@ namespace Repository.UnitOfWork
         Repository<FollowUpByDocResult> _FollowUpByDocResult;
         Repository<FollowUpTestTempData> _FollowUpTestTempData;
         Repository<ClientOrderTest> _ClientOrderTest;
+        Repository<AppointmentExp> _AppointmentExp;
 
         public UnitOfWork()
         {
             this._context = new ApplicationContext();
         
+        }
+        public IRepository<AppointmentExp> AppointmentExp
+        {
+            get
+            {
+                if (_AppointmentExp != null)
+                {
+                    return _AppointmentExp;
+                }
+                else
+                {
+                    _AppointmentExp = new Repository<AppointmentExp>(_context);
+                    return _AppointmentExp;
+                }
+
+            }
         }
         public IRepository<ClientOrderTest> ClientOrderTest
         {

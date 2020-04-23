@@ -28,7 +28,7 @@ namespace Service.Services
 
         public User GetUser(long id)
         {
-            var result = db.User.Get().Where(x => x.ID == id).Include(x => x.PersonalInformation).Include(x => x.PatientPersonalInformation).Include(x => x.PatientRelative).FirstOrDefault();
+            var result = db.User.Get().Where(x => x.ID == id).Include(x => x.PersonalInformation).Include(x => x.PatientPersonalInformation).ThenInclude(y => y.City).Include(x => x.PatientPersonalInformation).ThenInclude(y => y.BloodGroup).Include(x => x.PatientRelative).FirstOrDefault();
             return result;
         }
 

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace GeneticSystem.Areas.Admin.Models.FollowUp
@@ -18,6 +19,9 @@ namespace GeneticSystem.Areas.Admin.Models.FollowUp
         public List<FollowUpByDocResult> FollowUpByDocResultList { get;set;}
         public List<FollowUpByDocConv> FollowUpByDocConvList { get; set; }
         public List<SelectListItem> orderTest { get; set; }
+        public string completedOrderTests { get; set; }
+        public string[] PendingTestArray { get; set; }
+        public ClientOrderTest clientOrderTest { get; set; } 
         public List<List<FollowUpTestTempData>[]> followUpTestTempDataList { get; set; }
     }
 }

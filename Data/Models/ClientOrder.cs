@@ -8,7 +8,7 @@ namespace Data.Models
     public class ClientOrder
     {
         public int ID { get; set; }
-        public int TemplateID { get; set; }
+        public int? TemplateID { get; set; }
         public string FollowUp { get; set; }
         public string TestType { get; set; }
         public DateTime? OrderDate { get; set; }

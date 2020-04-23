@@ -18,17 +18,17 @@ namespace Service.Services
             this.db = db;
         }
 
-        public bool AddTestTemp(TestTemp testTemp)
+        public TestTemp AddTestTemp(TestTemp testTemp)
         {
             try
             {
                 db.TestTemp.Insert(testTemp);
-                return true;
+                return testTemp;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                return false;
+                return null;
             }
         }
 
@@ -46,6 +46,22 @@ namespace Service.Services
             }
         }
 
+        public bool MarkTestTempInUse(int testTempID)
+        {
+            try
+            {
+                var testTemp = db.TestTemp.Get().Where(x => x.ID == testTempID).FirstOrDefault();
+                testTemp.InUse = true;
+                db.TestTemp.Update(testTemp);
+                db.TestTemp.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
 
         public bool AddTestTempCol(List<TestTempCol> testTemp)
         {

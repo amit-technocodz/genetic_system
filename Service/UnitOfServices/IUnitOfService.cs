@@ -42,6 +42,7 @@ namespace Service.UnitOfServices
         TestTempService TestTempService { get; }
         ReminderService ReminderService { get; }
         FollowUpService FollowUpService { get; }
+        AppointmentExpService AppointmentExpService { get; }
     }
 }
 

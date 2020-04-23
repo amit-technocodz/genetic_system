@@ -39,6 +39,13 @@ namespace HISSystem.Areas.Admin.Controllers
             return View(users);
         }
 
+        public List<User> ReturnUser()
+        {
+            var users = db.UserService.GetUsers().ToList();
+
+            return users;
+        }
+
         public ActionResult _Index(int page)
         {
             var users = new PagedData<User>();

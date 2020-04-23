@@ -200,6 +200,12 @@
                 success: function (result) {
                     debugger
                     $("#DataLookup").html(result);
+                     console.log("True/False",$("#tmpInUse").val());
+                    if ($("#tmpInUse").val() == "True") {
+                        console.log("True/False",$("#tmpInUse").val());
+                        $('.fieldDiv').find('input, textarea, button, select').attr('disabled', 'disabled');
+                    }
+
                     $('.tryMultiselect').chosen();
                 },
                 error: function (xhr, status) {
@@ -390,15 +396,14 @@
                 data: formdata,
                 processData: false,
                 contentType: false,
-                 dataType: "text",
+                 dataType: "json",
                 success: function (data) {
-                    console.log(data)
-                    if (data) {
-                        toastr.success('Template Created');
-                        debugger
-                        //GetTemplateDetailFix(values);
-                        debugger
-                        $('#search').keyup();
+                    console.log(data);
+                    debugger;
+                    if (data.Code != 0) {
+                        toastr.success('Template Created')
+                        $('#search').keyup()
+                        GetTemplateDetailFix(data.Code)
                     }
                     else {
                         toastr.warning('Something went wrong');
@@ -438,7 +443,6 @@
 
 
         $(document).on("click", ".addTemplateDetail", function () {
-            debugger
             var values = $(this).attr("data-catch")
               var formdata = new FormData($('#addTemplateDetailFrm').get("0"));
               $.ajax({
@@ -449,27 +453,40 @@
                 processData: false,
                 contentType: false,
                   success: function (response) {
-                      debugger
-                      if (response == true) {
+                      if (response.Code != 0) {
                           toastr.info('Record saved');
-                          //GetTemplateDetailFix(values);
+                          GetTemplateDataList(response.Code);
                       }
                 },
                   error: function (XMLHttpRequest, textStatus, errorThrown) {
-
                     toastr.error('Something went wrong');
                 }
               });
 
         });
 
-        function GetTemplateDetailFix(type) {
-                alert('this got called')
-            var fields = type.split('>>');
-            var temptype = fields[0];
-            var subtemptype = fields[1];
+
+        function GetTemplateDataList(tempId) {
+            $.ajax({
+                url: '/admin/testtemp/getdynamictemplate?tempID=' + tempId,
+                contentType: 'application/json; charse=utf-8',
+                type: 'get',
+                success: function (result) {
+                    debugger
+                    $("#DataLookup").html(result);
+                    $('.tryMultiselect').chosen();
+                },
+                error: function (xhr, status) {
+                    alert(status)
+                }
+            });
+        }
+
+        function GetTemplateDetailFix(tempId) {
+            debugger;
+            console.log(tempId);
 		$.ajax({
-			url: '/admin/testdynamictemplate/getdynamictemplate?temptype=' + temptype + "&subtemptype=" + subtemptype,
+			url: '/admin/testtemp/AddTemplateData?templateId=' + tempId,
 			contentType: 'application/json; charse=utf-8',
 			type: 'get',
 			success: function (result) {
@@ -759,7 +776,9 @@
 
 
         $(document).on("click", ".backToTemplate", function () {
-            debugger
+            if (getGlobalHTML == null || getGlobalHTML == undefined) {
+                getGlobalHTML = "";
+            }
             document.getElementById("DataLookup").innerHTML = getGlobalHTML;
             debugger
             $("#DataLookup").find('.tryMultiselect').each(function (i, element) {

@@ -8,7 +8,6 @@
                 &nbsp;Add Template Data
             </button>
             &nbsp;
-            @*<h3 id="lName"></h3>*@
             <button type="button" class="btn btn-xs edit-post btn-outline-primary updateTemplate" onclick="TempID(@ViewBag.TemplateID)">
                 <i class="fa fa-edit" aria-hidden="true"></i>
                 &nbsp;Edit Template Columns
@@ -23,7 +22,6 @@
                         {
                             <th> @item.DisplayName </th>
                         }
-
                         <th class="numeric">Action</th>
                     </tr>
                 </thead>
@@ -36,66 +34,64 @@
                             {
                                 @foreach (var item in Model.Template.TemplateColumns.Select((value, i) => new { i, value }))
                                 {
-                                    <td class="" data-info="@itemData.value.ID">
+                            <td class="" data-info="@itemData.value.ID">
 
-                                        @if (item.value.TemplateField.Name == "EffectedGene")
-                                        {
-                                            @Html.ListBox("TemplateData.Genes", new MultiSelectList(ViewBag.EffectedGene, "ID", "Name", Model.TemplateDataList[itemData.i].Genes), htmlAttributes: new { @class = "tryMultiselect form-control", @disabled = "disabled", multiple = "multiple" })
+                                @if (item.value.TemplateField.Name == "EffectedGene")
+                                {
+                                    @Html.ListBox("TemplateData.Genes", new MultiSelectList(ViewBag.EffectedGene, "ID", "Name", Model?.TemplateDataList[itemData.i]?.Genes), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple", @disabled = true })
+                                }
+                                else if (item.value.TemplateField.Name == "ConsumptionType")
+                                {
+                                    @Html.DropDownList("TemplateData.ConsumptionTypeID", new SelectList(ViewBag.ConsumptionType, "ID", "Name", @Model.TemplateDataList[itemData.i].ConsumptionTypeID), "Select Consumption Type", new { @class = "form-control dropdown itemDatadsbl", @disabled = true })
+                                }
+                                else if (item.value.TemplateField.Name == "Element")
+                                {
+                                    @Html.DropDownList("TemplateData.ElementID", new SelectList(ViewBag.Element, "ID", "Name", @Model.TemplateDataList[itemData.i].ElementID), "Select Element Type", new { @class = "form-control dropdown itemDatadsbl", @disabled = true })
+                                }
+                                else if (item.value.TemplateField.Name == "Result")
+                                {
+                                    @Html.DropDownList("TemplateData.Result", new SelectList(ViewBag.Result, "Value", "Text", @Model.TemplateDataList[itemData.i].Result), "Select Result Type", new { @class = "form-control dropdown itemDatadsbl", @disabled = true })
 
-                                            @*@Html.ListBoxFor(m => m.TemplateDataList[itemData.i].Genes, new MultiSelectList(ViewBag.EffectedGene, "ID", "Name"), htmlAttributes: new { @class = "tryMultiselect form-control", multiple = "multiple" })*@
-                                        }
-                                        else if (item.value.TemplateField.Name == "ConsumptionType")
-                                        {
-                                            @Html.DropDownList("TemplateData.ConsumptionTypeID", new SelectList(ViewBag.ConsumptionType, "ID", "Name", @Model.TemplateDataList[itemData.i].ConsumptionTypeID), "Select Consumption Type", new { @class = "form-control dropdown itemDatadsbl", @disabled = true })
-                                        }
-                                        else if (item.value.TemplateField.Name == "Element")
-                                        {
-                                            @Html.DropDownList("TemplateData.ElementID", new SelectList(ViewBag.Element, "ID", "Name", @Model.TemplateDataList[itemData.i].ElementID), "Select Element Type", new { @class = "form-control dropdown itemDatadsbl", @disabled = true })
-                                        }
-                                        else if (item.value.TemplateField.Name == "Result")
-                                        {
-                                            @Html.DropDownList("TemplateData.Result", new SelectList(ViewBag.Result, "Value", "Text", @Model.TemplateDataList[itemData.i].Result), "Select Result Type", new { @class = "form-control dropdown itemDatadsbl", @disabled = true })
-
-                                        }
-                                        else if (item.value.TemplateField.Name == "HaveMutationEffected")
-                                        {
-                                        <label class="form-check">
-                                            <input type="checkbox" name="TemplateData.HaveMutationEffected" class="itemDatadsbl" value="@Model.TemplateDataList[itemData.i].HaveMutationEffected" @(Model.TemplateDataList[itemData.i].HaveMutationEffected == true ? "checked" : "") disabled><span class="label-text">Have Mutation Effected</span>
-                                        </label>
-                                            }
-                                        else if (item.value.TemplateField.Name == "EffectedGood")
-                                        {
-                                            <input name="TemplateData.EffectedGood" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.i].EffectedGood" disabled>
-                                        }
-                                        else if (item.value.TemplateField.Name == "EffectedBad")
-                                        {
-                                            <input name="TemplateData.EffectedBad" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.i].EffectedBad" disabled>
-                                        }
-                                        else if (item.value.TemplateField.Name == "GeneticMutation")
-                                        {
-                                            <input name="TemplateData.GeneticMutation" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.i].GeneticMutation" disabled>
-                                        }
-                                        else if (item.value.TemplateField.Name == "PersonalRiskFactor")
-                                        {
-                                            <input name="TemplateData.PersonalRiskFactor" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.i].PersonalRiskFactor" disabled>
-                                        }
-                                        else if (item.value.TemplateField.Name == "Hereditary")
-                                        {
-                                            <input name="TemplateData.Hereditary" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.i].Hereditary" disabled>
-                                        }
-                                        else if (item.value.TemplateField.Name == "ResultSummary")
-                                        {
-                                            <input name="TemplateData.ResultSummary" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.i].ResultSummary" disabled>
-                                        }
-                                        else if (item.value.TemplateField.Name == "Recommendations")
-                                        {
-                                            <input name="TemplateData.Recommendation" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.i].Recommendation" disabled>
-                                        }
-                                    </td>
+                                }
+                                else if (item.value.TemplateField.Name == "HaveMutationEffected")
+                                {
+                                    <label class="form-check">
+                                        <input type="checkbox" name="TemplateData.HaveMutationEffected" class="itemDatadsbl" value="@Model.TemplateDataList[itemData.i].HaveMutationEffected" @(Model.TemplateDataList[itemData.i].HaveMutationEffected == true ? "checked" : "") disabled><span class="label-text">Have Mutation Effected</span>
+                                    </label>
+                                }
+                                else if (item.value.TemplateField.Name == "EffectedGood")
+                                {
+                                    <input name="TemplateData.EffectedGood" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.i].EffectedGood" disabled>
+                                }
+                                else if (item.value.TemplateField.Name == "EffectedBad")
+                                {
+                                    <input name="TemplateData.EffectedBad" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.i].EffectedBad" disabled>
+                                }
+                                else if (item.value.TemplateField.Name == "GeneticMutation")
+                                {
+                                    <input name="TemplateData.GeneticMutation" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.i].GeneticMutation" disabled>
+                                }
+                                else if (item.value.TemplateField.Name == "PersonalRiskFactor")
+                                {
+                                    <input name="TemplateData.PersonalRiskFactor" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.i].PersonalRiskFactor" disabled>
+                                }
+                                else if (item.value.TemplateField.Name == "Hereditary")
+                                {
+                                    <input name="TemplateData.Hereditary" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.i].Hereditary" disabled>
+                                }
+                                else if (item.value.TemplateField.Name == "ResultSummary")
+                                {
+                                    <input name="TemplateData.ResultSummary" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.i].ResultSummary" disabled>
+                                }
+                                else if (item.value.TemplateField.Name == "Recommendations")
+                                {
+                                    <input name="TemplateData.Recommendation" class="form-control itemDatadsbl" value="@Model.TemplateDataList[itemData.i].Recommendation" disabled>
+                                }
+                            </td>
                                 }
                             }
                             <td>
-                                <a href="javascript:void(0);" class="fa fa fa-pencil mrgn-l-xs fa-1x" onclick="editTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Trach"></a>
+                                <a href="javascript:void(0);" class="fa fa fa-pencil mrgn-l-xs fa-1x" onclick="editTemplateData(@Model.TemplateDataList[itemData.i].ID)" data-toggle="tooltip" , data-placement="top" title="Trach"></a>
                                 <a href="javascript:void(0);" class="fa fa-trash mrgn-l-xs fa-1x" onclick="deleteTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Trach"></a>
                                 <a href="javascript:void(0);" class="fa fa-floppy-o mrgn-l-xs fa-1x" onclick="updateTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Trach" hidden></a>
                                 <a href="javascript:void(0);" class="fa fa-times mrgn-l-xs fa-1x" onclick="cancelTemplateData(event)" data-toggle="tooltip" , data-placement="top" title="Trach" hidden></a>

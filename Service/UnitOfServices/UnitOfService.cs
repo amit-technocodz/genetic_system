@@ -41,10 +41,24 @@ namespace Service.UnitOfServices
         private TestTempService _TestTempService;
         private ReminderService _ReminderService;
         private FollowUpService _FollowUpService;
+        private AppointmentExpService _AppointmentExpService;
 
         public UnitOfService()
         {
             this._rep = new UnitOfWork();
+        }
+        public AppointmentExpService AppointmentExpService
+        {
+            get
+            {
+                if (_AppointmentExpService != null)
+                    return _AppointmentExpService;
+                else
+                {
+                    _AppointmentExpService = new AppointmentExpService(_rep);
+                    return _AppointmentExpService;
+                }
+            }
         }
         public FollowUpService FollowUpService
         {

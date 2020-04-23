@@ -5,20 +5,80 @@
 }
 <style>
     .modal-dialog {
-    width: 650px;
-    margin: 30px auto;
-}
+        width: 650px;
+        margin: 30px auto;
+    }
+
     .center-screen {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  min-height: 100vh;
-}
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        min-height: 100vh;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 44px;
+        height: 20px;
+    }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 12px;
+            width: 11px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .slider {
+        background-color: #f39521;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #f39521;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
 </style>
 
-
+<link rel="stylesheet" href="//jonthornton.github.io/jquery-timepicker/jquery.timepicker.css">
 <div class="shadow"></div>
 <div class="hideSkipLink">
 </div>
@@ -155,22 +215,167 @@
             </div>
         </form>
     </div>
-  
+    <!-- Modal -->
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalLabel">Appointment Info</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <span class="badge badge-light">Doctor: </span>&nbsp;<label id="dctrSpan"></label>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="badge badge-light">Patient: </span>&nbsp;<label id="ptntSpan"></label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <span class="badge badge-light">Room:</span>&nbsp;<label id="roomSpan"></label>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="badge badge-light">Mobile:</span>&nbsp;<label id="mblSpan"></label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <span class="badge badge-light">Department:</span>&nbsp;<label id="dptSpan"></label>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="badge badge-light">Note:</span>&nbsp;<label id="noteSpan"></label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label>
+                                Send SMS:
+                                <label class="switch">
+                                    <input id="swtchChk" type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </label>
+                        </div>
+                    </div>
+                    <form id="smsFrm" hidden>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">To:</label>
+                            <input type="text" class="form-control" id="recipient-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Message:</label>
+                            <textarea class="form-control" id="message-text"></textarea>
+                            <button type="button" class="btn btn-primary" onclick="SendSMS()">Send</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 @section Scripts{
-
     <script>
+
+        function SendSMS() {
+            var data = new FormData();
+            data.append("InvoiceNo", $("#InvoiceNo").val());
+            data.append("AttachmentName", $("#AttachmentName").val());
+            data.append("TriggerType", $("#TriggerType").val());
+            data.append("TargetID", $("#TargetID").val());
+            data.append("FromMobile", $("#FromMobile").val());
+            data.append("ToMobile", $("#ToMobile").val());
+            data.append("Body", $("#Body").val());
+            //data.append("", $("#File").val());
+
+            $.ajax({
+                url: '/admin/SMS/send',
+                data: data,
+                type: 'Post',
+                processData: false, contentType: false,
+                success: function (result) {
+                    if (result) {
+                        alert('SMS sent successfully !')
+                        $('#modalDiv').modal('hide');
+                        window.location.reload();
+                    }
+                },
+                error: function (xhr, status) {
+                    alert(status)
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            var url = window.location.href;
+            var value = url.substring(url.lastIndexOf('/') + 1);
+            if (value == "SendEmail") {
+                return false;
+            }
+            value = value.split('?')
+            if (value[1] == "Send=True") {
+                alert('SMS sent successfully !');
+                window.location.href = '/admin/SMS/SendSMS';
+            }
+        })
+
+        var subject = "";
+        var body = "";
+        function NewSMS() {
+
+
+            body = $("#Body").val();
+
+
+
+            $("#Body").val("");
+        }
+
+        function Refresh() {
+
+
+            $("#Body").val(body);
+        }
+
+    </script>
+
+    <style>
+        textarea.form-control {
+            height: 250px;
+        }
+    </style>
+    <script src="//jonthornton.github.io/jquery-timepicker/jquery.timepicker.js"></script>
+    <script>
+
+        $(document).on('change', '#swtchChk', function () {
+            alert('outside')
+            if ($("#swtchChk").prop("checked")) {
+                alert('inside')
+                $('#smsFrm').show();
+            } else {
+                $('#smsFrm').hide();
+            }
+
+        });
+
         function appointmentsearch(i) {
 
             var searchstring = $("#searchinappointment1").val();
             var page = parseInt(i);
             var StartDate = $("#searchstartdate").val();
-           // console.log(StartDate);
+            // console.log(StartDate);
             var EndDate = $("#searchenddate").val();
-            var AppointmentStatusID =  $("#appstatusid").val();
-         //   alert(AppointmentStatusID);
+            var AppointmentStatusID = $("#appstatusid").val();
+            //   alert(AppointmentStatusID);
             debugger
             $.ajax({
                 url: '/admin/patient/SearchInCompletedAppointmentList',
@@ -179,13 +384,13 @@
                     page: page,
                     StartDate: StartDate,
                     EndDate: EndDate,
-                    AppointmentStatusID:AppointmentStatusID
+                    AppointmentStatusID: AppointmentStatusID
 
                 },
                 success: function (result) {
                     debugger
                     //
-                        $("#search-data1").empty();
+                    $("#search-data1").empty();
                     $("#search-data1").append(result);
                     $("#searchinappointment1").show();
                     $("#searchinappointment1").val(searchstring);
@@ -196,19 +401,19 @@
                 }
             });
         }
-        function GetAppointmentList(appointmentstatus) { 
+        function GetAppointmentList(appointmentstatus) {
             //debugger
-              //  $("#appointmentstatusid").val(appointmentstatus);
+            //  $("#appointmentstatusid").val(appointmentstatus);
             $.ajax({
-                url: '/admin/patient/AppointmentListOfStatus?AppointmentStatus='+appointmentstatus,
+                url: '/admin/patient/AppointmentListOfStatus?AppointmentStatus=' + appointmentstatus,
                 type: 'GET',
                 success: function (result) {
                     debugger
                     $("#searchwithid1").show();
                     $("#search-data1").html(result);
-                
-                   
-                    
+
+
+
                 },
                 error: function (xhr, status) {
                     debugger
@@ -219,7 +424,7 @@
         function closediv1() {
             $("#searchwithid1").hide();
         }
-    
+
         $(function () {
             $("#Date").datepicker();
         });
@@ -246,17 +451,20 @@
         nav.skipMonths = 3;
         nav.selectMode = "week";
         nav.onTimeRangeSelected = function (args) {
-            dp.startDate = args.day;
+            dp.startDate = args.start;
+            dp.days = args.days;
             dp.update();
-            loadEvents();
+
         };
         nav.init();
+
 
         var Columndata;
 
         var dp = new DayPilot.Calendar("dp");
         //dp.viewType = "Resources";
-        dp.viewType = "Resources";
+        //dp.viewType = "Resources";
+        dp.viewType = "WorkWeek";
         //  dp.headerLevels = 2;
         debugger
 
@@ -357,12 +565,15 @@
                 data: { id: id },
 
                 success: function (result) {
-                    console.log(result);
+                    console.log("This result", result);
                     function test() {
 
                     }
-
-                    $('#SpecialityID').val(result.personalInformation.specialityID);
+                    if (result.personalInformation != null) {
+                        $('#SpecialityID').val(result.personalInformation.specialityID);
+                    } else {
+                        $('#SpecialityID').val("");
+                    }
                     $('#DoctorIDModel').val(result.id);
 
                 }
@@ -395,14 +606,14 @@
                 debugger
                 dp.clearSelection();
                 var e = new DayPilot.Event({
-                    start: result.data.Data.start,
-                    end: result.data.Data.end,
+                    start: result.Data.Data.Start,
+                    end: result.Data.Data.End,
                     id: DayPilot.guid(),
                     resource: args.resource,
-                    text: result.data.Data.name
+                    text: result.Data.Data.Name
                 });
                 dp.events.add(e);
-                dp.message(result.data.Message);
+                dp.message(result.Data.Message);
                 $('#close-button').trigger('click');
 
             });
@@ -410,12 +621,30 @@
 
         dp.onTimeRangeDoubleClicked = function (args) {
             debugger
-           // alert("DoubleClick: start: " + args.start + " end: " + args.end + " resource: " + args.resource);
+            // alert("DoubleClick: start: " + args.start + " end: " + args.end + " resource: " + args.resource);
         };
 
         dp.onEventClick = function (args) {
-            debugger
-          //  alert("clicked: " + args.e.id());
+            if (args.e.data.Department != null) {
+                $("#dptSpan").text(args.e.data.Department)
+            }
+            if (args.e.data.Doctor != null) {
+                $("#dctrSpan").text(args.e.data.Doctor)
+            }
+            if (args.e.data.Room != null) {
+                $("#roomSpan").text(args.e.data.Room)
+            }
+            if (args.e.data.Mobile != null) {
+                $("#mblSpan").text(args.e.data.Mobile)
+            }
+            if (args.e.data.Patient != null) {
+                $("#ptntSpan").text(args.e.data.Patient)
+            }
+            if (args.e.data.Note != null) {
+                $("#noteSpan").text(args.e.data.Note)
+            }
+
+            $("#eventModal").modal('show');
         };
 
         dp.headerHeightAutoFit = true;
@@ -433,10 +662,14 @@
             }
         });
 
+        //dp.days = DayPilot.Date.daysDiff(nav.selectionStart, nav.selectionEnd);
+        dp.startDate = nav.selectionStart;
+        //dp.cellDuration = 1440;
         dp.init();
 
         $.get('GetDoctorAppointments', function (data) {
             debugger
+            console.log(data);
             dp.events.list = data.data;
             dp.update();
         });
@@ -527,7 +760,7 @@
                 }
             });
         }
-         function fnExcelReport() {
+        function fnExcelReport() {
             var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
             var textRange; var j = 0;
             var tab = document.getElementById('appointmentTbl'); // id of table
@@ -557,6 +790,6 @@
 
             return (sa);
         }
-       
+
     </script>
 }

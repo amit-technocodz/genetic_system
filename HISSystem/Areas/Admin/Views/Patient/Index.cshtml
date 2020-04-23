@@ -86,90 +86,66 @@
     </div>
 
     <div class="table-style">
-        <div class="row mrgn-b-sm">
-            <div class="col-md-4 col-lg-4">
-                <div class="btn-group btn-group-justified mrgn-b-xs">
-                    <a class="btn btn-xs  btn-primary sbmtBtn" href="/admin/patient/add"><i class="fa fa-plus" aria-hidden="true"></i> New </a>
-                    <a class="btn btn-xs  btn-warning sbmtBtn" href="/admin/patient/upate/" id="update-patient"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update </a>
-                    <div class="btn-group">
-                        <button data-toggle="dropdown" class="btn btn-xs btn-info dropdown-toggle" type="button"><i class="fa fa-share-square-o" aria-hidden="true"></i> Export <i class="fa fa-sort-desc" aria-hidden="true"></i> </button>
-                        <ul role="menu" class="dropdown-menu">
-                            <li onclick="fnExcelReport()"> <a href="javascript:;"> Xls Format </a> </li>
-                            <li id="pdfExport"> <a href="javascript:;"> PDF Format </a> </li>
-                        </ul>
-                    </div>
-
+        <div id="orderBtnDiv" hidden>
+            <div class="row mrgn-b-sm">
+                <div class="col-md-8 col-lg-8">
+                    <button class="btn btn-danger btn-xs cancelEvent" id="cancelOrderBtn" type="button"><i class="fa fa-times" aria-hidden="true"></i> Back </button>
+                    <button name="button" value="Save" onclick="saveOrderFunction();" class="btn btn-xs btn-primary sbmtBtn" id="signupform"><i class="fa fa-check" aria-hidden="true"></i> Save </button>
                 </div>
-            </div>
-            @*<div class="col-md-4 col-lg-4">
-                <div class="btn-group  mrgn-b-xs">
-                    <a class="btn btn-xs  btn-primary" href="/admin/patient/appointment"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Add Appointment </a>
-                    <button class="btn btn-xs btn-warning " type="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>  Add Emergancy </button>
-                </div>
-            </div>*@
-            <div class="col-md-3">
             </div>
         </div>
-        <div class="row mrgn-b-sm">
-            <div class="col-md-12 col-lg-12">
-                <h5>Quick Search</h5>
-                <div class="quick-search-block">
-                    <div class="row">
-                        @*<div class="col-md-2 col-lg-2">
-                            <div class="row">
-                                <div class="col-md-12 col-lg-12 mrgn-b-xs">
-                                    <div class="form-check">
-                                        <label>
-                                            <input type="checkbox" class="search" id="inPatientCheckBox" name="in-patient" value="1" checked onchange="patientSearch()" /><span class="label-text">In Patient</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-lg-12 mrgn-b-xs">
-                                    <div class="form-check">
-                                        <label>
-                                            <input type="checkbox" class="search" id="outPatientCheckBox" name="out-patient" value="1" checked onchange="patientSearch()" /><span class="label-text">Out Patient</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-lg-12 mrgn-b-xs">
-                                    <div class="form-check">
-                                        <label>
-                                            <input type="checkbox" class="search" id="appointmentTodayCheckBox" name="appointment-today" value="1" checked onchange="patientSearch()" /><span class="label-text">Appointment Today</span>
-                                        </label>
-                                    </div>
+        <div id="patientBtnDiv">
+            <div class="row mrgn-b-sm">
+                <div class="col-md-4 col-lg-4">
+                    <div class="btn-group btn-group-justified mrgn-b-xs">
+                        <a class="btn btn-xs  btn-primary sbmtBtn" href="/admin/patient/add"><i class="fa fa-plus" aria-hidden="true"></i> New </a>
+                        <a class="btn btn-xs  btn-warning sbmtBtn" href="/admin/patient/upate/" id="update-patient"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update </a>
+                        <div class="btn-group">
+                            <button data-toggle="dropdown" class="btn btn-xs btn-info dropdown-toggle" type="button"><i class="fa fa-share-square-o" aria-hidden="true"></i> Export <i class="fa fa-sort-desc" aria-hidden="true"></i> </button>
+                            <ul role="menu" class="dropdown-menu">
+                                <li onclick="fnExcelReport()"> <a href="javascript:;"> Xls Format </a> </li>
+                                <li id="pdfExport"> <a href="javascript:;"> PDF Format </a> </li>
+                            </ul>
+                        </div>
 
-                                </div>
-                            </div>
-                        </div>*@
-                        <div class="col-md-10 col-lg-10">
-                            <div class="row">
-                                <div class="col-md-2 col-lg-2">
-                                    Registration No:
-                                    <input type="text" id="registerNo" name="register-no" class="form-control" onkeyup="patientSearch()" />
-                                </div>
-                                @*<div class="col-md-2 col-lg-2">
-            ID No:
-            <input type="text" id="id-no" name="id-no" class="form-control" autocomplete="off" onkeyup="patientSearch()" />
-        </div>*@
-                                <div class="col-md-2 col-lg-2">
-                                    Client Name:
-                                    <input type="text" id="patientName" name="patient-name" class="form-control" autocomplete="off" onkeyup="patientSearch()" />
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    Client Mobile:
-                                    <input type="text" id="patientMobile" name="patient-mobile" class="form-control" autocomplete="off" onkeyup="patientSearch()" />
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    Client City:
-                                    <input type="text" id="patientCity" name="patient-city" class="form-control" autocomplete="off" onkeyup="patientSearch()" />
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    Birth Date:
-                                    <input type="text" name="birth-date" class="form-control datepicker" autocomplete="off" onchange="patientSearch()" />
-                                </div>
-                                <div class="col-md-2 col-lg-2">
-                                    Status:
-                                    @Html.DropDownList("Status", new SelectList(ViewBag.Status, "ID", "Name"), "Select status", new { @Class = "form-control dropdown", onchange = "patientSearch()" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                </div>
+            </div>
+        </div>
+        <div id="qckSrchDiv">
+            <div class="row mrgn-b-sm">
+                <div class="col-md-12 col-lg-12">
+                    <h5>Quick Search</h5>
+                    <div class="quick-search-block">
+                        <div class="row">
+                            <div class="col-md-10 col-lg-10">
+                                <div class="row">
+                                    <div class="col-md-2 col-lg-2">
+                                        Registration No:
+                                        <input type="text" id="registerNo" name="register-no" class="form-control" onkeyup="patientSearch()" />
+                                    </div>
+                                    <div class="col-md-2 col-lg-2">
+                                        Client Name:
+                                        <input type="text" id="patientName" name="patient-name" class="form-control" autocomplete="off" onkeyup="patientSearch()" />
+                                    </div>
+                                    <div class="col-md-2 col-lg-2">
+                                        Client Mobile:
+                                        <input type="text" id="patientMobile" name="patient-mobile" class="form-control" autocomplete="off" onkeyup="patientSearch()" />
+                                    </div>
+                                    <div class="col-md-2 col-lg-2">
+                                        Client City:
+                                        <input type="text" id="patientCity" name="patient-city" class="form-control" autocomplete="off" onkeyup="patientSearch()" />
+                                    </div>
+                                    <div class="col-md-2 col-lg-2">
+                                        Birth Date:
+                                        <input type="text" name="birth-date" class="form-control datepicker" autocomplete="off" onchange="patientSearch()" />
+                                    </div>
+                                    <div class="col-md-2 col-lg-2">
+                                        Status:
+                                        @Html.DropDownList("Status", new SelectList(ViewBag.Status, "ID", "Name"), "Select status", new { @Class = "form-control dropdown", onchange = "patientSearch()" })
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -181,7 +157,7 @@
         <div class="prtm-block pos-relative">
             <div class="prtm-block-content">
                 <div class="table-responsive">
-                    <div class="unseen">
+                    <div id="orderArea" class="unseen">
                         @{
                             Html.RenderPartial("GetPatients");
                         }
@@ -215,7 +191,56 @@
 
 
 @section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/chosen-js@1.8.7/chosen.jquery.js" integrity="sha256-TDtzz+WOGufaQuQzqpEnnxdJQW5xrU+pzjznwBtaWs4=" crossorigin="anonymous"></script>
     <script>
+        var ListHtml = null;
+                function saveOrderFunction() {
+            var formdata = new FormData($('form').get(0));
+            formdata.append("GeneTemplateId", $("#TestType").val());
+            $("#signupform").prop("disabled", true);
+            $.ajax({
+                type: 'POST',
+                url: "/admin/clientorder/AddOrderForPatient",
+                data: formdata,
+                dataType: "text",
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    toastr.info('Record saved');
+                    window.location = '/admin/clientorder/index';
+                },
+                error: function (xhr, status) {
+                }
+            });
+        }
+           function loadMultiSelect() {
+            $('.tryMultiselect').chosen();
+        }
+        function addOrderData(patientId) {
+                ListHtml = document.getElementById('orderArea').innerHTML;
+            $.ajax({
+                type: "GET",
+                url: '/admin/clientorder/addOrder?id=' + patientId,
+                success: function (result) {
+                    $('.unseen').html(result);
+                    $("#orderBtnDiv").show();
+                    $("#patientBtnDiv").hide();
+                     $("#qckSrchDiv").hide();
+                    loadMultiSelect();
+                },
+                error: function () {
+                    alert("Content load failed.");
+                }
+            });
+        }
+
+             $(document).on("click", ".cancelEvent", function () {
+            document.getElementById('orderArea').innerHTML = ListHtml;
+                                     $("#orderBtnDiv").hide();
+                    $("#patientBtnDiv").show();
+                     $("#qckSrchDiv").show();
+        });
+
         $(document).ajaxStart(function () {
             $(".sbmtBtn").attr("disabled", true);
         });

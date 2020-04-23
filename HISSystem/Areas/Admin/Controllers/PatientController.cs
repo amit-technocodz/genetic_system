@@ -775,9 +775,9 @@ namespace HISSystem.Areas.Admin.Controllers
             {
                 model.Add(new JsonEvent
                 {
-                    Name = item.Doctor.EnFirstName + " " + item.Doctor.EnSecondName + " " + item.Doctor.EnThirdName,
-                    Id = item.ID,
-                    Start = Convert.ToDateTime(item.Date),
+                    name = item.Doctor.EnFirstName + " " + item.Doctor.EnSecondName + " " + item.Doctor.EnThirdName,
+                    id = item.ID,
+                    start = Convert.ToDateTime(item.Date),
                     //   End = Convert.ToDateTime(item.Date),
                 });
             }
@@ -829,9 +829,9 @@ namespace HISSystem.Areas.Admin.Controllers
             {
                 model.Add(new JsonEvent
                 {
-                    Name = item.Doctor.EnFirstName + " " + item.Doctor.EnSecondName + " " + item.Doctor.EnThirdName,
-                    Id = item.ID,
-                    Start = Convert.ToDateTime(item.Date),
+                    name = item.Doctor.EnFirstName + " " + item.Doctor.EnSecondName + " " + item.Doctor.EnThirdName,
+                    id = item.ID,
+                    start = Convert.ToDateTime(item.Date),
                     //   End = Convert.ToDateTime(item.Date),
                 });
             }
@@ -853,10 +853,10 @@ namespace HISSystem.Areas.Admin.Controllers
             {
                 model.Add(new JsonEvent
                 {
-                    Name = item.EnFirstName + " " + item.EnFirstName + " " + item.EnFirstName,
-                    Id = item.ID,
-                    Start = DateTime.UtcNow.Date,
-                    End = DateTime.UtcNow.Date,
+                    name = item.EnFirstName + " " + item.EnFirstName + " " + item.EnFirstName,
+                    id = item.ID,
+                    start = DateTime.UtcNow.Date,
+                    end = DateTime.UtcNow.Date,
                 });
             }
 
@@ -872,11 +872,38 @@ namespace HISSystem.Areas.Admin.Controllers
             {
                 model.Add(new JsonEvent
                 {
-                    Id = item.Doctor.ID,
-                    Start = Convert.ToDateTime(item.StartDate),
-                    End = Convert.ToDateTime(item.EndDate),
-                    Text = item.Doctor.EnFirstName + " " + item.Doctor.EnSecondName + " " + item.Doctor.EnThirdName,
-                    Resource = item.Doctor.ID,
+                    id = item.Doctor.ID,
+                    start = Convert.ToDateTime(item.StartDate),
+                    end = Convert.ToDateTime(item.EndDate),
+                    text = item.Doctor.EnFirstName + " " + item.Doctor.EnSecondName + " " + item.Doctor.EnThirdName,
+                    resource = item.Doctor.ID,
+                    Doctor = item.Doctor?.EnFirstName ?? "" +  " " + item.Doctor?.EnSecondName ?? "" + " " + item.Doctor?.EnThirdName ?? "",
+                    Patient = item.User?.EnFirstName ?? "" + " " + item.User?.EnSecondName ?? "" + " " + item.User.EnThirdName ?? "",
+                    Department = item.Department?.Name ?? "",
+                    Room = item.Room?.Name ?? "",
+                    Mobile = item.User.Mobile,
+                    Note = item.Note
+
+                });
+            }          
+            return Json(new { data = model });
+        }
+
+        [HttpGet]
+        public IActionResult GetDoctorAppointmentsByDate(DateTime? startDate)
+        {
+            List<JsonEvent> model = new List<JsonEvent>();
+            var result = db.AppointmentService.GetAll().Where(x => x.StartDate.Value.Date == (Convert.ToDateTime(startDate.Value.Date))).ToList() ;
+
+            foreach (var item in result)
+            {
+                model.Add(new JsonEvent
+                {
+                    id = item.Doctor.ID,
+                    start = Convert.ToDateTime(item.StartDate),
+                    end = Convert.ToDateTime(item.EndDate),
+                    text = item.Doctor.EnFirstName + " " + item.Doctor.EnSecondName + " " + item.Doctor.EnThirdName,
+                    resource = item.Doctor.ID,
                 });
             }
 
@@ -893,11 +920,11 @@ namespace HISSystem.Areas.Admin.Controllers
             {
                 model.Add(new JsonEvent
                 {
-                    Id = item.Doctor.ID,
-                    Start = Convert.ToDateTime(item.StartDate),
-                    End = Convert.ToDateTime(item.EndDate),
-                    Text = item.Doctor.EnFirstName + " " + item.Doctor.EnSecondName + " " + item.Doctor.EnThirdName,
-                    Resource = item.Doctor.ID,
+                    id = item.Doctor.ID,
+                    start = Convert.ToDateTime(item.StartDate),
+                    end = Convert.ToDateTime(item.EndDate),
+                    text = item.Doctor.EnFirstName + " " + item.Doctor.EnSecondName + " " + item.Doctor.EnThirdName,
+                    resource = item.Doctor.ID,
                 });
             }
 
@@ -916,13 +943,13 @@ namespace HISSystem.Areas.Admin.Controllers
             model.AppointmentStatusID = db.LookupService.GetLookups().Where(x => x.Type == "AppointmentStatus" && x.TypeID == 1).FirstOrDefault().ID;
             var result = db.AppointmentService.Add(model);
             var Data = db.AppointmentService.GetById(result.ID);
-            jsonData.Id = Data.ID;
+            jsonData.id = Data.ID;
             if (Data.User != null && Data.User.PersonalInformation != null)
             {
-                jsonData.Name = Data.User.EnFirstName + " " + Data.User.EnSecondName + " " + Data.User.EnThirdName;
+                jsonData.name = Data.User.EnFirstName + " " + Data.User.EnSecondName + " " + Data.User.EnThirdName;
             }
-            jsonData.Start = Convert.ToDateTime(Data.StartDate);
-            jsonData.End = Convert.ToDateTime(Data.EndDate);
+            jsonData.start = Convert.ToDateTime(Data.StartDate);
+            jsonData.end = Convert.ToDateTime(Data.EndDate);
             return new JsonResult(new { Data = new Dictionary<string, object> { { "Status", 1 }, { "Message", "Add Success fully" }, { "Data", jsonData } } });
         }
         #endregion Appointment
@@ -1289,12 +1316,18 @@ namespace HISSystem.Areas.Admin.Controllers
 
         public class JsonEvent
         {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public DateTime Start { get; set; }
-            public DateTime End { get; set; }
-            public string Text { get; set; }
-            public int Resource { get; set; }
+            public int id { get; set; }
+            public string name { get; set; }
+            public DateTime start { get; set; }
+            public DateTime end { get; set; }
+            public string text { get; set; }
+            public int resource { get; set; }
+            public string Doctor { get; set; }
+            public string Patient { get; set; }
+            public string Department { get; set; }
+            public string Room { get; set; }
+            public string Mobile { get; set; }
+            public string Note { get; set; }
 
         }
         public IActionResult getpaitentsinAppointment()
